@@ -18,12 +18,12 @@
 #include "myassert.h"
 #include "useful.h"
 
-GrowingAverageFilter::GrowingAverageFilter(int size)
+GrowingAverageFilter::GrowingAverageFilter(size_t size)
 {
   init(size);
 }
 
-void GrowingAverageFilter::init(int size)
+void GrowingAverageFilter::init(size_t size)
 {
   _size = size;
   _count = 0;
@@ -32,9 +32,9 @@ void GrowingAverageFilter::init(int size)
   reset();
 }
 
-void GrowingAverageFilter::filter(const float *input, float *output, int n)
+void GrowingAverageFilter::filter(const float *input, float *output, size_t n)
 {
-  int j;
+  size_t j;
   if(n > _size) {
     for(j=0; j<_size; j++) {
       if(_count < _size) _count++;

@@ -186,7 +186,7 @@ class GPLDialog : public QDialog
 };
 
 extern MainWindow *mainWindow;
-class MyGLFont;
-extern MyGLFont *mygl_font;
+//class MyGLFont;
+//extern MyGLFont *mygl_font;
 
 #endif

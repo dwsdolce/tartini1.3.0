@@ -18,50 +18,69 @@
 
 const double v8=0x7F, v16=0x7FFF, v32=0x7FFFFFFF;
 
-int SoundStream::writeFloats(float **channelData, int length, int ch)
+size_t SoundStream::writeFloats(float **channelData, size_t length, int ch)
 {
-    int written;
+    size_t written;
     int c;
 
     if(bits == 8) {
-        unsigned char *temp = new unsigned char[length * channels];
-        unsigned char *pos1 = temp;
+        uint8_t *temp = new uint8_t[length * channels];
+        uint8_t *pos1 = temp;
         float *pos, *end;
         for(c=0; c<channels; c++) {
             end = channelData[c%ch] + length;
             pos1 = temp + c;
             for(pos = channelData[c%ch]; pos<end; pos++, pos1+=channels)
-                *pos1 = (unsigned char)((*pos * v8) + v8);
+                *pos1 = (uint8_t)((*pos * v8) + v8);
         }
         written = write_bytes(temp, length * channels);
-        delete temp;
+        delete[] temp;
         return written / channels;
     } else if(bits == 16) {
-        short *temp = new short[length * channels * sizeof(short)];
-        short *pos1 = temp;
+        uint16_t *temp = new uint16_t[length * channels * sizeof(uint16_t)];
+        uint16_t*pos1 = temp;
         float *pos, *end;
         for(c=0; c<channels; c++) {
             end = channelData[c%ch] + length;
             pos1 = temp + c;
             for(pos = channelData[c%ch]; pos<end; pos++, pos1+=channels) {
-                *pos1 = (short)(*pos * v16);
+                *pos1 = (uint16_t)(*pos * v16);
 //#ifdef Q_OS_MACX //reverse endieness
 #ifdef MACX //reverse endieness
                 *pos1 = ((*pos1 & 0xFF00) >> 8) | ((*pos1 & 0x00FF) << 8);
 #endif
             }
         }
-        written = write_bytes(temp, length * channels * sizeof(short));
-        delete temp;
+        written = write_bytes(temp, length * channels * sizeof(uint16_t));
+        delete[] temp;
+        return written / channels / sizeof(short);
+    }
+    else if (bits == 32) {
+        uint32_t *temp = new uint32_t[length * channels * sizeof(uint32_t)];
+        uint32_t *pos1 = temp;
+        float* pos, * end;
+        for (c = 0; c < channels; c++) {
+            end = channelData[c % ch] + length;
+            pos1 = temp + c;
+            for (pos = channelData[c % ch]; pos < end; pos++, pos1 += channels) {
+                *pos1 = (uint32_t)(*pos * v32);
+                //#ifdef Q_OS_MACX //reverse endieness
+#ifdef MACX //reverse endieness
+                * pos1 = ((*pos1 & 0xFF00) >> 8) | ((*pos1 & 0x00FF) << 8);
+#endif
+            }
+        }
+        written = write_bytes(temp, length * channels * sizeof(uint32_t));
+        delete[] temp;
         return written / channels / sizeof(short);
     }
     fprintf(stderr, "%d bit data is not suported yet\n", bits);
     return 0;
 }
 
-int SoundStream::readFloats(float **channelData, int length, int ch)
+size_t SoundStream::readFloats(float **channelData, size_t length, int ch)
 {
-    int read;
+    size_t read;
     int c;
     if(bits == 8) {
         unsigned char *temp = new unsigned char[length * channels];
@@ -74,7 +93,7 @@ int SoundStream::readFloats(float **channelData, int length, int ch)
             for(pos = channelData[c%ch]; pos<end; pos++, pos1+=channels)
                 *pos = float((double(*pos1) - v8) / v8);
         }
-        delete temp;
+        delete[] temp;
         return read / channels;
     } else if(bits == 16) {
         short *temp = new short[length * channels * sizeof(short)];
@@ -92,7 +111,7 @@ int SoundStream::readFloats(float **channelData, int length, int ch)
                 *pos = float(double(*pos1) / v16);
             }
         }
-        delete temp;
+        delete[] temp;
         return read / channels / sizeof(short);
     } else if(bits == 32) {
         long *temp = new long[length * channels * sizeof(long)];
@@ -109,7 +128,7 @@ int SoundStream::readFloats(float **channelData, int length, int ch)
                 *pos = float(double(*pos1) / v16);
             }
         }
-        delete temp;
+        delete[] temp;
         return read / channels / sizeof(long);
     }
     //TODO: 24bit
@@ -117,12 +136,10 @@ int SoundStream::readFloats(float **channelData, int length, int ch)
     return 0;
 }
 
-int SoundStream::writeReadFloats(float **outChannelData, int outCh, float **inChannelData, int inCh, int length)
+size_t SoundStream::writeReadFloats(float **outChannelData, int outCh, float **inChannelData, int inCh, size_t length)
 {
   writeFloats(outChannelData, length, outCh);
   return readFloats(inChannelData, length, inCh);
-  //not implimented yet.
-  //return 0;
 }
 /***************************************************************************
  *                                                                         *

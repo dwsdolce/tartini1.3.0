@@ -21,10 +21,9 @@
 
 //a linear interpolation
 //quicker than b-spline
-inline float interpolate_linear(int len, const float *array, float x)
+inline float interpolate_linear(size_t len, const float *array, float x)
 {
-  int x0 = (int)x;
-  //int x0 = lrint(x-0.4999);
+  int x0 = int(x);
   if(x0 >= 0 && x0 < len - 1) {
     float y0 = array[x0];
     float y1 = array[x0+1];
@@ -40,7 +39,7 @@ inline float interpolate_linear(int len, const float *array, float x)
 //NOTE: the values don't always pass through the in points
 //      but it gives a nice smooth curve
 //slower than linear
-float interpolate_b_spline(int len, const float *array, float x)
+float interpolate_b_spline(size_t len, const float *array, float x)
 {
   int x0 = int(ceil(x));
   if((x0 < 0) || (x0 > len)) return 0; //{ printf("find_interpolate error\n"); exit(1); } //exit with an error
@@ -66,7 +65,7 @@ float interpolate_b_spline(int len, const float *array, float x)
 
 
 //Uses a Hermite curve
-float interpolate_cubic(int len, const float *data, double x)
+float interpolate_cubic(size_t len, const float *data, double x)
 {
 	int inpos = int(x);
 	float finpos = float(x - double(inpos));
@@ -115,47 +114,23 @@ float interpolate_cubic(int len, const float *data, double x)
 //start = where the to start resampling from the *in array
 //len = the length of the resampling from the *in array
 //type = LINEAR or BSPLINE
-void stretch_array(int in_len, const float *in, int out_len, float *out, float start, float len, int type)
+void stretch_array(size_t in_len, const float *in, size_t out_len, float *out, float start, float len, int type)
 {
   float x = start;
-  //float x = (start >= 0) ? start : 0.0f;
-  //if(floor(start + len) >= in_len-1) len = float(in_len-2) - start; //FIXME: should pad the ending, not squash up array
   float step = len / float(out_len);
   
   if(type == LINEAR) {
-    for(int j=0; j<out_len; j++) {
+    for(size_t j=0; j<out_len; j++) {
       out[j] = interpolate_linear(in_len, in, x);
       x += step;
     }
-/*
-    int prevRoundMode = fegetround();
-    fesetround(FE_DOWNWARD);
-    int j=0;
-    //while(x < 0.0f) { out[j++] = 0.0f; x+=step; }
-    //int small_out_len = std::min(lrint(start + out_len*step), in_len-2);
-    while(j<out_len) {
-      int x0 = lrint(x);
-      //assert(x0 >= 0);
-      //printf("j=%d, %d, %f, %d\n", j, x0, x, in_len-2);
-      if(x0 < 0 || x0 > len - 2) { out[j++]=0; continue;}  //{ printf("find_interpolate error\n"); exit(1); } //exit with an error
-      //assert(x0 <= in_len - 2);
-      float y0 = in[x0];
-      //float y1 = in[x0+1];
-      out[j++] = y0 + (x-(float)x0)*(in[x0+1]-y0);
-      x += step;
-    }
-    //while(j<out_len) {
-    //  out[j] = 0.0f;
-    //}
-    fesetround(prevRoundMode);
-    */
   } else if(type == BSPLINE) {
-      for(int j=0; j<out_len; j++) {
+      for(size_t j=0; j<out_len; j++) {
 	  out[j] = interpolate_b_spline(in_len, in, x);
 	  x += step;
       }
   } else {
-      for(int j=0; j<out_len; j++) {
+      for(size_t j=0; j<out_len; j++) {
 	  out[j] = interpolate_cubic(in_len, in, x);
 	  x += step;
       }

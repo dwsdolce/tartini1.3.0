@@ -67,7 +67,6 @@ class AudioThread : public QThread {
 
  public:
 	AudioThread();
-	//AudioThread(SoundFile *s);
   virtual ~AudioThread() {}
 
   virtual void run();
@@ -79,7 +78,6 @@ class AudioThread : public QThread {
   int doStuff();
   SoundFile *playSoundFile() { return _playSoundFile; }
   SoundFile *recSoundFile() { return _recSoundFile; }
-  //SoundFile *curSoundFile() { return (_playSoundFile) ? _playSoundFile : _recSoundFile; }
   SoundFile *curSoundFile() { return (_recSoundFile) ? _recSoundFile : _playSoundFile; }
   
  private:
@@ -93,7 +91,6 @@ class AudioThread : public QThread {
   int frame_num;
 
   bool useFile;
-  //FILE *freqFile;
 
    int sleepCount;
 };

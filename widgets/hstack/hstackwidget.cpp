@@ -43,18 +43,9 @@ void HStackWidget::setWindowSize(double _windowsize)
   }
 }
 
-void HStackWidget::setDBOffset(double offset)
-{
-  //if(top != offset + viewheight / 2) {
-  //  top = offset + viewheight / 2;
-  //  emit dBOffsetChanged(top);
-  //}
-}
-
 void HStackWidget::setDBRange(double range)
 {
   if(viewheight != range) {
-    //top -= (viewheight - range)/2;
     viewheight = range;
     emit dBRangeChanged(viewheight);
   }
@@ -122,7 +113,7 @@ void HStackWidget::paintEvent( QPaintEvent * )
       data = active->dataAtChunk(startChunk+i);
       if (data != 0)
       {
-        int m = MIN(data->harmonicAmpNoCutOff.size(), (unsigned) numHarmonics);
+        int m = MIN(int(data->harmonicAmpNoCutOff.size()), (unsigned) numHarmonics);
         for (j = 0; j < m;j++)
         {
           if (!data->harmonicAmpRelative.empty() && !isinf(data->harmonicAmpRelative[j]))

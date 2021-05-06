@@ -17,9 +17,7 @@
 
 #include <qpainter.h>
 #include <qwidget.h>
-#include <QGLWidget>
 #include <qobject.h>
-//Added by qt3to4:
 #include <QPixmap>
 #include <vector>
 #include <map>
@@ -51,11 +49,9 @@ public:
   static void setLineWidth(int width);
   
   void beginDrawing(bool clearBackground_=true);
-  void endDrawing(bool drawToScreen_=true);
+  void endDrawing();
   void clearBackground();
   void fillBackground(const QColor &color);
-  void checkSize();
-  void drawToScreen();
   static bool calcZoomElement(Channel *ch, ZoomElement &ze, int baseElement, double baseX);
   void drawArray(float *input, int n, int sampleStep=1, double theZoomY=1.0, double offset=0);
   

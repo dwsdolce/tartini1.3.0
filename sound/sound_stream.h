@@ -38,18 +38,14 @@ class SoundStream
   int sample_size() { return (bits+7) / 8; }
   int frame_size() { return sample_size() * channels; }
 
-  virtual long read_bytes(void *data, long length) = 0;
-  virtual long read_frames(void *data, long length) = 0;
-  virtual long write_bytes(void *data, long length) = 0;
-  virtual long write_frames(void *data, long length) = 0;
-  //virtual long write_buffer(FBuffer/*<float>*/ & /*buffer*/, unsigned long /*length*/) { return 0; }
-  //virtual long read_buffer(FBuffer/*<float>*/ & /*buffer*/, unsigned long /*length*/) { return 0; }
-  virtual long wait_bytes(long /*length*/) { return 0; };
-  virtual long wait_frames(long /*length*/) { return 0; };
+  virtual size_t read_bytes(void *data, size_t length) = 0;
+  virtual size_t read_frames(void *data, size_t length) = 0;
+  virtual size_t write_bytes(void *data, size_t length) = 0;
+  virtual size_t write_frames(void *data, size_t length) = 0;
 
-  virtual int writeFloats(float **channelData, int length, int ch);
-  virtual int readFloats(float **channelData, int length, int ch);
-  virtual int writeReadFloats(float **outChannelData, int outCh, float **inChannelData, int inCh, int length);
+  virtual size_t writeFloats(float **channelData, size_t length, int ch);
+  virtual size_t readFloats(float **channelData, size_t length, int ch);
+  virtual size_t writeReadFloats(float **outChannelData, int outCh, float **inChannelData, int inCh, size_t length);
 };
 
 #endif

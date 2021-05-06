@@ -15,25 +15,15 @@
 
 #include "mylabel.h"
 #include <qpixmap.h>
-//Added by qt3to4:
 #include <QPaintEvent>
 
 MyLabel::MyLabel(const QString &text_, QWidget *parent, const char * name) : DrawWidget(parent)
 {
    setObjectName(name);
   _text = text_;
-/*
-  p.begin(paintDevice);
-#ifndef SINGLE_DRAWING_BUFFER
-  p.initFrom(this);
-#endif
-*/
-  //QFontMetrics fm = paintDevice.fontMetrics();
   QFontMetrics fm = QFontMetrics(p.font());
   _fontHeight = fm.height();
   _textWidth = fm.width(_text);
-  //p.end();
-  //setAttribute(Qt::WA_OpaquePaintEvent, false);
 }
 
 void MyLabel::paintEvent( QPaintEvent * )

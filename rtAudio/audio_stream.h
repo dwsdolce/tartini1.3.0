@@ -44,16 +44,15 @@ class AudioStream : public SoundStream
   int open(int mode_, int freq_=44100, int channels_=2, int bits_=16, int buffer_size_=2048);
 
   //note: use the writeFloats or readFloats instead
-  long read_bytes(void * /*data*/, long /*length*/) { return 0; } //not implemented
-  long read_frames(void * /*data*/, long /*length*/) { return 0; } //not implemented
-  long write_bytes(void * /*data*/, long /*length*/) { return 0; } //not implemented
-  long write_frames(void * /*data*/, long /*length*/) { return 0; } //not implemented
-  //long wait_bytes(long length) { return 0; } //not implemented
-  //long wait_frames(long length) { return 0; } //not implemented
+  // These are not abstract.
+  virtual size_t read_bytes(void * /*data*/, size_t /*length*/) { return 0; } //not implemented
+  virtual size_t read_frames(void * /*data*/, size_t /*length*/) { return 0; } //not implemented
+  virtual size_t write_bytes(void * /*data*/, size_t /*length*/) { return 0; } //not implemented
+  virtual size_t write_frames(void * /*data*/, size_t /*length*/) { return 0; } //not implemented
 
-  int writeFloats(float **channelData, int length, int ch);
-  int readFloats(float **channelData, int length, int ch);
-  int writeReadFloats(float **outChannelData, int outCh, float **inChannelData, int inCh, int length);
+  size_t writeFloats(float **channelData, size_t length, int ch);
+  size_t readFloats(float **channelData, size_t length, int ch);
+  size_t writeReadFloats(float **outChannelData, int outCh, float **inChannelData, int inCh, size_t length);
   bool isSameInOutDevice() { return inDevice == outDevice; }
 
   static QStringList getInputDeviceNames();

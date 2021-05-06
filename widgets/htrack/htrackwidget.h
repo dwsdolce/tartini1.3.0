@@ -16,8 +16,7 @@
 #ifndef HTRACK_H
 #define HTRACK_H
 
-#include <qgl.h>
-//Added by qt3to4:
+#include <QGLWidget>
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <vector>
@@ -74,7 +73,6 @@ private:
   double _distanceAway;
   double _viewAngleHorizontal;
   double _viewAngleVertical;
-  //GLuint theKeyboard3d;
   Piano3d *piano3d;
   double translateX, translateY;
 };

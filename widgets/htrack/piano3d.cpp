@@ -221,9 +221,7 @@ void Piano3d::draw()
       glTranslatef(keyOffsets[j], 0.0, 0.0);
       if(keyStates[j]) {
         glRotated(5.0, 1.0, 0.0, 0.0);
-        //setMaterialColor3f(0.5, 0.5, 0.0);
         glCallList(aBlackKey);
-        //setMaterialColor3f(0.35, 0.35, 0.35);
       } else {
         glCallList(aBlackKey);
       }

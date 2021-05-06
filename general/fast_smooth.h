@@ -13,19 +13,19 @@ inline void fast_complex_rotate(double &x, double &y, double sin_angle, double c
 This uses and fast internal rotation algorithm*/
 class fast_smooth
 {
-    int _size, _size_left, _size_right;
+    size_t _size, _size_left, _size_right;
     double _angle;
     double _cos_angle, _sin_angle;
     double _sum;
 
  public:
-    fast_smooth(int size); //the total width of the hanning window. To keep data centered use an odd size
-    void fast_smoothA(float *source, float *dest, int length, int step);
-    void fast_smoothA(float *source, float *dest, int length);
-    void fast_smoothB(float *source, float *dest, int length, int step);
-    void fast_smoothB(float *source, float *dest, int length);
+    fast_smooth(size_t size); //the total width of the hanning window. To keep data centered use an odd size
+    void fast_smoothA(float *source, float *dest, size_t length, size_t step);
+    void fast_smoothA(float *source, float *dest, size_t length);
+    void fast_smoothB(float *source, float *dest, size_t length, size_t step);
+    void fast_smoothB(float *source, float *dest, size_t length);
 };
 
-void testFastSmooth();
+//void testFastSmooth();
 
 #endif

@@ -21,32 +21,34 @@
 class SoundFileStream : public SoundStream
 {
 protected:
-  int _total_frames;
-  int _pos; //in frames
+  size_t _total_frames;
+  size_t _pos; //in frames
 
-  void setPos(int newPos) { _pos = newPos; }
+  void setPos(size_t newPos) { _pos = newPos; }
 public:
 
   SoundFileStream() { _total_frames=-1; _pos=0; };
   virtual ~SoundFileStream() {};
 
-  int data_length() { return totalFrames() * frame_size(); }
-  int totalFrames() { return _total_frames; }
-  int pos() { return _pos; }
+  size_t data_length() { return totalFrames() * frame_size(); }
+  size_t totalFrames() { return _total_frames; }
+  size_t pos() { return _pos; }
   
-  virtual int open_read(const QString &/*filename*/) { return 0; };
-  virtual long read_bytes(void * /*data*/, long /*length*/) { return 0; };
-  virtual long read_frames(void * /*data*/, long /*length*/) { return 0; };
+  virtual int open_read(const QString&/*filename*/) = 0;
 
-  virtual int open_write(const QString& /*filename*/, int /*freq_*/=44100, int /*channels_*/=2, int /*bits_*/=16) { return 0; };
-  virtual long write_bytes(void * /*data*/, long /*length*/) { return 0; };
-  virtual long write_frames(void * /*data*/, long /*length*/) { return 0; };
+  virtual size_t read_bytes(void* /*data*/, size_t /*length*/) = 0;
+  virtual size_t read_frames(void* /*data*/, size_t /*length*/) = 0;
+
+  virtual int open_write(const QString& /*filename*/, int /*freq_*/ = 44100, int /*channels_*/ = 2, int /*bits_*/ = 16) = 0;
+
+  virtual size_t write_bytes(void* /*data*/, size_t /*length*/) = 0;
+  virtual size_t write_frames(void* /*data*/, size_t /*length*/) = 0;
 
   virtual void close() {};
 
-  virtual void jump_to_frame(int /*frame*/) {};
-  virtual void jump_back(int /*frames*/) {};
-  virtual void jump_forward(int /*frames*/) {};
+  virtual void jump_to_frame(size_t /*frame*/) {};
+  virtual void jump_back(size_t /*frames*/) {};
+  virtual void jump_forward(size_t /*frames*/) {};
 };
 
 #endif

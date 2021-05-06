@@ -24,7 +24,6 @@
 
 #include "conversions.h"
 
-//enum AmplitudeModes { AMPLITUDE_RMS, AMPLITUDE_MAX_INTENSITY, AMPLITUDE_CORRELATION, AMPLITUDE_PURITY, FREQ_CHANGENESS };
 enum AmplitudeModes { AMPLITUDE_RMS, AMPLITUDE_MAX_INTENSITY, AMPLITUDE_CORRELATION, FREQ_CHANGENESS, DELTA_FREQ_CENTROID, NOTE_SCORE, NOTE_CHANGE_SCORE };
 
 #define NUM_AMP_MODES 7
@@ -58,18 +57,12 @@ public:
   float vibratoPhase;
   float vibratoError;
   int reason; /*< The reason why there was a note change */
-  //float correlation; /*< How well the fundamental frequency fits the signal (0=no fit, 1=perfet fit) */
-  //float logrms; /*< The Root-mean-square, a measure of intensity/volume in the chunk */
-  //float maxIntensityDB;
   int highestCorrelationIndex;
   int chosenCorrelationIndex;
   float periodRatio; /*< The ratio of the current period to the period at the beginning of the current note */
 
-  int cepstrumIndex;
+  size_t cepstrumIndex;
   float cepstrumPitch;
-  //float periodOctaveEstimate; /*< A estimate from over the whole duration of the note, to help get the correct octave */
-  //float volumeValue; /*< A value between 0 and 1 related to volume and correlation */
-  //float changeness; /*< 0 for a stedy note, larger for a fast changing frequency */
   std::vector<float> periodEstimates;
   std::vector<float> periodEstimatesAmp;
   std::vector<float> harmonicAmpNoCutOff;
@@ -81,7 +74,6 @@ public:
   int noteIndex; //The index of the note in the noteData, or NO_NOTE
   bool notePlaying;
   bool done;
-  //bool isValid();
   AnalysisData();
   void calcScores();
 

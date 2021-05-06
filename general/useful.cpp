@@ -256,33 +256,10 @@ bool moveFile(const QString &src, const QString &dest)
 
 /** Returns the power of 2 greater or equal to x
   */
-int nextPowerOf2(int x)
+size_t nextPowerOf2(size_t x)
 {
   myassert(x > 1<<31);
-  int y = 1;
+  size_t y = 1;
   while(y < x) y <<= 1;
   return y;
 }
-
-/*
-void binary_search_closest_test()
-{
-  std::cout << "binary_search_closest_test" << std::endl;
-  float value = 1.0;
-  float a[] = { 1.0, 2.0, 3.0, 4.0 };
-  float *aLast = a+4;
-  print_elements(a, aLast);
-  std::pair<float*, float*> range = std::equal_range(a, aLast, value);
-  std::cout << *range.first << " " << *range.second << std::endl;
-  std::cout << *binary_search_closest(a, aLast, -0.5) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 1.0) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 1.51) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 2.0) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 2.4) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 3.0) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 3.6) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 4.0) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 4.6) << std::endl;
-  std::cout << *binary_search_closest(a, aLast, 5.0) << std::endl;
-}
-*/

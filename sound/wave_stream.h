@@ -29,28 +29,23 @@ class WaveStream : public SoundFileStream
   WaveStream();
   virtual ~WaveStream();
 
-  //int header_size() { return header_length; }
-
   int open_read(const QString& filename);
   int read_header();
-  long read_bytes(void *data, long length);
-  long read_frames(void *data, long length);
+  size_t read_bytes(void *data, size_t length);
+  size_t read_frames(void *data, size_t length);
 
   int open_write(const QString& filename, int freq_=44100, int channels_=2, int bits_=16);
   void write_header();
-  long write_bytes(void *data, long length);
-  long write_frames(void *data, long length);
+  size_t write_bytes(void *data, size_t length);
+  size_t write_frames(void *data, size_t length);
 
   QStringList getOutputDeviceNames();
 
-  //virtual long write_buffer(FBuffer/*<float>*/ &buffer, unsigned long length);
-  //virtual long read_buffer(FBuffer/*<float>*/ &buffer, unsigned long length);
-
   void close();
 
-  void jump_to_frame(int frame);
-  void jump_back(int frames);
-  void jump_forward(int frames);
+  void jump_to_frame(size_t frame);
+  void jump_back(size_t frames);
+  void jump_forward(size_t frames);
 };
 
 #endif

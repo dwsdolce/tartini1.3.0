@@ -23,7 +23,6 @@
 #include <QFrame>
 #include <qtooltip.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
@@ -33,7 +32,6 @@
 HTrackView::HTrackView( int viewID_, QWidget *parent )
  : ViewWidget( viewID_, parent)
 {
-  //setCaption("HTrack view");
   QGridLayout *mainLayout = new QGridLayout(this);
   mainLayout->setSizeConstraint(QLayout::SetNoConstraint);
 
@@ -42,15 +40,12 @@ HTrackView::HTrackView( int viewID_, QWidget *parent )
 
   QFrame *frame = new QFrame(this);
   frame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
-  //frame->setLineWidth(2);
-  //frame->setMidLineWidth(2);
   QWidget *aWidget = new QWidget(frame);
   hTrackWidget = new HTrackWidget(aWidget);
   hTrackWidget->setWhatsThis("Shows a 3D keyboard with the current note coloured. "
     "Vertical columns (or tracks), each representing a harmonic (or component frequency), protrude from the back, and move further away over time. "
     "The height of each track is related to how much energy is at that frequency. "
     "Tracks alternate in colour for better visibility. It can be seen how the hamonics in a note fit into the musical scale.");
-  //hTrackWidget->show();
 
   peakThresholdSlider = new QSlider(Qt::Vertical, this);
   peakThresholdSlider->setMinimum(0);
@@ -76,7 +71,6 @@ HTrackView::HTrackView( int viewID_, QWidget *parent )
   
   distanceWheel = new QwtWheel(this);
   distanceWheel->setOrientation(Qt::Vertical);
-  //distanceWheel->setWheelWidth(20);
   distanceWheel->setRange(100, 5000);
   distanceWheel->setSingleStep(10.0);
   distanceWheel->setPageStepCount(20);;
@@ -88,7 +82,6 @@ HTrackView::HTrackView( int viewID_, QWidget *parent )
   homeButton->setToolTip("Return to the original view");
   
   QSizeGrip *sizeGrip = new QSizeGrip(this);
-  //sizeGrip->setFixedSize(15, 15);
   
   mainLayout->addWidget(frame, 0, 0);
   mainLayout->addLayout(bottomLayout, 1, 0);
@@ -103,7 +96,6 @@ HTrackView::HTrackView( int viewID_, QWidget *parent )
   bottomLayout->addWidget(homeButton);
   bottomLayout->addSpacing(14);
   bottomLayout->addWidget(rotateXWheel);
-  //bottomLayout->addSpacing(20);
   mainLayout->addWidget(sizeGrip, 1, 1);
 
   //make the widget get updated when the view changes

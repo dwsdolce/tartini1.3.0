@@ -35,14 +35,12 @@
 #include <qlabel.h>
 #include <QToolBar>
 #include <qtooltip.h>
-//#include <qmime.h>
 #include <QTextEdit>
 #include <QPlainTextEdit>
 #include <qtextstream.h>
 #include <QTextBrowser>
 
 #include <qaction.h>
-//Added by qt3to4:
 #include <QKeyEvent>
 #include <QEvent>
 #include <QHBoxLayout>
@@ -56,7 +54,6 @@
 #include "mainwindow.h"
 
 #include "freqpair.h"
-//#include "process.h"
 #include "soundfile.h"
 #include "channel.h"
 #include "myscrollbar.h"
@@ -86,7 +83,6 @@
 
 #include "savedialog.h"
 #include "opendialog.h"
-//#include "preferences.h"
 #include "tartinisettingsdialog.h"
 #include <qlineedit.h>
 #include <QListView>
@@ -106,16 +102,13 @@
 #include <math.h>
 #include "useful.h"
 #include "mystring.h"
-//#include <unistd.h>
 #include <string.h>
 
 //include the icon .xpm pictures into the program directly
-//#include "pics/mic.xpm"
 #include "pics/record32x32.xpm"
 #include "pics/open.xpm"
 #include "pics/close32x32.xpm"
 #include "pics/save32x32.xpm"
-//#include "pics/pause.xpm"
 
 #include "pics/beginning32x32.xpm"
 #include "pics/rewind32x32.xpm"
@@ -125,15 +118,11 @@
 #include "pics/fastforward32x32.xpm"
 #include "pics/end32x32.xpm"
 
-//#include "pics/background.xpm"
 #include "pics/autofollow32x32.xpm"
 #include "pics/shadingon32x32.xpm"
 #include "pics/shadingoff32x32.xpm"
-//#include "pics/chain_open.xpm"
-//#include "pics/chain_closed.xpm"
-//#include "pics/tartinilogo.xpm"
 
-#include "myglfonts.h"
+//#include "myglfonts.h"
 
 #ifdef MACX
 #include "main.h"
@@ -142,7 +131,7 @@
 #include "myassert.h"
 
 MainWindow *mainWindow;
-MyGLFont *mygl_font;
+//MyGLFont *mygl_font;
 
 ViewData viewData[NUM_VIEWS] = {
                                /*ViewData(title,               menuName,              className,           menu type);*/
@@ -178,7 +167,7 @@ MainWindow::MainWindow()
   QFont myFont = QFont();
   myFont.setPointSize(9);
   myFont.setStyleStrategy(QFont::PreferAntialias);
-  mygl_font = new MyGLFont(myFont);
+  //mygl_font = new MyGLFont(myFont);
 
 #ifndef WINDOWS
   getitimer(ITIMER_PROF, &profiler_value); //for running multi-threaded profiling
@@ -329,7 +318,6 @@ MainWindow::MainWindow()
   fileMenu->addAction(quit);
 
   //Channel Menu
-  //QAction *exportAction = new QAction(QIcon(iconOpen), "&Export", this);
   QAction *exportAction1 = new QAction("&Export to plain text", this);
   connect(exportAction1, SIGNAL(triggered()), this, SLOT(exportChannelPlainText()));
   QAction *exportAction2 = new QAction("&Export to matlab", this);
@@ -341,7 +329,6 @@ MainWindow::MainWindow()
 
   // Create actions for the new view menu
   newViewMenu = menuBar()->addMenu("&Create");
-  //connect(newViewMenu, SIGNAL(activated(int)), this, SLOT(openView(int)));
   connect(newViewMenu, SIGNAL(aboutToShow()), this, SLOT(newViewUpdate()));
 
   //Create the Window Menu
@@ -454,7 +441,6 @@ MainWindow::MainWindow()
   timeSlider->setWhatsThis("Drag the time slider to move back and forward through the sound file");
   connect(timeSlider, SIGNAL(sliderMoved(double)), gdata, SLOT(updateActiveChunkTime(double)));
   connect(timeSlider, SIGNAL(sliderMoved(double)), view, SLOT(doSlowUpdate()));
-  //connect(view, SIGNAL(currentTimeChanged(double)), timeSlider, SLOT(setValue(double)));
   connect(view, SIGNAL(onSlowUpdate(double)), timeSlider, SLOT(setValue(double)));
   connect(gdata, SIGNAL(timeRangeChanged(double, double)), this, SLOT(setTimeRange(double, double)));
    timeBarDock->addWidget(timeSlider);
@@ -465,7 +451,6 @@ MainWindow::MainWindow()
   VolumeMeterView *volumeMeterView = new VolumeMeterView(VIEW_VOLUME_METER, volumeMeterToolBar);//->show();
   volumeMeterView->setWhatsThis("Shows the volume (in dB) of the left and right channels of the active sound. Note: If a mono sound the both are the same");
   volumeMeterToolBar->addWidget(volumeMeterView);
-
 
   QToolBar *keyToolBar = new QToolBar("Key Toolbar", this);
   keyToolBar->setWhatsThis("Used to set which reference lines are drawn in the Pitch Contour View.");
@@ -498,7 +483,6 @@ MainWindow::MainWindow()
   QComboBox *temperedComboBox = new QComboBox(keyToolBar);
   temperedComboBox->setWindowTitle("Tempered type");
   s.clear();
-  //s << "Even Tempered" << "Just Intonation";
   for(uint j=0; j<gMusicKeys.size(); j++) s << gMusicKeys[j].name();
   temperedComboBox->addItems(s);
   temperedComboBox->setCurrentIndex(gdata->temperedType());
@@ -527,40 +511,22 @@ MainWindow::MainWindow()
   QFont font("Courier", 12, QFont::Bold);
   
   noteLabel = new MyLabel("Note: 9999", statusBar(), "notelabel");
-/*
-  noteLabel = new QLabel("", statusBar(), "notelabel");
-  noteLabel->setTextFormat(Qt::PlainText);
-  noteLabel->setFont(font);
-*/
   statusBar()->addPermanentWidget(noteLabel, 0);
   setNoteLabel();
   noteLabel->setToolTip("The current note number in the active file");
-  //connect(gdata->view, SIGNAL(currentTimeChanged(double)), this, SLOT(setNoteLabel()));
   connect(gdata->view, SIGNAL(onSlowUpdate(double)), this, SLOT(setNoteLabel()));
-
   
   chunkLabel = new MyLabel("Chunk: 999999", statusBar(), "chunklabel");
 
-  //statusBar()->addPermanentWidget(chunkLabel, 0, true);
   statusBar()->addPermanentWidget(chunkLabel, 0);
   setChunkLabel();
   chunkLabel->setToolTip("The current chunk number in the active file");
-  //connect(gdata->view, SIGNAL(currentTimeChanged(double)), this, SLOT(setChunkLabel()));
   connect(gdata->view, SIGNAL(onSlowUpdate(double)), this, SLOT(setChunkLabel()));
 
   timeLabel = new MyLabel("Time: -00:00.000", statusBar(), "timelabel");
-/*
-  timeLabel = new QLabel("", statusBar(), "timelabel");
-  //timeLabel->setTextFormat(Qt::RichText);
-  timeLabel->setTextFormat(Qt::PlainText);
-  //timeLabel->setScaledContents(false);
-  timeLabel->setFont(font);
-*/
-  //statusBar()->addWidget(timeLabel, 0, true);
   statusBar()->addPermanentWidget(timeLabel, 0);
   setTimeLabel(0);
   timeLabel->setToolTip("The current time positon for all files (mins:sec)");
-  //connect(gdata->view, SIGNAL(currentTimeChanged(double)), this, SLOT(setTimeLabel(double)));
   connect(gdata->view, SIGNAL(onSlowUpdate(double)), this, SLOT(setTimeLabel(double)));
 
   statusBar()->showMessage( "Ready", 2000 );
@@ -597,28 +563,18 @@ bool MainWindow::event( QEvent * e )
       soundFile->unlock();
     }
     gdata->updateViewLeftRightTimes();
-/*
-    if(e->type() == UPDATE_SLOW) {
-      gdata->view->doAutoFollowing();
-      gdata->view->doSlowUpdate();
-    }
-*/
     gdata->need_update = false;
 	  return true;
   } else if(e->type() == SOUND_STARTED) {
-    //playStopButton->setIconSet(*stopIconSet);
     playStopAction->setIcon(*stopIconSet);
     playStopAction->setText("Stop");
-    //recordButton->setIconSet(*stopIconSet);
     recordAction->setIcon(*stopIconSet);
     recordAction->setText("Stop");
     playRecordAction->setIcon(*stopIconSet);
     playRecordAction->setText("Stop");
   } else if(e->type() == SOUND_STOPPED) {
-    //playStopButton->setIconSet(*playIconSet);
     playStopAction->setIcon(*playIconSet);
     playStopAction->setText("Play");
-    //recordButton->setIconSet(*recordIconSet);
     recordAction->setIcon(*recordIconSet);
     recordAction->setText("Record");
     playRecordAction->setIcon(*playRecordIconSet);
@@ -645,9 +601,6 @@ void MainWindow::keyPressEvent ( QKeyEvent * e )
     qApp->closeAllWindows();
     break;
 #endif
-/*  case Qt::Key_Space:
-      gdata->pauseSound();
-      break;*/
   case Qt::Key_Left:
     if(gdata->running == STREAM_FORWARD) {
       gdata->rewind();
@@ -657,7 +610,6 @@ void MainWindow::keyPressEvent ( QKeyEvent * e )
       else
         newTime = view->currentTime() - 0.10*speed;  //move 1/5th of a second back
       gdata->updateActiveChunkTime(newTime);
-      //view->setCurrentTime(newTime);
     }
     break;
   case Qt::Key_Right:
@@ -704,13 +656,9 @@ void MainWindow::keyPressEvent ( QKeyEvent * e )
   case Qt::Key_Plus:
   case Qt::Key_Equal:
       emit zoomInPressed();
-      //view->viewZoomInX();
-      //view->viewZoomInY();
       break;
   case Qt::Key_Minus:
       emit zoomOutPressed();
-      //view->viewZoomOutX();
-      //view->viewZoomOutY();
       break;
   default:
     e->ignore();
@@ -764,14 +712,11 @@ void MainWindow::openRecord(bool andPlay)
 	
   SoundFile *playSoundFile = (andPlay) ? gdata->getActiveSoundFile() : NULL;
 
-  //int rate = gdata->settings.getInt("Sound", "sampleRate");
   int rate = gdata->qsettings->value("Sound/sampleRate", 44100).toInt();
-  //QString numberOfChannels = gdata->settings.getString("Sound", "numberOfChannels");
   QString numberOfChannels = gdata->qsettings->value("Sound/numberOfChannels", "mono").toString();
   int channels;
   if(numberOfChannels.toLower() == "mono") channels = 1;
   else channels = 2;
-  //int bits = gdata->settings.getInt("Sound", "bitsPerSample");
   int bits = gdata->qsettings->value("Sound/bitsPerSample", 16).toInt();
   int windowSize = gdata->getAnalysisBufferSize(rate);
   int stepSize = gdata->getAnalysisStepSize(rate);
@@ -779,13 +724,12 @@ void MainWindow::openRecord(bool andPlay)
   //If playing and recording then overide the record settings to the same as the playing file
   if(playSoundFile) {
     rate = playSoundFile->rate();
-    channels = playSoundFile->numChannels();
+    channels = int(playSoundFile->numChannels());
     bits = playSoundFile->bits();
-    windowSize = playSoundFile->bufferSize();
-    stepSize = playSoundFile->bufferSize()/2;
+    windowSize = int(playSoundFile->bufferSize());
+    stepSize = int(playSoundFile->bufferSize()/2);
   }
 
-  //QString tempFileFolder = gdata->settings.getString("General", "tempFilesFolder");
   QString tempFileFolder = gdata->qsettings->value("General/tempFilesFolder", QDir::toNativeSeparators(QDir::currentPath())).toString();
   QDir dir = QDir(tempFileFolder);
   QFileInfo fileInfo; //(dir, fileName);
@@ -797,9 +741,7 @@ void MainWindow::openRecord(bool andPlay)
     fileInfo.setFile(dir, fileName);
     if(fileInfo.exists()) {
       fileExists = true;
-      //int fileGeneratingNumber = gdata->settings.getInt("General", "fileGeneratingNumber");
       int fileGeneratingNumber = gdata->qsettings->value("General/fileGeneratingNumber", 1).toInt();
-      //gdata->settings.setInt("General", "fileGeneratingNumber", fileGeneratingNumber+1);
       gdata->qsettings->setValue("General/fileGeneratingNumber", fileGeneratingNumber+1);
     }
   } while(fileExists);
@@ -885,9 +827,7 @@ void MainWindow::toggleOption(int id)
 
 void MainWindow::menuPreferences()
 {
-	//Ui_SettingsDialog *settings = new Ui_SettingsDialog(this, "Settings", false, Qt::WDestructiveClose);
   TartiniSettingsDialog *settings = new TartiniSettingsDialog(this);
-  //SettingsDialog *settings = new SettingsDialog(this);
 	settings->show();
 }
 
@@ -911,7 +851,6 @@ QWidget *MainWindow::openView(int viewID)
     case VIEW_FREQ:
 	  {
         FreqView *freqView = new FreqView(viewID, parent);
-        //freqView->show();
         connect(this, SIGNAL(zoomInPressed()), freqView, SLOT(zoomIn()));
         connect(this, SIGNAL(zoomOutPressed()), freqView, SLOT(zoomOut()));
         w = freqView;
@@ -1022,10 +961,8 @@ void MainWindow::setTimeLabel(double t)
     int sign = (t < 0) ? -1 : 1;
     t = fabs(t);
     int mins = int(floor(t)) / 60;
-    //double secs = t - double(mins * 60);
     int secs = int(floor(t - double(mins * 60)));
     int milliSecs = int(floor((t - double(mins * 60) - double(secs))*1000.0));
-    //sprintf(temp, "<qt><nobr><b><big>Time: %s%02d:%02d</big>.%03d</b></nobr></qt>", (sign == -1) ? "-" : " ", mins, secs, milliSecs);
     sprintf(temp, "Time: %s%02d:%02d.%03d", (sign == -1) ? "-" : " ", mins, secs, milliSecs);
     timeLabel->setText(QString(temp));
   }
@@ -1061,23 +998,12 @@ void MainWindow::setNoteLabel()
 
 void MainWindow::setTimeRange(double min_, double max_)
 {
-  //if(timeSlider) timeSlider->setRange(min_, max_, timeSlider->step(), timeSlider->pageSize());
   if (timeSlider) {
     timeSlider->setScale(min_, max_);
     timeSlider->setTotalSteps((uint)((max_ - min_) / timeSlider->singleSteps()));
     timeSlider->setPageSteps(1000);
   }
 }
-
-/*
-void MainWindow::setPageStep(double step_)
-{
-  if(timeSlider) {
-    //timeSlider->setRange(timeSlider->minValue(), timeSlider->maxValue(), timeSlider->step(), toInt(step_ / timeSlider->step() / 4.0));
-    //timeSlider->setRange(timeSlider->minValue(), timeSlider->maxValue(), timeSlider->step(), 100);
-  }
-}
-*/
 
 void MainWindow::rewindPressed()
 {
@@ -1098,20 +1024,6 @@ void MainWindow::playStopClicked()
     gdata->play();
   }  
 }
-
-/*
-void MainWindow::playNote()
-{
-  if(gdata->running) {
-    gdata->stop();
-    //playStopButton->setIconSet(*playIconSet);
-  } else {
-    if(gdata->play()) {
-      playStopButton->setIconSet(*stopIconSet);
-    }
-  }  
-}
-*/
 
 void MainWindow::fastforwardPressed()
 {
@@ -1182,10 +1094,8 @@ TartiniDialog::TartiniDialog(QWidget *parent) : QDialog(parent)
   topLayout->addWidget(tartiniPicture);
   topLayout->addStretch(10);
 
-  //QTextEdit *tartiniTextEdit = new QTextEdit(this, "TartiniTextEdit");
   QTextBrowser *tartiniTextEdit = new QTextBrowser(this);
   tartiniTextEdit->setObjectName("TartiniTextEdit");
-  //tartiniTextEdit->setReadOnly(true);
   tartiniTextEdit->setOpenExternalLinks(true);
 
   QColor linkColor(Qt::cyan);
@@ -1194,7 +1104,6 @@ TartiniDialog::TartiniDialog(QWidget *parent) : QDialog(parent)
 
   tartiniTextEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-  //tartiniTextEdit->setText(
   tartiniTextEdit->setHtml(
     /*"<qt text=\"white\">*/"Tartini is a graphical tool for analysing the music of solo instruments.<br>"
     "This program was created by Philip McLeod as part of PhD work at the University of Otago, New Zealand<br>"
@@ -1256,12 +1165,7 @@ TartiniDialog::TartiniDialog(QWidget *parent) : QDialog(parent)
   QBoxLayout *bottomLayout = new QHBoxLayout();
   layout->addLayout(bottomLayout);
   QPushButton *okButton = new QPushButton("&Ok", this);
-  /*okButton->setBackgroundColor(Qt::black);
-  pal = palette();
-  okButton->setPalette(pal);*/
   QPushButton *GPLButton = new QPushButton("&Read License", this);
-  //GPLButton->setBackgroundColor(Qt::black);
-  //GPLButton->setPalette(pal);
   bottomLayout->addStretch(10);
   bottomLayout->addWidget(okButton);
   bottomLayout->addStretch(10);
@@ -1333,7 +1237,7 @@ void MainWindow::printPitch()
     double viewTop = view->viewTop();//gdata->topPitch();
     double zoomX = (rightTime-leftTime) / double(w);
     double zoomY = (viewTop-viewBottom) / double(h);
-    FreqDrawWidget::drawReferenceLines(printer, p, leftTime, 0.0, zoomX, viewBottom, zoomY, DRAW_VIEW_PRINT);
+    FreqDrawWidget::drawReferenceLines(printer, p, 0.0, zoomX, viewBottom, zoomY, DRAW_VIEW_PRINT);
 
     double dotsPerLineStepY = 1.0 / zoomY;
     double dotsPerMM = double(printer.height()) / double(printer.heightMM()); /*printer.resolution()*/
@@ -1435,8 +1339,6 @@ void MainWindow::saveViewGeometry()
     }
     if(!found) {
       s->setValue(base+"/visible", false);
-      //s->setValue(base+"/pos", QPoint(0, 0));
-      //s->setValue(base+"/size", QSize(100, 100));
     }
   }
 }

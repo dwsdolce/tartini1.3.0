@@ -22,12 +22,9 @@ typedef unsigned int uint;
 class Filter
 {
 public:
-  //virtual float filter(float input) = 0;
-  virtual void filter(const float *input, float *output, int n) = 0;
+  virtual void filter(const float *input, float *output, size_t n) = 0;
   virtual void reset() = 0;
-  virtual int delay() { return 0; }
-  //virtual void getState(FilterState *filterState) const = 0;
-  //virtual void setState(const FilterState *filterState) = 0;
+  virtual size_t delay() { return 0; }
   virtual ~Filter() { }
 };
 

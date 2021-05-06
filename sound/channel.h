@@ -20,7 +20,6 @@
 #include "array2d.h"
 #include "qcolor.h"
 #include <vector>
-//#include "myqmutex.h"
 #include "analysisdata.h"
 #include "zoomlookup.h"
 #include "soundfile.h"
@@ -33,13 +32,9 @@ class Channel/* : public Array1d<float>*/
 private:
   SoundFile *parent;
   float freq; /**< Channel's frequency */
-  //float estimate;
-  //int frame_num;
   int _pitch_method;
   bool visible;
   bool noteIsPlaying;
-  //double timeOffset; /**< Where the file starts in absolute time (in seconds) */
-  //std::vector<AnalysisData> lookup;
   large_vector<AnalysisData> lookup;
   float _threshold;
   QMutex *mutex;
@@ -66,13 +61,10 @@ public:
   Array1d<float> cepstrumData;
   Array1d<float> detailedPitchData;
   Array1d<float> detailedPitchDataSmoothed;
-  //std::vector<NoteData> noteData;
   large_vector<NoteData> noteData;
   Filter *highPassFilter;
   Filter *pitchSmallSmoothingFilter;
   Filter *pitchBigSmoothingFilter;
-  //double filterStateX1, filterStateX2;
-  //double filterStateY1, filterStateY2;
   double rmsFloor; //in dB
   double rmsCeiling; //in dB
   
@@ -84,16 +76,15 @@ public:
   void unlock() { isLocked = false; mutex->unlock(); }
   bool locked() { return isLocked; } //For same thread testing of asserts only
 
-  //Channel();
   Channel(SoundFile *parent_, int size_, int k_=0);
   virtual ~Channel();
   float *begin() { return directInput.begin(); }
   float *end() { return directInput.end(); }
-  int size() { return directInput.size(); }
+  size_t size() { return directInput.size(); }
   float &at(int pos) { return directInput.at(pos); }
   int rate() { return parent->rate(); }
   virtual void resize(int newSize, int k_=0);
-  virtual void shift_left(int n);
+  virtual void shift_left(size_t n);
   int framesPerChunk() { return parent->framesPerChunk(); }
   void setParent(SoundFile *parent_) { parent = parent_; }
   SoundFile* getParent() { return parent; }
@@ -108,22 +99,15 @@ public:
   double timePerChunk() { return parent->timePerChunk(); }
   double startTime() { return parent->startTime(); }
   void setStartTime(double newStartTime) { parent->setStartTime(newStartTime); }
-  //int chunkNum() { return parent->chunkNum(); }
-  int totalChunks() { return lookup.size(); }
+  int totalChunks() { return int(lookup.size()); }
   double finishTime() { return startTime() + totalTime(); }
-  //double totalTime() { return double(lookup.size()) * timePerChunk(); }
   double totalTime() { return double(MAX(totalChunks()-1, 0)) * timePerChunk(); }
   void jumpToTime(double t) { parent->jumpToTime(t); }
   int chunkAtTime(double t) { return parent->chunkAtTime(t); }
   double chunkFractionAtTime(double t) { return parent->chunkFractionAtTime(t); }
   int chunkAtCurrentTime() { return parent->chunkAtCurrentTime(); }
-  //int chunkOffset() { return parent->chunkOffset(); }
-  //int currentChunk() { return chunkNum() - chunkOffset(); } //this one should be use to retrieve current info
   int currentChunk() { return parent->currentChunk(); } //this one should be use to retrieve current info
   double timeAtChunk(int chunk) { return parent->timeAtChunk(chunk); }
-
-  //AnalysisData &dataAtChunk(int chunk) { myassert(chunk >= 0 && chunk < int(lookup.size())); return lookup[chunk]; }
-  //AnalysisData &dataAtCurrentTime() { return dataAtChunk(chunkAtCurrentTime()); }
 
   AnalysisData *dataAtChunk(int chunk) { return (isValidChunk(chunk)) ? &lookup[chunk] : NULL; }
   AnalysisData *dataAtCurrentChunk() { return dataAtChunk(currentChunk()); }
@@ -140,11 +124,9 @@ public:
   float averageMaxCorrelation(int begin, int end);
 
   float threshold() { return _threshold; }
-  //void setThreshold(float threshold) { _threshold = threshold; }
   void setIntThreshold(int thresholdPercentage) { _threshold = float(thresholdPercentage) / 100.0f; }
   void resetIntThreshold(int thresholdPercentage);
   void setColor(QColor c) { color = c; }
-  //static QColor getNextColour();
 
   bool isNotePlaying() { return noteIsPlaying; }
   bool isVisibleNote(int noteIndex_);
@@ -175,7 +157,7 @@ public:
   bool isFirstChunkInNote(int chunk);
   void resetNSDFAggregate(float period);
   void addToNSDFAggregate(const float scaler, float periodDiff);
-  float calcDetailedPitch(float *input, double period, int chunk);
+  float calcDetailedPitch(float *input, double period);
   bool firstTimeThrough() { return parent->firstTimeThrough; }
   bool doingDetailedPitch() { return parent->doingDetailedPitch(); }
 

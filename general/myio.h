@@ -13,11 +13,12 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 #include <stdio.h>
+#include <stdint.h>
 
-int igetw(FILE *f);  //Reads a 16 bit word (intel byte ordering)
-long igetl(FILE *f); //Reads a 32 bit long (intel byte ordering)
-int iputw(int w, FILE *f); //Writes a 16 bit int (intel byte ordering)
-long iputl(long l, FILE *f); //Writes a 32 bit long (intel byte ordering)
+uint16_t igetw(FILE *f);  //Reads a 16 bit word (intel byte ordering)
+uint32_t igetl(FILE *f); //Reads a 32 bit long (intel byte ordering)
+int iputw(uint16_t w, FILE *f); //Writes a 16 bit int (intel byte ordering)
+long iputl(uint32_t l, FILE *f); //Writes a 32 bit long (intel byte ordering)
 
 
 int mgetw(FILE *f); //Reads a 16 bit int (motorola byte-ordering)

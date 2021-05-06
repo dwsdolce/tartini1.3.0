@@ -18,42 +18,15 @@
 #include <QString>
 #include <stdlib.h>
 
-/*
-#if (defined (WIN32) || defined (_WIN32))
-  #include  <math.h>
-  //  Win32 doesn't seem to have the lrint or lrintf functions.
-  //  Therefore implement inline versions of these functions here.
-  __inline long int 
-  lrint (double flt)
-  { int intgr;
-    _asm { fld flt
-      fistp intgr
-      } ;
-    return intgr ;
-  } 
-  
-  __inline long int 
-  lrintf (float flt)
-  { int intgr;
-    _asm
-    { fld flt
-      fistp intgr
-      } ;
-    return intgr ;
-  }
-#else
-*/
 //to get the lrint and lrintf functions we must use the C99 defines
 #define _ISOC9X_SOURCE  1
 #define _ISOC99_SOURCE  1
 #define __USE_ISOC9X  1
 #define __USE_ISOC99  1
 #include  <math.h>
-//#endif //(defined (WIN32) || defined (_WIN32))
 
 #define MIN(x,y)    ((x)<(y) ? (x) : (y))
 #define MAX(x,y)    ((x)>(y) ? (x) : (y))
-//#define MID(x,y,z)  MAX(MIN(x,y),z)
 #define ABS(x)      ((x)<0 ? -(x) : (x))
 #define SIGN(x)     (((x) == 0) ? 0 : (((x)>0) ? 1 : -1))
 
@@ -123,12 +96,10 @@ inline double myround(const double x) {
 
 inline int toInt(const float x) {
   return lrintf(x);
-  //return int(floor(x + 0.5));
 }
 
 inline int toInt(const double x) {
   return lrint(x);
-  //return int(floor(x + 0.5));
 }
 
 inline int intFloor(const float x) {
@@ -203,15 +174,6 @@ inline void parabolaTurningPoint2(T y_1, T y0, T y1, T xOffset, T *x, T *y)
   }
 }
 
-/*
-struct MinMax
-{
-    MinMax::MinMax() : min(0.0) , max(0.0) {};
-    MinMax::MinMax(float min_, float max_) : min(min_) , max(max_) {};
-    float min;
-    float max;
-};
-*/
 struct MinMax
 {
     MinMax() 
@@ -236,16 +198,6 @@ float average(float *begin, float *end);
 /* Returns the average value between two pointers ignoring anything outside the two bounds (exclusive) */
 float average(float *begin, float *end, float lowBound, float highBound);
 int calcIndex(double frameTime, double baseX, int size);
-
-
-/*//makes  lowerBound <= var <= upperBound
-template<class T>
-void bound(T *var, T lowerBound, T upperBound)
-{
-  if(*var < lowerBound) *var = lowerBound;
-  if(*var > upperBound) *var = upperBound;
-}
-*/
 
 /** Return the index with the maximum value in an array.
   * If more than one value with the maximum, the first is returned.
@@ -282,22 +234,13 @@ int minIndex(ForwardIterator aFirst, int length)
     same time, so should be more efficient
     @return a std::pair of which .first is an iterator to the min, and .second to the max
 */
-//template<typename _ForwardIter, typename _Compare1, typename _Compare2>
-//std::pair<_ForwardIter, _ForwardIter> minMaxElement(_ForwardIter __first, _ForwardIter __last, _Compare1 __lessComp, _Compare2 __greaterComp)
 template<typename _ForwardIter, typename _Compare>
 std::pair<_ForwardIter, _ForwardIter> minMaxElement(_ForwardIter __first, _ForwardIter __last, _Compare __lessComp)
 {
-  // concept requirements
-  //__glibcpp_function_requires(_ForwardIteratorConcept<_ForwardIter>)
-  //__glibcpp_function_requires(_BinaryPredicateConcept<_Compare,
-  //typename iterator_traits<_ForwardIter>::value_type,
-  //typename iterator_traits<_ForwardIter>::value_type>)
-
   std::pair<_ForwardIter, _ForwardIter> __result(__first, __first);
   if (__first == __last) return __result;
   while (++__first != __last) {
 	  if (__lessComp(*__first, *__result.first)) __result.first = __first;
-    //if (__greaterComp(*__first, *__result.second)) __result.second = __first;
     if (__lessComp(*__result.second, 
     *__first))
      __result.second = __first;
@@ -310,8 +253,6 @@ std::pair<_ForwardIter, _ForwardIter> minMaxElement(_ForwardIter __first, _Forwa
 template <class ForwardIterator>
 void addElements(ForwardIterator aFirst, ForwardIterator aLast, ForwardIterator bFirst)
 {
-  //while(aFirst != aLast) *bFirst++ += *aFirst++;
-  //while(aFirst != aLast) { *bFirst += *aFirst; bFirst++; aFirst++; }
   while(aFirst != aLast) { *aFirst += *bFirst; ++bFirst; ++aFirst; }
 }
 
@@ -320,7 +261,6 @@ void addElements(ForwardIterator aFirst, ForwardIterator aLast, ForwardIterator 
 template <class ForwardIterator, class ElementType>
 void addElements(ForwardIterator aFirst, ForwardIterator aLast, ForwardIterator bFirst, ElementType scaler)
 {
-  //while(aFirst != aLast) *bFirst++ += *aFirst++;
   while(aFirst != aLast) { *aFirst += (*bFirst) * scaler; ++bFirst; ++aFirst; }
 }
 
@@ -360,22 +300,9 @@ struct absoluteGreater : public std::binary_function<T, T, bool>
 bool copyFile(const QString &src, const QString& dest);
 bool moveFile(const QString& src, const QString& dest);
 
-int nextPowerOf2(int x);
+size_t nextPowerOf2(size_t x);
 
 #include <algorithm>
-
-/*
-template<class ForwardIterator, class ElementType>
-ForwardIterator binary_search_closest(ForwardIterator first, ForwardIterator last, const ElementType &value)
-{
-  ForwardIterator i = std::lower_bound(first, last, value);
-  if(i < last-1) {
-    if(fabs(value - *i) < fabs(value - *(i+1))) return i;
-    else return i+1;
-  }
-  return i;
-}
-*/
 
 /** Given an ordered sequence, 'A', return an iterator to the closest element to value
 */

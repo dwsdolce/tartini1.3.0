@@ -20,11 +20,11 @@
 void bresenham1d(const Array1d<float> &input, Array1d<float> &output)
 {
     //Use Bresenham's algorithm in 1d to choose the points to draw
-    int w = output.size();
-    int intStep = int(input.size() / w);
-    int remainderStep = input.size() - (intStep * w);
-    int pos = 0;
-    int remainder = 0;
+    size_t w = output.size();
+    size_t intStep = size_t(input.size() / w);
+    size_t remainderStep = input.size() - (intStep * w);
+    size_t pos = 0;
+    size_t remainder = 0;
     for(int j=0; j<w; j++, pos+=intStep, remainder+=remainderStep) {
       if(remainder >= w) {
         pos++;
@@ -41,14 +41,14 @@ void maxAbsDecimate1d(const Array1d<float> &input, Array1d<float> &output)
 {
   if(input.size() > output.size()) {
     //Use Bresenham's algorithm in 1d to choose the points to draw
-    int w = output.size();
-    if(w <= 0) return;
-    int intStep = int(input.size() / w);
-    int remainderStep = input.size() - (intStep * w);
-    int pos = 0;
-    int remainder = 0;
-    int prev = 0;
-    int j=0;
+      size_t w = output.size();
+    if (w <= 0) return;
+    size_t intStep = size_t(input.size() / w);
+    size_t remainderStep = input.size() - (intStep * w);
+    size_t pos = 0;
+    size_t remainder = 0;
+    size_t prev = 0;
+    size_t j=0;
 
     do {
       pos+=intStep;
@@ -58,7 +58,6 @@ void maxAbsDecimate1d(const Array1d<float> &input, Array1d<float> &output)
         remainder -= w;
       }
       myassert(pos <= input.size());
-      //output[j] = *std::max_element(input.begin() + prev, input.begin() + pos - 1);
       output[j] = *std::max_element(input.begin() + prev, input.begin() + pos, absoluteLess<float>());
       prev = pos;
     } while(++j < w);

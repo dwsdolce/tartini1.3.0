@@ -34,10 +34,7 @@ int LEDLetterLookup[12] = { 2, 2, 3, 3, 4, 5, 5, 6, 6, 0, 0, 1 };
 TunerView::TunerView( int viewID_, QWidget *parent )
  : ViewWidget( viewID_, parent)
 {
-  //setCaption("Chromatic Tuner");
-
   QGridLayout *layout = new QGridLayout(this);
-  //layout->setContentsMargins(2, 2, 2, 2);
   layout->setSizeConstraint(QLayout::SetNoConstraint);
 
   // Tuner widget goes from (0, 0) to (0, 8);
@@ -49,7 +46,8 @@ TunerView::TunerView( int viewID_, QWidget *parent )
   QFrame* tunerFrame = new QFrame;
   tunerFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout* tunerFrameLayout = new QVBoxLayout;
-  tunerWidget = new VibratoTunerWidget(0);
+  tunerWidget = new TunerWidget(0);
+
   tunerWidget->setWhatsThis("Indicates pitch deviation from standard not plus the standard note that is being played.");
   tunerFrameLayout->addWidget(tunerWidget);
   tunerFrameLayout->setMargin(0);
@@ -158,8 +156,6 @@ void TunerView::doUpdate()
     int stopChunk = active->chunkAtTime(stopTime)+1;
     pitch = active->averagePitch(startChunk, stopChunk);
   }
-
-  //float intensity = active->averageMaxCorrelation(startChunk, stopChunk);
 
   tunerWidget->doUpdate(pitch);
 }

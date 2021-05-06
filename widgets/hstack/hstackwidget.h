@@ -16,7 +16,6 @@
 #define HSTACKWIDGET_H
 
 #include "drawwidget.h"
-//Added by qt3to4:
 #include <QPixmap>
 #include <QPaintEvent>
 
@@ -32,8 +31,6 @@ class HStackWidget : public DrawWidget {
 
     void paintEvent( QPaintEvent * );
 
-    //QSize sizeHint() const { return QSize(300, 200); }
-
   private:
     QPixmap *buffer;
     int windowSize;
@@ -42,7 +39,6 @@ class HStackWidget : public DrawWidget {
 
   public slots:
     void setWindowSize(double);
-    void setDBOffset(double);
     void setDBRange(double);
 
   signals:

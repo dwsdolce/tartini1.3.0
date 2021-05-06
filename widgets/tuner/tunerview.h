@@ -21,7 +21,7 @@
 #include <QPaintEvent>
 
 #include "viewwidget.h"
-#include "vibratotunerwidget.h"
+#include "tunerwidget.h"
 
 class QPixmap;
 class TunerWidget;
@@ -45,7 +45,7 @@ class TunerView : public ViewWidget {
   private:
     void resetLeds();
     
-    VibratoTunerWidget *tunerWidget;
+    TunerWidget *tunerWidget;
     std::vector<LEDIndicator*> leds;
     QwtSlider *slider;
 };

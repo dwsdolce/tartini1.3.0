@@ -186,9 +186,6 @@
     <ClCompile Include="general\myalgo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="general\myglfonts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="general\myio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -273,9 +270,6 @@
     <ClCompile Include="widgets\tuner\tunerview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="widgets\tuner\tunerwidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="general\useful.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -291,7 +285,7 @@
     <ClCompile Include="widgets\vibrato\vibratotimeaxis.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="widgets\vibrato\vibratotunerwidget.cpp">
+    <ClCompile Include="widgets\vibrato\tunerwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="widgets\vibrato\vibratoview.cpp">
@@ -482,9 +476,6 @@
     <ClInclude Include="general\mygl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="general\myglfonts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="general\myio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -578,9 +569,6 @@
     <QtMoc Include="widgets\tuner\tunerview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="widgets\tuner\tunerwidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <ClInclude Include="general\useful.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -596,7 +584,7 @@
     <QtMoc Include="widgets\vibrato\vibratotimeaxis.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="widgets\vibrato\vibratotunerwidget.h">
+    <QtMoc Include="widgets\vibrato\tunerwidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoview.h">
@@ -631,119 +619,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="dialogs\settingsdialog.ui">
@@ -760,6 +641,9 @@
     <None Include="pics\tartinilogo.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="LICENSE.txt" />
+    <None Include="LICENSE.txt" />
+    <None Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="INSTALL.txt">
@@ -857,6 +741,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="D:\Users\dws\src\Tartini\tartini1.2.0\tartini_resource.rc" />
+    <ResourceCompile Include=".\tartini_resource.rc" />
   </ItemGroup>
 </Project>

@@ -23,12 +23,12 @@
 /** Construct a FastSmoothedAverageFilter
   * @param size The total width of the hanning window. To keep data centered use an odd size
   */
-FastSmoothedAveragingFilter::FastSmoothedAveragingFilter(int size)
+FastSmoothedAveragingFilter::FastSmoothedAveragingFilter(size_t size)
 {
   init(size);
 }
 
-void FastSmoothedAveragingFilter::init(int size)
+void FastSmoothedAveragingFilter::init(size_t size)
 {
   _size = size;
   _size_left = _size / 2;
@@ -48,10 +48,10 @@ void FastSmoothedAveragingFilter::init(int size)
 
 #include "fast_smooth.h"
 
-void FastSmoothedAveragingFilter::filter(const float *input, float *output, int n)
+void FastSmoothedAveragingFilter::filter(const float *input, float *output, size_t n)
 {
   //blur stays centered if odd
-  int j;
+  size_t j;
   if(n > _size) {
     for(j=0; j<_size; j++) {
       cos_sum += input[j];

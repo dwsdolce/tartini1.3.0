@@ -38,13 +38,12 @@ template<typename T>
 class large_vector
 {
 private:
-  uint _buffer_size;
-  //std::vector<std::vector<T> *> buf_ptrs();
+  size_t _buffer_size;
   SmartPtr<Array1d<std::vector<T> *> > _buf_ptrs;
   
   Array1d<std::vector<T> *> &buf_ptrs() { return *_buf_ptrs; }
 
-  void addBuffer(uint num=0) {
+  void addBuffer(size_t num=0) {
     buf_ptrs().push_back(new std::vector<T>(num));
     buf_ptrs().back()->reserve(_buffer_size);
   }
@@ -57,12 +56,12 @@ public:
   class iterator
   {
     large_vector<T> *_parent;
-    uint _pos;
+    size_t _pos;
     
    public:
-    iterator(large_vector<T> *parent, int pos) : _parent(parent), _pos(pos) { }
+    iterator(large_vector<T> *parent, size_t pos) : _parent(parent), _pos(pos) { }
     iterator(const iterator &it) : _parent(it._parent), _pos(it._pos) { }
-    uint pos() const { return _pos; }
+    size_t pos() const { return _pos; }
     iterator& operator++() { ++_pos; return (*this); }
     iterator& operator++(int) { _pos++; return (*this); }
     iterator& operator--() { --_pos; return (*this); }
@@ -75,18 +74,15 @@ public:
     bool operator==(const iterator &it) const { return _pos == it.pos(); }
     bool operator<(const iterator &it) const { return _pos < it.pos(); }
     bool operator>(const iterator &it) const { return _pos > it.pos(); }
-    //iterator& operator=(const iterator &it) { return (*this); }
   };
 
-  large_vector(uint size=0, uint buffer_size=2048) {
+  large_vector(size_t size=0, size_t buffer_size=2048) {
     _buf_ptrs = new Array1d<std::vector<T> *>();
     _buffer_size = buffer_size;
     while(size > _buffer_size) {
       buf_ptrs().push_back(new std::vector<T>(_buffer_size));
       size-=_buffer_size;
     }
-    //buf_ptrs().push_back(new std::vector<T>(size));
-    //buf_ptrs().back()->reserve(_buffer_size);
     addBuffer(size);
   }
   ~large_vector() {
@@ -95,11 +91,11 @@ public:
     }
   }
   
-  T& operator[](uint pos) {
+  T& operator[](size_t pos) {
     //myassert(empty() || pos < size());
     return (*buf_ptrs()[pos / _buffer_size])[pos % _buffer_size];
   }
-  T& at(uint pos) {
+  T& at(size_t pos) {
     myassert(empty() || pos < size());
     return (*buf_ptrs()[pos / _buffer_size])[pos % _buffer_size];
   }
@@ -110,8 +106,6 @@ public:
   void push_back(const T &new_element) {
     buf_ptrs().back()->push_back(new_element);
     if(buf_ptrs().back()->size() == _buffer_size) {
-      //buf_ptrs().push_back(new std::vector<T>(0));
-      //buf_ptrs().back()->reserve(_buffer_size);
       addBuffer();
     }
   }
@@ -124,12 +118,12 @@ public:
     buf_ptrs().back()->pop_back();
     return temp;
   }
-  void push_back(const T *src, uint length) {
-    uint sizeBefore = size();
+  void push_back(const T *src, size_t length) {
+      size_t sizeBefore = size();
     increase_size(length);
     copyFrom(src, sizeBefore, length);
   }
-  void increase_size(uint num) {
+  void increase_size(size_t num) {
     if(num < bufferSize() - buf_ptrs().back()->size()) {
       buf_ptrs().back()->resize(buf_ptrs().back()->size() + num);
     } else {
@@ -147,30 +141,28 @@ public:
   void clear() {
     for(int j=0; j<buf_ptrs().size();j++) delete buf_ptrs()[j];
     buf_ptrs().clear();
-    //buf_ptrs().push_back(new std::vector<T>(0));
-    //buf_ptrs().back()->reserve(_buffer_size);
     addBuffer();
   }
   iterator begin() { return iterator(this, 0); }
   iterator end() { return iterator(this, size()); }
-  iterator iterator_at(uint pos) { return iterator(this, pos); }
+  iterator iterator_at(size_t pos) { return iterator(this, pos); }
   
-  uint bufferSize() const { return _buffer_size; }
+  size_t bufferSize() const { return _buffer_size; }
   int numBuffers() { return buf_ptrs().size(); }
-  std::vector<T> &getBuffer(uint bufferNum) { return *buf_ptrs()[bufferNum]; }
+  std::vector<T> &getBuffer(size_t bufferNum) { return *buf_ptrs()[bufferNum]; }
   //efficient copy to a single block of memory (ie array or vector)
-  void copyTo(T *dest, uint start, uint length) {
+  void copyTo(T *dest, size_t start, size_t length) {
     myassert(start+length <= size());
     T* ending = dest+length;
-    uint curBuf = start / bufferSize();
-    uint offset = start % bufferSize();
+    size_t curBuf = start / bufferSize();
+    size_t offset = start % bufferSize();
     if(length <= bufferSize() - offset) {
       std::copy(getBuffer(curBuf).begin()+offset, getBuffer(curBuf).begin()+offset+length, dest);
     } else {
       std::copy(getBuffer(curBuf).begin()+offset, getBuffer(curBuf).end(), dest);
       dest += bufferSize() - offset;
       curBuf++;
-      while(uint(ending - dest) > bufferSize()) {
+      while(size_t(ending - dest) > bufferSize()) {
         std::copy(getBuffer(curBuf).begin(), getBuffer(curBuf).end(), dest);
         dest += bufferSize();
         curBuf++;
@@ -179,18 +171,18 @@ public:
     }
   }
   //efficient copy from a single block of memory (ie array or vector)
-  void copyFrom(const T *src, uint start, uint length) {
+  void copyFrom(const T *src, size_t start, size_t length) {
     myassert(start+length <= size());
     const T* ending = src+length;
-    uint curBuf = start / bufferSize();
-    uint offset = start % bufferSize();
+    size_t curBuf = start / bufferSize();
+    size_t offset = start % bufferSize();
     if(length <= bufferSize() - offset) {
       std::copy(src, src+length, getBuffer(curBuf).begin()+offset);
     } else {
       std::copy(src, src+(bufferSize()-offset), getBuffer(curBuf).begin()+offset);
       src += bufferSize() - offset;
       curBuf++;
-      while(uint(ending - src) > bufferSize()) {
+      while(size_t(ending - src) > bufferSize()) {
         std::copy(src, src+bufferSize(), getBuffer(curBuf).begin());
         src += bufferSize();
         curBuf++;

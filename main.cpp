@@ -24,7 +24,7 @@ QString macxPathString;
 //#include <stdio.h>
 #include "gdata.h"
 #include "myassert.h"
-#include "myglfonts.h"
+//#include "myglfonts.h"
 
 //there is some compiler bug which initilises the colors wrong
 //So we fix them with a cheap hack

@@ -23,7 +23,6 @@
 
 #include <qwt_compass.h>
 #include <qwt_dial_needle.h>
-//Added by qt3to4:
 #include <QResizeEvent>
 
 #define INTERVAL 90

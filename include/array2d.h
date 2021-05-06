@@ -32,7 +32,6 @@ int *ptr = &*it;
 #ifndef ARRAY2D_H
 #define ARRAY2D_H
 
-//#include <algorithm>
 #include <iostream>
 //#define NDEBUG //removes the asserts
 #include "myassert.h"
@@ -63,7 +62,6 @@ template<class T> class Array2d
   	height=h_;
   	data =(T*)malloc(size()*sizeof(T));
   	myassert(data);
-    //std::uninitialized_fill(begin(), end(), T());
   }
   Array2d(int w_, int h_, T val) { //initialise fill with val
   	w_ = MAX(w_, 0);
@@ -72,8 +70,6 @@ template<class T> class Array2d
   	height=h_;
   	data =(T*)malloc(size()*sizeof(T));
   	myassert(data);
-  	//for(T *p = data; p != end();)
-      //*p++ = val;
     std::uninitialized_fill(begin(), end(), val);
   }
   /*virtual*/ ~Array2d() {

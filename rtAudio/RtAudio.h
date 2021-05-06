@@ -52,7 +52,7 @@
   #include <windows.h>
   #include <process.h>
 
-  typedef unsigned long ThreadHandle;
+  typedef uintptr_t ThreadHandle;
   typedef CRITICAL_SECTION StreamMutex;
 
 #else // Various unix flavors with pthread support.

@@ -18,7 +18,7 @@
 /* igetw:
  *  Reads a 16 bit word from a file, using intel byte ordering.
  */
-int igetw(FILE *f)
+uint16_t igetw(FILE *f)
 {
    int b1, b2;
 
@@ -34,7 +34,7 @@ int igetw(FILE *f)
 /* igetl:
  *  Reads a 32 bit long from a file, using intel byte ordering.
  */
-long igetl(FILE *f)
+uint32_t igetl(FILE *f)
 {
    int b1, b2, b3, b4;
 
@@ -53,7 +53,7 @@ long igetl(FILE *f)
 /* iputw:
  *  Writes a 16 bit int to a file, using intel byte ordering.
  */
-int iputw(int w, FILE *f)
+int iputw(uint16_t w, FILE *f)
 {
    int b1, b2;
 
@@ -72,14 +72,14 @@ int iputw(int w, FILE *f)
 /* iputw:
  *  Writes a 32 bit long to a file, using intel byte ordering.
  */
-long iputl(long l, FILE *f)
+long iputl(uint32_t l, FILE *f)
 {
-   int b1, b2, b3, b4;
+	uint32_t b1, b2, b3, b4;
 
-   b1 = (int)((l & 0xFF000000L) >> 24);
-   b2 = (int)((l & 0x00FF0000L) >> 16);
-   b3 = (int)((l & 0x0000FF00L) >> 8);
-   b4 = (int)l & 0x00FF;
+   b1 = (uint32_t)((l & 0xFF000000L) >> 24);
+   b2 = (uint32_t)((l & 0x00FF0000L) >> 16);
+   b3 = (uint32_t)((l & 0x0000FF00L) >> 8);
+   b4 = (uint32_t)l & 0x00FF;
 
    if(fputc(b4,f)==b4)
     if(fputc(b3,f)==b3)

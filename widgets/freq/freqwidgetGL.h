@@ -16,8 +16,6 @@
 #ifndef FREQWIDGETGL_H
 #define FREQWIDGETGL_H
 
-//#include "drawwidget.h"
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QPixmap>
 #include <QWheelEvent>
@@ -35,7 +33,6 @@
 #define DRAW_VIEW_SUMMARY  1
 #define DRAW_VIEW_PRINT    2
 
-//class FreqDrawWidget : public DrawWidget {
 class FreqWidgetGL : public QGLWidget {
 
 Q_OBJECT
@@ -48,7 +45,6 @@ public:
     DragTimeBar = 3
   };
 
-
   FreqWidgetGL(QWidget *parent, const char* name = 0);
   virtual ~FreqWidgetGL();
 
@@ -56,23 +52,14 @@ public:
 
   void initializeGL();
   void resizeGL(int w, int h);
-  //static void drawReferenceLines(QPaintDevice &pd, QPainter &p, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType);
-  void drawReferenceLinesGL(double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType);
-  //void drawReferenceLinesGL(double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType);
+  void drawReferenceLinesGL(double currentTime, double zoomX, double viewBottom, double zoomY, int viewType);
   void drawChannelGL(Channel *ch, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType);
   void drawChannelFilledGL(Channel *ch, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType);
   bool calcZoomElement(Channel *ch, ZoomElement &ze, int baseElement, double baseX);
   void paintGL();
-  //void paintEvent( QPaintEvent * );
   QSize sizeHint() const { return QSize(400, 350); }
-  //void ensurePolished() const;
-  //QSize sizeHint() const { return QSize(256, 128); }
-  //void resizeEvent( QResizeEvent * );
 
 private:
-  //float offset_y;
-  //bool mouseDown;
-  //bool dragCenter;
   int dragMode;
   int mouseX, mouseY;
   double downTime, downNote;
@@ -96,9 +83,6 @@ private:
   double rightTime() { return gdata->view->viewRight(); }
   double timeWidth() { return gdata->view->viewTotalTime(); }
 
-  //MinMax getMinMax(std::vector<float> &data, double frameTime, double baseX, float lowBound, float highBound, std::map<int, MinMax> &preCalc);
-  //int calcIndex(double frameTime, double baseX, int size);
-  
   QPixmap *buffer;
   
 };

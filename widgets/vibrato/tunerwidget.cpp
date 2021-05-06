@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratotunerwidget.cpp  -  description
+                          tunerwidget.cpp  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,7 +12,7 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#include "vibratotunerwidget.h"
+#include "tunerwidget.h"
 #include <QOpenGLContext>
 #include "GL/glu.h"
 #include "gdata.h"
@@ -20,7 +20,7 @@
 #include "analysisdata.h"
 #include "musicnotes.h"
   
-VibratoTunerWidget::VibratoTunerWidget(QWidget *parent)
+TunerWidget::TunerWidget(QWidget *parent)
   : QGLWidget(parent)
 {
   needleValueToDraw = -999;
@@ -37,7 +37,7 @@ VibratoTunerWidget::VibratoTunerWidget(QWidget *parent)
   tunerFont.setPointSize(9);
 }
 
-VibratoTunerWidget::~VibratoTunerWidget()
+TunerWidget::~TunerWidget()
 {
   // Remove display lists
     QOpenGLContext* c = QOpenGLContext::currentContext();
@@ -49,7 +49,7 @@ VibratoTunerWidget::~VibratoTunerWidget()
   glDeleteLists(needle, 1);
 }
 
-void VibratoTunerWidget::initializeGL()
+void TunerWidget::initializeGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
@@ -70,7 +70,7 @@ void VibratoTunerWidget::initializeGL()
 
 }
 
-void VibratoTunerWidget::resizeGL(int w, int h)
+void TunerWidget::resizeGL(int w, int h)
 {
   glViewport(0, 0, (GLint)w, (GLint)h);
 
@@ -194,7 +194,7 @@ void VibratoTunerWidget::resizeGL(int w, int h)
   doUpdate(curPitch);
 }
 
-void VibratoTunerWidget::paintGL()
+void TunerWidget::paintGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
@@ -219,7 +219,7 @@ void VibratoTunerWidget::paintGL()
 
 }
 
-void VibratoTunerWidget::doUpdate(double thePitch)
+void TunerWidget::doUpdate(double thePitch)
 {
   curPitch = thePitch;
 
@@ -324,7 +324,7 @@ void VibratoTunerWidget::doUpdate(double thePitch)
   }
 }
 
-void VibratoTunerWidget::resetLeds()
+void TunerWidget::resetLeds()
 {
   for (int i = 0; i < 8; i++) {
     emit(ledSet(i, false));

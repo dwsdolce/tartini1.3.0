@@ -26,7 +26,6 @@
 */
 
 #include "vibratoview.h"
-#include "vibratotunerwidget.h"
 #include "vibratospeedwidget.h"
 #include "vibratocirclewidget.h"
 #include "vibratoperiodwidget.h"
@@ -305,15 +304,10 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   setLayout(mainLayout);
 
   // Make signal/slot connections
-  //connect(gdata, SIGNAL(onChunkUpdate()), vibratoTunerWidget, SLOT(doUpdate()));
-  //connect(vibratoTunerWidget, SIGNAL(ledSet(int, bool)), this, SLOT(setLed(int, bool)));
 
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoSpeedWidget, SLOT(doUpdate()));
-  //connect(usePronyButton, SIGNAL(toggled(bool)), vibratoSpeedWidget, SLOT(setUseProny(bool)));
 
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoCircleWidget, SLOT(doUpdate()));
-  //connect(vibratoCircleAccuracySlider, SIGNAL(valueChanged(int)), vibratoCircleWidget, SLOT(setAccuracy(int)));
-  //connect(vibratoCircleTypeSlider, SIGNAL(valueChanged(int)), vibratoCircleWidget, SLOT(setType(int)));
 
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoPeriodWidget, SLOT(doUpdate()));
 

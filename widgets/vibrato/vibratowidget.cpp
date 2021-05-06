@@ -20,7 +20,7 @@
 #include "gdata.h"
 #include "channel.h"
 #include "analysisdata.h"
-#include "myglfonts.h"
+//#include "myglfonts.h"
 #include "musicnotes.h"
 
 VibratoWidget::VibratoWidget(QWidget *parent, int nls)
@@ -141,16 +141,10 @@ void VibratoWidget::paintGL()
   glCallList(maximaMinimaPoints);
 
   // Draw the note labels
-  mygl_font->beginGLtext(width(), height());
-  glColor3ub(0,0,0);
   for (int i = 0; i < noteLabelCounter; i++) {
-    //renderText(3, noteLabels[i].y - 4, 0, noteLabels[i].label, vibratoFont);
-    //renderText(width() - noteLabelOffset + 3, noteLabels[i].y - 4, 0, noteLabels[i].label, vibratoFont);
-    mygl_font->drawGLtextRaw(3, noteLabels[i].y - 4, noteLabels[i].label);
-    mygl_font->drawGLtextRaw(width() - noteLabelOffset + 3, noteLabels[i].y - 4, noteLabels[i].label);
+    renderText(3, noteLabels[i].y - 4, 0, noteLabels[i].label, vibratoFont);
+    renderText(width() - noteLabelOffset + 3, noteLabels[i].y - 4, 0, noteLabels[i].label, vibratoFont);
   }
-  mygl_font->endGLtext();
-
 }
 
 void VibratoWidget::doUpdate()
@@ -199,15 +193,15 @@ void VibratoWidget::doUpdate()
       const int myEndChunk = note->endChunk();
       const int myCurrentChunk = active->chunkAtCurrentTime();
       const float halfHeight = 0.5 * height();
-      const int maximaSize = note->maxima->size();
-      const int minimaSize = note->minima->size();
+      const int maximaSize = int(note->maxima->size());
+      const int minimaSize = int(note->minima->size());
       const float avgPitch = note->avgPitch();
       const int framesPerChunk = active->framesPerChunk();
       const float zoomFactorYx100 = zoomFactorY * 100;
 
       float windowOffset;
       large_vector<float> pitchLookupUsed = active->pitchLookupSmoothed;
-      int smoothDelay = active->pitchBigSmoothingFilter->delay();
+      int smoothDelay = int(active->pitchBigSmoothingFilter->delay());
 
       if ((myEndChunk - myStartChunk) * zoomFactorX > width() - 2 * noteLabelOffset) {
         // The vibrato-polyline doesn't fit in the window
@@ -587,7 +581,7 @@ void VibratoWidget::doUpdate()
         vertices = new GLfloat[(width() + 1) * 2];
         colors = new GLubyte[(width() + 1) * 3];
 
-        const int pitchLookupUsedSizeLimit = pitchLookupUsed.size() - 1;
+        const int pitchLookupUsedSizeLimit = int(pitchLookupUsed.size() - 1);
         const int beginningOfNote = myStartChunk * framesPerChunk;
         const int endOfNote = myEndChunk * framesPerChunk - 1;
         float chunk;

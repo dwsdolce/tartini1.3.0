@@ -116,7 +116,7 @@ void WaveWidget::paintEvent( QPaintEvent * )
     Array1d<float> &filteredData = active->filteredInput;
 
     int intStep = int(filteredData.size() / w);
-    int remainderStep = filteredData.size() - (intStep * w);
+    int remainderStep = int(filteredData.size() - (intStep * w));
     int pos = 0;
     int remainder = 0;
     for(int j=0; j<w; j++, pos+=intStep, remainder+=remainderStep) {
@@ -125,7 +125,7 @@ void WaveWidget::paintEvent( QPaintEvent * )
         remainder -= w;
       }
       myassert(pos < filteredData.size());
-      if(pos >= filteredData.size()) printf("pos = %d, filteredData.size()=%d\n", pos, filteredData.size());
+      if(pos >= filteredData.size()) printf("pos = %d, filteredData.size()=%zu\n", pos, filteredData.size());
       pointArray.setPoint(j, j*2, toInt(dh2 - (filteredData.at(pos))*scaleY));
     }
     p.setPen(QPen(active->color, 0));

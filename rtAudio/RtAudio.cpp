@@ -398,7 +398,7 @@ void RtApi :: openStream( int outputDevice, int outputChannels,
 
 int RtApi :: getDeviceCount(void)
 {
-  return devices_.size();
+  return int(devices_.size());
 }
 
 RtApi::StreamState RtApi :: getStreamState( void ) const
@@ -462,14 +462,14 @@ void RtApi :: closeStream(void)
   // MUST be implemented in subclasses!
 }
 
-void RtApi :: probeDeviceInfo( RtApiDevice *info )
+void RtApi :: probeDeviceInfo( RtApiDevice */*info*/ )
 {
   // MUST be implemented in subclasses!
 }
 
-bool RtApi :: probeDeviceOpen( int device, StreamMode mode, int channels, 
-                               int sampleRate, RtAudioFormat format,
-                               int *bufferSize, int numberOfBuffers )
+bool RtApi :: probeDeviceOpen( int /*device*/, StreamMode /*mode*/, int /*channels*/, 
+                               int /*sampleRate*/, RtAudioFormat /*format*/,
+                               int */*bufferSize*/, int /*numberOfBuffers*/ )
 {
   // MUST be implemented in subclasses!
   return FAILURE;
@@ -5894,7 +5894,7 @@ void RtApiDs :: initialize(void)
     }
   }
 
-  nDevices_ = devices_.size();
+  nDevices_ = int(devices_.size());
   return;
 }
 
@@ -6047,7 +6047,7 @@ void RtApiDs :: probeDeviceInfo(RtApiDevice *info)
         info->sampleRates.push_back( (int) out_caps.dwMaxSecondarySampleRate );
     }
     else {
-      for ( int i=info->sampleRates.size()-1; i>=0; i-- ) {
+      for ( int i=int(info->sampleRates.size()-1); i>=0; i-- ) {
         if ( (unsigned int) info->sampleRates[i] > out_caps.dwMaxSecondarySampleRate )
           info->sampleRates.erase( info->sampleRates.begin() + i );
       }
@@ -6584,7 +6584,7 @@ void RtApiDs :: setStreamCallback(RtAudioCallback callback, void *userData)
 
   // When spawning multiple threads in quick succession, it appears to be
   // necessary to wait a bit for each to initialize ... another windoism!
-  Sleep(1);
+   Sleep(1);
 }
 
 void RtApiDs :: cancelStreamCallback()
@@ -7445,9 +7445,9 @@ extern "C" unsigned __stdcall callbackHandler(void *ptr)
   return 0;
 }
 
-static bool CALLBACK deviceCountCallback(LPGUID lpguid,
-                                         LPCTSTR description,
-                                         LPCTSTR module,
+static bool CALLBACK deviceCountCallback(LPGUID /*lpguid*/,
+                                         LPCTSTR /*description*/,
+                                         LPCTSTR /*module*/,
                                          LPVOID lpContext)
 {
   int *pointer = ((int *) lpContext);
@@ -7467,7 +7467,7 @@ std::string convertTChar( LPCTSTR name )
   // but RtAudio is currently written to return an std::string of
   // one-byte chars for the device name.
   for ( unsigned int i=0; i<wcslen( name ); i++ )
-    s.push_back( name[i] );
+    s.push_back( char(name[i]) );
 #else
   s.append( std::string( name ) );
 #endif
@@ -7477,7 +7477,7 @@ std::string convertTChar( LPCTSTR name )
 
 static bool CALLBACK deviceInfoCallback(LPGUID lpguid,
                                         LPCTSTR description,
-                                        LPCTSTR module,
+                                        LPCTSTR /*module*/,
                                         LPVOID lpContext)
 {
   enum_info *info = ((enum_info *) lpContext);
@@ -7523,7 +7523,7 @@ static bool CALLBACK deviceInfoCallback(LPGUID lpguid,
 
 static bool CALLBACK defaultDeviceCallback(LPGUID lpguid,
                                            LPCTSTR description,
-                                           LPCTSTR module,
+                                           LPCTSTR /*module*/,
                                            LPVOID lpContext)
 {
   enum_info *info = ((enum_info *) lpContext);
@@ -7538,7 +7538,7 @@ static bool CALLBACK defaultDeviceCallback(LPGUID lpguid,
 
 static bool CALLBACK deviceIdCallback(LPGUID lpguid,
                                       LPCTSTR description,
-                                      LPCTSTR module,
+                                      LPCTSTR /*module*/,
                                       LPVOID lpContext)
 {
   enum_info *info = ((enum_info *) lpContext);

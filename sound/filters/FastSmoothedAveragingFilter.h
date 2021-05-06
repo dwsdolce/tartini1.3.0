@@ -23,7 +23,7 @@
   */
 class FastSmoothedAveragingFilter : public Filter
 {
-  int _size, _size_left, _size_right;
+  size_t _size, _size_left, _size_right;
   double _angle;
   double _cos_angle, _sin_angle;
   double _sum;
@@ -35,11 +35,11 @@ class FastSmoothedAveragingFilter : public Filter
 
 public:
   FastSmoothedAveragingFilter() { }
-  FastSmoothedAveragingFilter(int size);
-  void init(int size);
-  void filter(const float *input, float *output, int n);
+  FastSmoothedAveragingFilter(size_t size);
+  void init(size_t size);
+  void filter(const float *input, float *output, size_t n);
   void reset();
-  int delay() { return _size/2; }
+  size_t delay() { return _size/2; }
 };
 
 

@@ -16,7 +16,6 @@
 #ifndef ARRAY1D_H
 #define ARRAY1D_H
 
-//#include <algorithm>
 #include <iostream>
 #include <memory>
 //#define NDEBUG //removes the asserts
@@ -35,8 +34,8 @@ template<class T> class Array1d
 {
  private:
   T* data;
-  int dataSize;
-  int allocatedSize;
+  size_t dataSize;
+  size_t allocatedSize;
 
  public:
 
@@ -51,7 +50,7 @@ template<class T> class Array1d
   /** Construct an Array1d of size length. The values are uninitialised
     * @param length The size of the new Array1d
     */
-  Array1d(int length) {
+  Array1d(size_t length) {
     dataSize = length;
     allocatedSize = nextPowerOf2(dataSize);
     data = (T*)malloc(allocatedSize * sizeof(T));
@@ -62,7 +61,7 @@ template<class T> class Array1d
     * @param length The size of the new Array1d
     * @param val Values will initialied to this
     */
-  Array1d(int length, const T &val) {
+  Array1d(size_t length, const T &val) {
     dataSize = length;
     allocatedSize = nextPowerOf2(dataSize);
     data = (T*)malloc(allocatedSize * sizeof(T));
@@ -75,7 +74,7 @@ template<class T> class Array1d
     * @param src The array to copy from
     * @param length The amount of data to copy and the new size of this array.
     */
-  Array1d(const T *src, int length) {
+  Array1d(const T *src, size_t length) {
     dataSize = length;
     allocatedSize = nextPowerOf2(dataSize);
     data = (T*)malloc(allocatedSize * sizeof(T));
@@ -90,7 +89,6 @@ template<class T> class Array1d
     dataSize = r.size();
     allocatedSize = nextPowerOf2(dataSize);
     data = (T*)malloc(allocatedSize * sizeof(T));
-    //copy_raw(r.begin(), dataSize);
     copy_raw(r.begin());
   }
 
@@ -105,33 +103,33 @@ template<class T> class Array1d
   ~Array1d() {
     if(data) free(data);
   }
-  T& operator()(int x) { return at(x); }
-  T& operator[](int x) { return at(x); }
-  const T& operator[](int x) const { return at(x); }
-  T& at(int x) {
+  T& operator()(size_t x) { return at(x); }
+  T& operator[](size_t x) { return at(x); }
+  const T& operator[](size_t x) const { return at(x); }
+  T& at(size_t x) {
     myassert(data != NULL);
     myassert(x >= 0 && x < size());
     return data[x];
   }
-  const T& at(int x) const {
+  const T& at(size_t x) const {
     myassert(data != NULL);
     myassert(x >= 0 && x < size());
     return data[x];
   }
-  int size() const { return dataSize; }
+  size_t size() const { return dataSize; }
   T *begin() const { return data; }
   T *end() const { return data+dataSize; }
   bool isEmpty() { return (data==NULL); }
 
   T &front() const { return *data; }
   T &back() const { return data[dataSize-1]; }
-  int capacity() { return allocatedSize; }
-  int getIndex(T *element) { return element - data; }
+  size_t capacity() { return allocatedSize; }
+  size_t getIndex(T *element) { return element - data; }
 
   /** Resizes this to newSize, making all data uninitized
     * If newSize == size() then it dosn't do anything
     */
-  void resize_raw(int newSize) {
+  void resize_raw(size_t newSize) {
     if(newSize == dataSize) return;
     if(newSize > allocatedSize) {
       if(data) free(data);
@@ -143,7 +141,7 @@ template<class T> class Array1d
 
    /** Resize this, any new values will be uninitized
      */
-  void resize(int newSize) {
+  void resize(size_t newSize) {
     if(newSize > allocatedSize) {
       allocatedSize = nextPowerOf2(newSize);
       data = (T*)realloc(data, allocatedSize * sizeof(T));
@@ -153,7 +151,7 @@ template<class T> class Array1d
 
    /** Resize this, any new values will be initized to val
      */
-  void resize(int newSize, const T &val) {
+  void resize(size_t newSize, const T &val) {
     if(newSize > allocatedSize) {
       allocatedSize = nextPowerOf2(newSize);
       data = (T*)realloc(data, allocatedSize * sizeof(T));
@@ -170,7 +168,7 @@ template<class T> class Array1d
     * @param src The array to copy from
     * @param length The amount of data to copy and the new size of this array.
     */
-  void resize_copy(const T *src, int length) {
+  void resize_copy(const T *src, size_t length) {
     resize_raw(length);
     //copy_raw(src, length);
     copy_raw(src);
@@ -199,7 +197,6 @@ template<class T> class Array1d
     * @param src The array to copy from
     * @param length The amount of data to copy
     */
-  //void copy_raw(const T *src, int length) {
   void copy_raw(const T *src) {
     T *theEnd = end();
     for(T *p = begin(); p != theEnd;) *p++ = *src++;
@@ -237,7 +234,7 @@ template<class T> class Array1d
   /** Shift all values to the left by n.
     * losing the first n values and not initialising the last n
     */
-  void shift_left(int n) {
+  void shift_left(size_t n) {
 	  if(n < 1 || n >= size()) return;
     memmove(begin(), begin()+n, (size()-n)*sizeof(T));
   }
@@ -245,7 +242,7 @@ template<class T> class Array1d
   /** Shift all values to the right by n.
     * losing the last n values and not initialising the first n
     */
-  void shift_right(int n) {
+  void shift_right(size_t n) {
 	  if(n < 1 || n >= size()) return;
     memmove(begin()+n, begin(), (size()-n)*sizeof(T));
   }
@@ -255,7 +252,7 @@ template<class T>
 std::ostream& operator<<(std::ostream &o, Array1d<T> &a)
 {
   o << '[';
-  for(int j=0; j<a.size(); j++) {
+  for(size_t j=0; j<a.size(); j++) {
     o << a(j);
     if(j != a.size()-1) o << ' ';
   }

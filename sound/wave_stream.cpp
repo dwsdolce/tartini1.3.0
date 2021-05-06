@@ -25,7 +25,6 @@
 WaveStream::WaveStream()
 {
   file = NULL;
-  //_total_frames = _pos = 0;
   header_length = 0;
 }
 
@@ -132,21 +131,21 @@ missing_data:
   return -1;
 }
 
-long WaveStream::read_bytes(void *data, long length)
+size_t WaveStream::read_bytes(void *data, size_t length)
 {
   if(!file || !(mode & F_READ)) return 0;
 
-  long read = fread(data, 1, length, file);
+  size_t read = fread(data, 1, length, file);
   _pos += read/frame_size();
   if(pos() > totalFrames()) _total_frames = pos();
   return read;
 }
 
-long WaveStream::read_frames(void *data, long length)
+size_t WaveStream::read_frames(void *data, size_t length)
 {
   if(!file || !(mode & F_READ)) return 0;
 
-  long read = fread(data, frame_size(), length, file);
+  size_t read = fread(data, frame_size(), length, file);
   _pos += read;
   if(pos() > totalFrames()) _total_frames = pos();
   return read;
@@ -172,14 +171,11 @@ void WaveStream::write_header()
   rewind(file);
 
   fputs("RIFF", file);                 /* RIFF header */
-  iputl(36+data_length(), file);         /* size of RIFF chunk */
+  iputl(uint32_t(36+data_length()), file);         /* size of RIFF chunk */
   
   fputs("WAVE", file);                 /* WAV definition */
   fputs("fmt ", file);                 /* format chunk */
   iputl(16, file);                     /* size of format chunk */
-  //if(sampleType == paFloat32)
-  //iputw(3, file);                    /* PCM data 3=floating point*/
-  //else
   iputw(1, file);                      /* PCM data 1=two's compliment int*/
   iputw(channels, file);               /* number of channels */
   iputl(freq, file);                   /* sample frequency */
@@ -189,46 +185,44 @@ void WaveStream::write_header()
   iputw(blockAlign, file);             /* block alignment */
   iputw(bits, file);          /* bits per sample */
   fputs("data", file);                 /* data chunk */
-  iputl(data_length(), file);            /* actual data length */
+  iputl(int32_t(data_length()), file);            /* actual data length */
 }
 
-long WaveStream::write_bytes(void *data, long length)
+size_t WaveStream::write_bytes(void *data, size_t length)
 {
   if(!file || !(mode & F_WRITE)) return 0;
 
-  long written = fwrite(data, 1, length, file);
+  size_t written = fwrite(data, 1, length, file);
   _pos += written/frame_size();
   if(pos() > totalFrames()) _total_frames = pos();
   return written;
 }
 
-long WaveStream::write_frames(void *data, long length)
+size_t WaveStream::write_frames(void *data, size_t length)
 {
   if(!file || !(mode & F_WRITE)) return 0;
 
-  long written = fwrite(data, frame_size(), length, file);
+  size_t written = fwrite(data, frame_size(), length, file);
   _pos += written;
   if(pos() > totalFrames()) _total_frames = pos();
   return written;
 }
 
-void WaveStream::jump_to_frame(int frame)
+void WaveStream::jump_to_frame(size_t frame)
 {
-  frame = bound(frame, 0, totalFrames());
-  //if(frame < 0) frame = 0;
-  //if(frame > totalFrames()) { printf("over end, %d, %d\n", frame, totalFrames()); frame = totalFrames(); }
-  if(fseek(file, header_length + frame*frame_size(), SEEK_SET)) {
+  frame = bound(frame, size_t(0), totalFrames());
+  if(fseek(file, long(header_length + frame*frame_size()), SEEK_SET)) {
     fprintf(stderr, "error seeking, %d\n", errno);
   }
   setPos(frame);
 }
 
-void WaveStream::jump_back(int frames)
+void WaveStream::jump_back(size_t frames)
 {
   jump_to_frame(pos() - frames);
 }
 
-void WaveStream::jump_forward(int frames)
+void WaveStream::jump_forward(size_t frames)
 {
   jump_to_frame(pos() + frames);
 }

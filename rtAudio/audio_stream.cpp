@@ -65,15 +65,12 @@ int AudioStream::open(int mode_, int freq_, int channels_, int /*bits_*/, int bu
 
   try {
     if(mode == F_READ) {
-      //device_no = ::open(audioInput, O_RDONLY|O_NONBLOCK);
       audio = new RtAudio(0, 0, inDevice, channels, RTAUDIO_FLOAT32, freq, &buffer_size, num_buffers);
     }
     else if(mode == F_WRITE)  {
-      //device_no = ::open(audioOutput, O_WRONLY|O_NONBLOCK);
       audio = new RtAudio(outDevice, channels, 0, 0, RTAUDIO_FLOAT32, freq, &buffer_size, num_buffers);
     }
     else if(mode == F_RDWR) {
-      //device_no = ::open(audioInOut, O_RDWR|O_NONBLOCK);
       audio = new RtAudio(outDevice, channels, inDevice, channels, RTAUDIO_FLOAT32, freq, &buffer_size, num_buffers);
     } else {
       fprintf(stderr, "No mode selected\n");
@@ -101,10 +98,11 @@ int AudioStream::open(int mode_, int freq_, int channels_, int /*bits_*/, int bu
   return 0;
 }
 
-int AudioStream::writeFloats(float **channelData, int length, int ch)
+size_t AudioStream::writeFloats(float **channelData, size_t length, int ch)
 {
   float *bufPtr = buffer;
-  int c, j;
+  int c;
+  size_t j;
   //printf("length=%d, buffer_size=%d, ch=%d\n", length, buffer_size, ch); fflush(stdout);
   if(length == buffer_size) {
     for(j=0; j<length; j++) {
@@ -129,7 +127,7 @@ int AudioStream::writeFloats(float **channelData, int length, int ch)
       }
     }
     while(flowBuffer.size() >= buffer_size*ch) {
-      int recieved = flowBuffer.get(buffer, buffer_size*ch);
+      size_t recieved = flowBuffer.get(buffer, buffer_size*ch);
 	  if(recieved != buffer_size*ch) fprintf(stderr, "AudioStream::writeFloats: Error recieved != buffer_size*ch\n");
     // Trigger the output of the data buffer
       try {
@@ -145,10 +143,11 @@ int AudioStream::writeFloats(float **channelData, int length, int ch)
   return length;
 }
 
-int AudioStream::readFloats(float **channelData, int length, int ch)
+size_t AudioStream::readFloats(float **channelData, size_t length, int ch)
 {
   float *bufPtr = buffer;
-  int c, j;
+  int c;
+  size_t j;
   if(length == buffer_size) {
 
     // Trigger the input of the data buffer
@@ -179,10 +178,11 @@ This requires that inChannelData and outChannelData have the same number of chan
 @param length The amount of data per channel. This has to be the same for in and out data
 @param ch The number of channels. This has to be the same of in and out data
 */
-int AudioStream::writeReadFloats(float **outChannelData, int outCh, float **inChannelData, int inCh, int length)
+size_t AudioStream::writeReadFloats(float **outChannelData, int outCh, float **inChannelData, int inCh, size_t length)
 {
   float *bufPtr = buffer;
-  int c, j;
+  int c;
+  size_t j;
   //printf("length=%d, buffer_size=%d, ch=%d\n", length, buffer_size, ch); fflush(stdout);
 
   //put the outChannelData into the Audio buffer to be written out

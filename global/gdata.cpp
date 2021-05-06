@@ -46,13 +46,6 @@ struct itimerval profiler_value;
 struct itimerval profiler_ovalue;
 #endif
 
-/*
-//QColor myBackgroundColor(196, 196, 196);
-QColor myBackgroundColor(128, 128, 128);
-QColor myLineColor1(32, 32, 32);
-QColor myLineColor2(0, 0, 255);
-QColor myRefLineColor(0, 128, 0);
-*/
 
 int frame_window_sizes[NUM_WIN_SIZES] = { 512, 1024, 2048, 4096, 8192 };
 const char *frame_window_strings[NUM_WIN_SIZES] = { "512", "1024", "2048", "4096", "8192" };
@@ -98,15 +91,9 @@ GData::GData(/*int buffer_size_, int winfunc_, float step_size_*/)
   amp_weights[2] = 0.2;
   amp_weights[3] = 0.2;
   amp_weights[4] = 0.2;
-  //setNoiseThresholdDB(-100.0);
-  //setChangenessThreshold(0.8); //1.8);
 
-  //settings.init("cs.otago.ac.nz", "Tartini");
   qsettings = new QSettings("cs.otago.ac.nz", TARTINI_NAME_STR);
   TartiniSettingsDialog::setUnknownsToDefault(qsettings);
-  //settings.print();
-  //settings.load();
-  //settings.print();
   
   activeChannel = NULL;
   _doingActiveAnalysis = 0;
@@ -117,53 +104,18 @@ GData::GData(/*int buffer_size_, int winfunc_, float step_size_*/)
   _doingActiveCepstrum = 0;
 
   updateQuickRefSettings();
-  
-    //char *filename = getenv("PITCH_INI");
-    //if(filename == NULL) {
-	//filename = "pitch.ini";
-    //}
-    //settings.load(filename);
-
-    //buffer_size = buffer_size_;
-    //winfunc = winfunc_;
-    //step_size = step_size_;
-    
+   
     peakThreshold = -60.0; //in dB
     correlationThreshold = 0.00001f; //0.5 in the other scale (log);
     frameCounter = 0;
-    //equalLoudness = false; //true;
-    //useMasking = false; //true;
-    //harmonicNum = 1;
-
-    //useRidgeFile = false; /**< Store harmonic info to a ridge file */
     
     doingStuff = false; /**< Active/inactive */
     running = STREAM_STOP;
-    
-    //in_channels = 2;
-    //process_channels = 1;
-    //out_channels = 2;
     interpolating_type = 2; //HERMITE_CUBIC;
-    //bisection_steps = settings.get_int("Correlation", "bisectionSteps", 8); //8;
-    //fast_correlation_repeats = settings.get_int("Correlation", "fastRepeats", 512);
     using_coefficients_table = true;
 
     audio_stream = NULL;
     soundMode = SOUND_PLAY;
-
-#if 0 //dont use chirp stuff
-    //setup fct
-    fct.set_N_dimensions(2);
-    fct.set_N_data(buffer_size);
-    fct.set_phase_function(1,64,&phase_function);
-    fct.set_N_tau0(buffer_size);
-    fct.initialize();
-    //Allocate fct memory
-    fct_in_data  = (float *)calloc(2*buffer_size, sizeof(float));
-    fct_out_data = (float *)calloc(2*fct.get_output_data_length(), sizeof(float));
-    fct_draw_data = (FrameRGB *)calloc(buffer_size/2*64, sizeof(FrameRGB));
-#endif
-
     cur_note = 0.0;
 
     sync_flag = 0;
@@ -171,27 +123,17 @@ GData::GData(/*int buffer_size_, int winfunc_, float step_size_*/)
 
     //view = new View();
     
-    //lineColor.push_back(Qt::white);
-    //lineColor.push_back(Qt::black);
-    //lineColor.push_back(Qt::red);
+
     lineColor.push_back(Qt::darkRed);
-    //lineColor.push_back(Qt::green);
     lineColor.push_back(Qt::darkGreen);
-    //lineColor.push_back(Qt::blue);
     lineColor.push_back(Qt::darkBlue);
-    //lineColor.push_back(Qt::cyan);
     lineColor.push_back(Qt::darkCyan);
-    //lineColor.push_back(Qt::magenta);
     lineColor.push_back(Qt::darkMagenta);
-    //lineColor.push_back(Qt::yellow);
     lineColor.push_back(Qt::darkYellow);
-    //lineColor.push_back(Qt::gray);
     lineColor.push_back(Qt::darkGray);
-    //lineColor.push_back(Qt::lightGray);
 
     nextColorIndex = 0;
 
-  //_musicKey = 2; //C
   _musicKeyType = 0; //ALL_NOTES
   _temperedType = 0; //EVEN_TEMPERED
   initMusicStuff();
@@ -201,7 +143,6 @@ GData::~GData()
 {
     audioThread.stopAndWait();
 
-    //settings.save();
     qsettings->sync();
 
     //Note: The soundFiles is responsible for cleaning up the data the channels point to
@@ -219,84 +160,10 @@ GData::~GData()
 
     filter_lp.clear();
 
-    //if(fwinfunc) delete fwinfunc;
-    //if(loudnessFunc) delete loudnessFunc;
-    //if(sound_file_stream) delete sound_file_stream;
-    //if(audio_stream) delete audio_stream;
-
-#if 0
-    free(fct_in_data);
-    free(fct_out_data);
-    free(fct_draw_data);
-#endif
-
   delete qsettings;
 
   delete _drawingBuffer;
 }
-
-/*
-void GData::setBuffers(int freq, int channels)
-{
-    //bufferMutex.lock();
-
-    //coefficients_table.resize(buffer_size*4*channels);
-    coefficients_table.resize(buffer_size*4, channels);
-    fwinfunc->create(winfunc, buffer_size);
-    loudnessFunc->create_loudness(buffer_size/2, freq);
-    freqHistory.resize(channels);
-
-    std::vector<Filter*>::iterator fi;
-    for(fi=filter_hp.begin(); fi!=filter_hp.end(); ++fi)
-	delete (*fi);
-    filter_hp.clear();
-    for(fi=filter_lp.begin(); fi!=filter_lp.end(); ++fi)
-	delete (*fi);
-    filter_lp.clear();
-
-    const double R = 0.94; //0.94 to 0.99
-    double fhp_a[3] = { 1.0, -2.0, 1.0 };
-    double fhp_b[2] = { -2.0*R, R*R };
-    double flp_a[2] = { 0.109, 0.109 };
-    double flp_b[8] = { -2.5359, 3.9295, -4.7532, 4.7251, -3.5548, 2.1396, -0.9879, 0.2836 };
-
-    for(int j=0; j<channels; j++) {
-	Filter *hp = new Filter();
-	hp->make_IIR(fhp_a, 3, fhp_b, 2);
-	Filter *lp = new Filter();
-	lp->make_IIR(flp_a, 2, flp_b, 8);
-	filter_hp.push_back(hp);
-	filter_lp.push_back(lp);
-    }
-
-    //bufferMutex.unlock();
-}
-*/
-
-/*
-void GData::setFrameWindowSize(int index)
-{
-    buffer_size = frame_window_sizes[index];
-    if(input_stream) setBuffers(input_stream->freq, input_stream->channels);
-    need_update = false; //wait for buffers to get more data before the next update
-}
-
-void GData::setWinFunc(int index)
-{
-    winfunc = index;
-    fwinfunc->create(winfunc, buffer_size);
-}
-
-void GData::setStepSize(int index)
-{
-    //printf("gdata waiting for lock\n"); fflush(stdout);
-    //bufferMutex.lock();
-    //printf("gdata got lock\n"); fflush(stdout);
-    step_size = step_sizes[index];
-    //printf("gdata lost lock\n"); fflush(stdout);
-    //bufferMutex.unlock();
-}
-*/
 
 SoundFile* GData::getActiveSoundFile()
 {
@@ -310,34 +177,6 @@ void GData::pauseSound()
     //printf("paused called. Value is now %d\n", running);
 }
 
-/*
-void GData::openMicrophone()
-{
-    stopAllSound();
-
-    //if(!audio_stream) {
-    audio_stream = new AudioStream;
-    if(audio_stream->open(F_READ, 44100, in_channels, 16)) {
-	fprintf(stderr, "Error initilizing sound\n");
-	delete audio_stream;
-	audio_stream = NULL;
-	//output_stream = NULL;
-    } else {
-	//input_stream = audio_stream;
-	//setBuffers(input_stream->freq, input_stream->channels);
-	running = STREAM_FORWARD;
-  soundMode = SOUND_REC;
-#if (QT_VERSION >= 0x030200)
-	//audioThread.start(QThread::HighPriority); //TimeCriticalPriority);
-	audioThread.start();
-#else
-	audioThread.start();
-#endif
-    }
-    //}
-}
-*/
-
 /** Opens the soundcard for recording.
   @param sRec A new created blank SoundFile to recort to
   @param sPlay A SoundFile to play when recording or NULL for record only
@@ -350,33 +189,19 @@ bool GData::openPlayRecord(SoundFile *sRec, SoundFile *sPlay)
   stop();
 
   int rate = sRec->rate();
-  int numChannels = sRec->numChannels();
+  int numChannels = int(sRec->numChannels());
   int bits = sRec->bits();
-  //int theBufferSize = sRec->bufferSize();
   int theBufferSize = sRec->framesPerChunk();
 
-  //if(gdata->qsettings->value("Sound/muteOutput", true).toBool() || gdata->getActiveSoundFile() == NULL) { //mute the output sound while recording
   if(sPlay) {
     soundMode = SOUND_PLAY_REC;
     theOpenMode = F_RDWR;
     sPlay->jumpToChunk(0);
     gdata->view->setCurrentTime(0);
-
-    //rate = sPlay->rate();
-    //numChannels = sPlay->numChannels();
-    //bits = sPlay->bits();
-    //theBufferSize = sPlay->bufferSize()/2;
   } else {
     soundMode = SOUND_REC;
     theOpenMode = F_READ;
   }
-
-//#ifdef LINUX  //fixme: Buffer sizes need to be tested
-//  int theBufferSize = sRec->bufferSize()/2;
-//#else
-//  int theBufferSize = s->framesPerChunk();
-//#endif
-
   //open the audio input
   audio_stream = new AudioStream;
   if(audio_stream->open(theOpenMode, rate, numChannels, bits, theBufferSize)) {
@@ -386,10 +211,6 @@ bool GData::openPlayRecord(SoundFile *sRec, SoundFile *sPlay)
     audio_stream = NULL;
     return false;
   } else {
-//#ifdef WINDOWS
-//    Sleep(100);
-//#endif
-    //running = STREAM_FORWARD;
     if((theOpenMode & F_WRITE)) {
       audioThread.start(sPlay, sRec);
     } else {
@@ -419,11 +240,7 @@ bool GData::playSound(SoundFile *s)
   //printf("Creating a new AudioStream\n");
     audio_stream = new AudioStream;
     //printf("The BufferSize!!! = %d\n", s->bufferSize());
-//#ifdef LINUX  //fixme: Buffer sizes need to be tested
-    if(audio_stream->open(F_WRITE, s->rate(), s->numChannels(), s->bits(), s->bufferSize()/2)) {
-//#else
-//    if(audio_stream->open(F_WRITE, s->rate(), s->numChannels(), s->bits(), s->bufferSize())) {
-//#endif
+    if(audio_stream->open(F_WRITE, s->rate(), int(s->numChannels()), s->bits(), int(s->bufferSize()/2))) {
       fprintf(stderr, "Error initialising sound\n");
       delete audio_stream;
       audio_stream = NULL;
@@ -434,22 +251,6 @@ bool GData::playSound(SoundFile *s)
   return true;
 }
 
-/*
-void GData::jump_forward(int frames)
-{
-    if(running == STREAM_PAUSE) {
-	if(sound_file_stream) {
-	    if(frames != 0) {
-		//bufferMutex.lock();
-		sound_file_stream->jump_forward(frames);
-		//bufferMutex.unlock();
-	    }
-	    running = STREAM_UPDATE;
-	}
-    }
-}
-*/
-
 void GData::updateViewLeftRightTimes()
 {
   double left = 0.0; //in seconds
@@ -457,10 +258,8 @@ void GData::updateViewLeftRightTimes()
   Channel *ch;
   for(uint j = 0; j < channels.size(); j++) {
     ch = channels.at(j);
-    //if(ch->isVisible()) {
       if(ch->startTime() < left) left = ch->startTime();
       if(ch->finishTime() > right) right = ch->finishTime();
-    //}
   }
   setLeftTime(left); //in seconds
   setRightTime(right); //in seconds
@@ -482,7 +281,6 @@ void GData::updateActiveChunkTime(double t)
   Channel *active = getActiveChannel();
   t = bound(t, leftTime(), rightTime());
   if(active) {
-    //t = active->timeAtChunk(active->chunkAtTime(t)); //align time to an integer sample step
     active->jumpToTime(t);
     if(gdata->doingActive()) {
 	    active->lock();
@@ -518,7 +316,6 @@ void GData::setTopPitch(double y)
 {
   if(y != _topPitch) {
     _topPitch = y;
-    //emit scrollableYChanged(topNote()-viewHeight());
   }
 }
 
@@ -569,14 +366,11 @@ void GData::end()
 
 int GData::getAnalysisBufferSize(int rate)
 {  
-  //int windowSize = settings.getInt("Analysis", "bufferSizeValue");
   int windowSize = qsettings->value("Analysis/bufferSizeValue", 48).toInt();
-  //QString windowSizeUnit = settings.getString("Analysis", "bufferSizeUnit");
   QString windowSizeUnit = qsettings->value("Analysis/bufferSizeUnit", "milli-seconds").toString();
   if(windowSizeUnit.toLower() == "milli-seconds") { //convert to samples
     windowSize = int(double(windowSize) * double(rate) / 1000.0);
   }
-  //if(settings.getBool("Analysis", "bufferSizeRound")) {
   if(qsettings->value("Analysis/bufferSizeRound", true).toBool()) {
     windowSize = toInt(nearestPowerOf2(windowSize));
   }
@@ -585,14 +379,11 @@ int GData::getAnalysisBufferSize(int rate)
 
 int GData::getAnalysisStepSize(int rate)
 {  
-  //int stepSize = settings.getInt("Analysis", "stepSizeValue");
   int stepSize = qsettings->value("Analysis/stepSizeValue", 24).toInt();
-  //QString stepSizeUnit = settings.getString("Analysis", "stepSizeUnit");
   QString stepSizeUnit = qsettings->value("Analysis/stepSizeUnit", "milli-seconds").toString();
   if(stepSizeUnit.toLower() == "milli-seconds") { //convert to samples
     stepSize = int(double(stepSize) * double(rate) / 1000.0);
   }
-  //if(settings.getBool("Analysis", "stepSizeRound")) {
   if(qsettings->value("Analysis/stepSizeRound", true).toBool()) {
     stepSize = toInt(nearestPowerOf2(stepSize));
   }
@@ -601,18 +392,6 @@ int GData::getAnalysisStepSize(int rate)
 
 void GData::updateQuickRefSettings()
 {
-/*  _backgroundColor.setNamedColor(settings.getString("Display", "theBackgroundColor"));
-  _shading1Color.setNamedColor(settings.getString("Display", "shading1Color"));
-  _shading2Color.setNamedColor(settings.getString("Display", "shading2Color"));
-  _doingHarmonicAnalysis = settings.getBool("Analysis", "doingHarmonicAnalysis");
-  _doingFreqAnalysis = settings.getBool("Analysis", "doingFreqAnalysis");
-  _doingEqualLoudness = settings.getBool("Analysis", "doingEqualLoudness");
-  _doingAutoNoiseFloor = settings.getBool("Analysis", "doingAutoNoiseFloor");
-  _fastUpdateSpeed = settings.getInt("Display", "fastUpdateSpeed");
-  _slowUpdateSpeed = settings.getInt("Display", "slowUpdateSpeed");
-  if(settings.getString("Analysis", "analysisType") == QString("MPM")) _analysisType = 0;
-  else _analysisType = 1;
-*/
   _backgroundColor.setNamedColor(qsettings->value("Display/theBackgroundColor", "#BBCDE2").toString());
   _shading1Color.setNamedColor(qsettings->value("Display/shading1Color", "#BBCDEF").toString());
   _shading2Color.setNamedColor(qsettings->value("Display/shading2Color", "#CBCDE2").toString());
@@ -659,7 +438,7 @@ QColor GData::getNextColor()
 
 void GData::addFileToList(SoundFile *s)
 {
-  int c;
+  size_t c;
   soundFiles.push_back(s);
   for(c=0; c<s->numChannels(); c++) {
     channels.push_back(s->channels(c));
@@ -669,13 +448,12 @@ void GData::addFileToList(SoundFile *s)
 
 void GData::removeFileFromList(SoundFile *s)
 {
-  int j;
+  size_t j;
   int curPos;
   int prevPos;  
   //remove all the channels in s from the channels list
   for(j=0; j<s->numChannels(); j++) {
     Channel *c = s->channels(j);
-    //if(c == getActiveChannel()) { setActiveChannel(NULL); }
     curPos = prevPos = 0;
     for(std::vector<Channel*>::iterator it1=channels.begin(); it1 != channels.end(); curPos++) {
       if((*it1) == c) {
@@ -699,7 +477,6 @@ void GData::removeFileFromList(SoundFile *s)
     }
   }
   emit channelsChanged();
-  //view->doSlowUpdate();
 }
 
 void GData::saveActiveFile() {
@@ -719,18 +496,8 @@ void GData::saveActiveFile() {
 
 QString GData::saveFileAsk(QString oldFilename)
 {
-/*
-  RecordDialog d(mainWindow);
-  if(d.exec() != QDialog::Accepted) return QString();
-  QString newFilename = d.selectedFile();
-  //QString newFilename = QFileDialog::getSaveFileName(oldFilename, "Wave files (*.wav)", mainWindow, "Save file dialog", "Choose a filename to save under", 0, false);
-*/
   QString newFilename = SaveDialog::getSaveWavFileName(mainWindow);
   if(newFilename.isNull()) return QString();
-  //if(!newFilename.endsWith(".wav")) { newFilename += ".wav"; }
-//#ifdef WINDOWS
-//  newFilename.replace(QChar('/'), QChar('\\'));
-//#endif
   newFilename = QDir::toNativeSeparators(newFilename);
   if(newFilename != oldFilename && QFile::exists(newFilename)) {
     if(QMessageBox::warning(mainWindow, tr("Overwrite File?"),
@@ -750,7 +517,7 @@ int GData::saveFile(SoundFile *s, QString newFilename)
   if(newFilename.isNull()) { /*printf("cancled\n");*/ return 1; }
   QString oldFilename(s->filename);
   oldFilename = QDir::toNativeSeparators(oldFilename);
-  int pos = s->stream->pos();
+  size_t pos = s->stream->pos();
   s->stream->close();
   
   //printf("moveFile(%s, %s);\n", oldFilename.latin1(), newFilename.latin1());
@@ -931,9 +698,8 @@ void GData::setTemperedType(int type)
 {
   if(_temperedType != type) {
     if(_temperedType == 0 && type > 0) { //remove out the minors
-      //if(mainWindow->keyTypeComboBox->currentIndex() >= 2) mainWindow->keyTypeComboBox->setCurrentIndex(1);
       if(_musicKeyType >= 2) setMusicKeyType(0);
-      for(int j=gMusicScales.size()-1; j>=2; j--) {
+      for(int j=int(gMusicScales.size())-1; j>=2; j--) {
         mainWindow->keyTypeComboBox->removeItem(j);
       }
     } else if(_temperedType > 0 && type == 0) {

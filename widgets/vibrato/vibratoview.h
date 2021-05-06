@@ -17,7 +17,6 @@
 
 #include "viewwidget.h"
 
-class VibratoTunerWidget;
 class VibratoSpeedWidget;
 class VibratoPeriodWidget;
 class VibratoCircleWidget;
@@ -37,15 +36,11 @@ class VibratoView : public ViewWidget {
     std::vector<LEDIndicator*> leds;
 
   private:
-    //VibratoTunerWidget *vibratoTunerWidget;
     VibratoSpeedWidget *vibratoSpeedWidget;
     VibratoPeriodWidget *vibratoPeriodWidget;
     VibratoCircleWidget *vibratoCircleWidget;
     VibratoTimeAxis *vibratoTimeAxis;
     VibratoWidget *vibratoWidget;
-
-  //public slots:
-  //  void setLed(int index, bool value);
 };
 
 

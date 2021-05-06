@@ -18,7 +18,7 @@
 
 #include <vector>
 #include <stdio.h>
-#include <qgl.h>
+#include <QGLWidget>
 #include "myassert.h"
 
 #define WHITE_KEY_WIDTH            23.5f
@@ -38,11 +38,8 @@ public:
   ~Piano3d();
   
   static void drawWhiteKey();
-  //static void drawWhiteKeyLine();
   static void drawBlackKey();
   
-  //static void drawBlackKeyAt(double x, bool isOn);
-  //static void drawWhiteKeyAt(double x, bool isOn);
   void draw();
   
   void init(int numKeys_=85, int firstKey_=21);

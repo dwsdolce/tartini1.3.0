@@ -70,38 +70,41 @@ OpenFiles::~OpenFiles()
   
 void OpenFiles::refreshChannelList()
 {
-  // Block all signals while the table is reconstructed.
-  const QSignalBlocker blocker(filesTable);
+    // Block all signals while the table is reconstructed.
+    const QSignalBlocker blocker(filesTable);
 
-  //put in any channel items that already exist
-   filesTable->clearContents();
-   filesTable->setRowCount(0);
-  
-  QString s;
-  for(std::vector<Channel*>::iterator it = gdata->channels.begin(); it != gdata->channels.end(); it++) {
-    const int row = filesTable->rowCount();
-    filesTable->setRowCount(row + 1);
-    s = (*it)->getUniqueFilename();
+    //put in any channel items that already exist
+    filesTable->clearContents();
+    filesTable->setRowCount(0);
 
-    QTableWidgetItem* fileItem = new QTableWidgetItem(s);
-    fileItem->setData(Qt::UserRole, s);
-    fileItem->setFlags((fileItem->flags() | Qt::ItemIsUserCheckable) & ~Qt::ItemIsEditable);
-    filesTable->setItem(row, 0, fileItem);
+    QString s;
+    for (std::vector<Channel*>::iterator it = gdata->channels.begin(); it != gdata->channels.end(); it++) {
+        const int row = filesTable->rowCount();
+        filesTable->setRowCount(row + 1);
+        s = (*it)->getUniqueFilename();
 
+        QTableWidgetItem* fileItem = new QTableWidgetItem(s);
+        fileItem->setData(Qt::UserRole, s);
+        fileItem->setFlags((fileItem->flags() | Qt::ItemIsUserCheckable) & ~Qt::ItemIsEditable);
+        filesTable->setItem(row, 0, fileItem);
 
-    QTableWidgetItem* active = new QTableWidgetItem("");
-    if((*it) == gdata->getActiveChannel()) {
-      active->setText("A");
-      filesTable->setCurrentItem(active);
+        QTableWidgetItem* active = new QTableWidgetItem("");
+        if ((*it) == gdata->getActiveChannel()) {
+            active->setText("A");
+            filesTable->setCurrentItem(active);
+        }
+        active->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter | Qt::AlignCenter);
+        active->setFlags(active->flags() & (~Qt::ItemIsSelectable) & (~Qt::ItemIsEnabled));
+        filesTable->setItem(row, 1, active);
+
+        if ((*it)->isVisible()) {
+            fileItem->setCheckState(Qt::Checked);
+        }
+        else {
+            fileItem->setCheckState(Qt::Unchecked);
+        }
     }
-    active->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter | Qt::AlignCenter);
-    active->setFlags(active->flags() & (~Qt::ItemIsSelectable) & (~Qt::ItemIsEnabled));
-    filesTable->setItem(row, 1, active);
 
-    if ((*it)->isVisible()) {
-        fileItem->setCheckState(Qt::Checked);
-    }
-  }
 }
 
 //TODO: Tidy this method up

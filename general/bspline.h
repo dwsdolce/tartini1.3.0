@@ -21,9 +21,9 @@
 #define BSPLINE          1
 #define HERMITE_CUBIC    2
 
-float interpolate_linear(int len, const float *array, float x);
-float interpolate_b_spline(int len, const float *array, float x);
-float interpolate_cubic(int len, const float *data, double x);
-void stretch_array(int in_len, const float *in, int out_len, float *out, float start, float len, int type);
+float interpolate_linear(size_t len, const float *array, float x);
+float interpolate_b_spline(size_t len, const float *array, float x);
+float interpolate_cubic(size_t len, const float *data, double x);
+void stretch_array(size_t in_len, const float *in, size_t out_len, float *out, float start, float len, int type);
 
 #endif

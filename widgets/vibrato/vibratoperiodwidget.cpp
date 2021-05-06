@@ -143,10 +143,10 @@ void VibratoPeriodWidget::doUpdate()
       NoteData *note = new NoteData();
       note = &(active->noteData[data->noteIndex]);
 
-      int smoothDelay = active->pitchBigSmoothingFilter->delay();
+      int smoothDelay = int(active->pitchBigSmoothingFilter->delay());
       int currentTime = active->chunkAtCurrentTime() * active->framesPerChunk() + smoothDelay;
-      int maximaSize = note->maxima->size();
-      int minimaSize = note->minima->size();
+      size_t maximaSize = note->maxima->size();
+      size_t minimaSize = note->minima->size();
 
       // Determine which period to show: the 2 rightmost minima + the maximum in between
       if ((maximaSize >= 1 ) && (minimaSize == 2)) {
@@ -169,7 +169,7 @@ void VibratoPeriodWidget::doUpdate()
         if (currentTime > note->minima->at(minimaSize - 1)) {
           leftMinimumTime  = note->minima->at(minimaSize - 2);
           rightMinimumTime = note->minima->at(minimaSize - 1);
-          leftMinimumAt = minimaSize - 2;
+          leftMinimumAt = int(minimaSize - 2);
         }
       }
       // The maximum in between
@@ -239,7 +239,7 @@ void VibratoPeriodWidget::doUpdate()
         theDelay = 0;
       } else {
         thePitchLookup = active->pitchLookup;
-        theDelay = active->pitchBigSmoothingFilter->delay() - active->pitchSmallSmoothingFilter->delay();
+        theDelay = int(active->pitchBigSmoothingFilter->delay() - active->pitchSmallSmoothingFilter->delay());
       }
 
       int theLeftMinimumTime = leftMinimumTime - theDelay;

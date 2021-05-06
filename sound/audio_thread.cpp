@@ -88,14 +88,11 @@ void AudioThread::run()
   fast_update_count = 0;
   slow_update_count = 0;
   frame_num = 0;
-  //if(((MainWindow*) qApp->mainWidget())->freqView) ((MainWindow*) qApp->mainWidget())->freqView->offset_x = 0;
-  //if(((MainWindow*) qApp->mainWidget())->zoomFreqView) ((MainWindow*) qApp->mainWidget())->zoomFreqView->offset_x = 0;
 
   //read to the 1 chunk befor time 0
   if((gdata->soundMode & SOUND_REC)) {
     gdata->setDoingActiveAnalysis(true);
     myassert(_recSoundFile->firstTimeThrough == true);
-    //_soundFile->initRecordingChunk();
     _recSoundFile->recordChunk(_recSoundFile->offset());
   }
   

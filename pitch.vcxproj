@@ -246,7 +246,6 @@
     <ClCompile Include="widgets\mainwindow\mainwindow.cpp" />
     <ClCompile Include="general\musicnotes.cpp" />
     <ClCompile Include="general\myalgo.cpp" />
-    <ClCompile Include="general\myglfonts.cpp" />
     <ClCompile Include="general\myio.cpp" />
     <ClCompile Include="widgets\mylabel.cpp" />
     <ClCompile Include="general\mymatrix.cpp" />
@@ -275,13 +274,12 @@
     <ClCompile Include="dialogs\tartinisettingsdialog.cpp" />
     <ClCompile Include="widgets\timeaxis.cpp" />
     <ClCompile Include="widgets\tuner\tunerview.cpp" />
-    <ClCompile Include="widgets\tuner\tunerwidget.cpp" />
+    <ClCompile Include="widgets\vibrato\tunerwidget.cpp" />
     <ClCompile Include="general\useful.cpp" />
     <ClCompile Include="widgets\vibrato\vibratocirclewidget.cpp" />
     <ClCompile Include="widgets\vibrato\vibratoperiodwidget.cpp" />
     <ClCompile Include="widgets\vibrato\vibratospeedwidget.cpp" />
     <ClCompile Include="widgets\vibrato\vibratotimeaxis.cpp" />
-    <ClCompile Include="widgets\vibrato\vibratotunerwidget.cpp" />
     <ClCompile Include="widgets\vibrato\vibratoview.cpp" />
     <ClCompile Include="widgets\vibrato\vibratowidget.cpp" />
     <ClCompile Include="global\view.cpp" />
@@ -372,7 +370,6 @@
     <ClInclude Include="general\myalgo.h" />
     <ClInclude Include="include\myassert.h" />
     <ClInclude Include="general\mygl.h" />
-    <ClInclude Include="general\myglfonts.h" />
     <ClInclude Include="general\myio.h" />
     <ClInclude Include="widgets\mylabel.h" />
     <ClInclude Include="general\mymatrix.h" />
@@ -416,7 +413,7 @@
     </QtMoc>
     <QtMoc Include="widgets\tuner\tunerview.h">
     </QtMoc>
-    <QtMoc Include="widgets\tuner\tunerwidget.h">
+    <QtMoc Include="widgets\vibrato\tunerwidget.h">
     </QtMoc>
     <ClInclude Include="general\useful.h" />
     <QtMoc Include="widgets\vibrato\vibratocirclewidget.h">
@@ -426,8 +423,6 @@
     <QtMoc Include="widgets\vibrato\vibratospeedwidget.h">
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratotimeaxis.h">
-    </QtMoc>
-    <QtMoc Include="widgets\vibrato\vibratotunerwidget.h">
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoview.h">
     </QtMoc>

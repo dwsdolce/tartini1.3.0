@@ -390,13 +390,13 @@ void VibratoSpeedWidget::doUpdate()
         vibratoWidth = 200 * data->vibratoWidth;
       } else if((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
         large_vector<float> pitchLookupUsed = active->pitchLookupSmoothed;
-        int smoothDelay = active->pitchBigSmoothingFilter->delay();
+        int smoothDelay = int(active->pitchBigSmoothingFilter->delay());
 
         int currentTime = active->chunkAtCurrentTime() * active->framesPerChunk() + smoothDelay;
         int maximumTime = 0;
         int minimumTime = 0;
-        int maximaSize = note->maxima->size();
-        int minimaSize = note->minima->size();
+        size_t maximaSize = note->maxima->size();
+        size_t minimaSize = note->minima->size();
 
         // Find the most recent maximum
         for (int i = 1; i < maximaSize; i++) {

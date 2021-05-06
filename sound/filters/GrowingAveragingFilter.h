@@ -22,18 +22,18 @@
   */
 class GrowingAverageFilter : public Filter
 {
-  int _size;
+  size_t _size;
   int _count;
   double total_sum;
   Array1d<float> _x; // the last size input values
 
  public:
   GrowingAverageFilter() { }
-  GrowingAverageFilter(int size);
-  void init(int size);
-  void filter(const float *input, float *output, int n);
+  GrowingAverageFilter(size_t size);
+  void init(size_t size);
+  void filter(const float *input, float *output, size_t n);
   void reset();
-  int delay() { return _size/2; }
+  size_t delay() { return _size/2; }
 };
 
 #endif

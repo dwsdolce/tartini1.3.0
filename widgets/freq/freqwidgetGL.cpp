@@ -86,7 +86,7 @@ FreqWidgetGL::~FreqWidgetGL()
 {
 }
 
-void FreqWidgetGL::drawReferenceLinesGL(double /*leftTime*/, double currentTime, double zoomX, double viewBottom, double zoomY, int /*viewType*/)
+void FreqWidgetGL::drawReferenceLinesGL(double currentTime, double zoomX, double viewBottom, double zoomY, int /*viewType*/)
 {
   // Draw the lines and notes
   QFontMetrics fm = fontMetrics();
@@ -202,7 +202,7 @@ void FreqWidgetGL::paintGL()
     drawChannelFilledGL(gdata->getActiveChannel(), view->viewLeft(), view->currentTime(), view->zoomX(), view->viewBottom(), view->zoomY(), DRAW_VIEW_NORMAL);
 
   glLineWidth(1.0f);
-  drawReferenceLinesGL(view->viewLeft(), view->currentTime(), view->zoomX(), view->viewBottom(), view->zoomY(), DRAW_VIEW_NORMAL);
+  drawReferenceLinesGL(view->currentTime(), view->zoomX(), view->viewBottom(), view->zoomY(), DRAW_VIEW_NORMAL);
 
   glEnable(GL_LINE_SMOOTH);
   //draw all the visible channels
@@ -948,7 +948,7 @@ void FreqWidgetGL::setChannelVerticalView(Channel *ch, double leftTime, double c
     }
   }
   
-  if(!ys.empty() > 0) {
+  if(!ys.empty()) {
     float meanY = totalY / numY;
     double spred = 0.0;
     myassert(ys.size() == weightings.size());

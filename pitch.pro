@@ -154,7 +154,6 @@ HEADERS += main.h \
   dialogs/tartinisettingsdialog.h \
   widgets/vibrato/vibratowidget.h \
   widgets/vibrato/vibratoview.h \
-  widgets/vibrato/vibratotunerwidget.h \
   widgets/vibrato/vibratotimeaxis.h \
   widgets/vibrato/vibratospeedwidget.h \
   widgets/vibrato/vibratoperiodwidget.h \
@@ -246,7 +245,6 @@ SOURCES += main.cpp \
   dialogs/tartinisettingsdialog.cpp \
   widgets/vibrato/vibratowidget.cpp \
   widgets/vibrato/vibratoview.cpp \
-  widgets/vibrato/vibratotunerwidget.cpp \
   widgets/vibrato/vibratotimeaxis.cpp \
   widgets/vibrato/vibratospeedwidget.cpp \
   widgets/vibrato/vibratoperiodwidget.cpp \

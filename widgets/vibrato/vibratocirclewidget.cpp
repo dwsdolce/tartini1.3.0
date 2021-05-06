@@ -97,7 +97,7 @@ void VibratoCircleWidget::resizeGL(int w, int h)
   glEnd();
 
   // The circle
-  const float DEG2RAD = PI / 180;
+  const float DEG2RAD = float(PI / 180);
   glColor3ub(0, 0, 0);
   glBegin(GL_LINE_LOOP);
   for (int i=0; i < 360; i=i+1)
@@ -166,12 +166,12 @@ void VibratoCircleWidget::doUpdate()
       note = &(active->noteData[data->noteIndex]);
 
       // Determine which delay to use
-      int smoothDelay = active->pitchBigSmoothingFilter->delay();
+      size_t smoothDelay = active->pitchBigSmoothingFilter->delay();
       large_vector<float> pitchLookupUsed = active->pitchLookupSmoothed;
 
-      int currentTime = active->chunkAtCurrentTime() * active->framesPerChunk() + smoothDelay;
-      int maximaSize = note->maxima->size();
-      int minimaSize = note->minima->size();
+      int currentTime = int(active->chunkAtCurrentTime() * active->framesPerChunk() + smoothDelay);
+      size_t maximaSize = note->maxima->size();
+      size_t minimaSize = note->minima->size();
 
       // Determine which period to show: the 2 rightmost minima + the maximum in between
       if ((maximaSize >= 1 ) && (minimaSize == 2)) {
@@ -194,7 +194,7 @@ void VibratoCircleWidget::doUpdate()
         if (currentTime > note->minima->at(minimaSize - 1)) {
           leftMinimumTime  = note->minima->at(minimaSize - 2);
           rightMinimumTime = note->minima->at(minimaSize - 1);
-          leftMinimumAt = minimaSize - 2;
+          leftMinimumAt = int(minimaSize - 2);
         }
       }
       // The maximum in between
@@ -226,7 +226,7 @@ void VibratoCircleWidget::doUpdate()
           float prevAvgPitch = (prevMinimumPitch + prevMaximumPitch) * 0.5;
           float prevWidth = prevMaximumPitch - prevMinimumPitch;
 
-          int arraySize = 1 + (((currentChunk+1) * active->framesPerChunk() + smoothDelay - 1) - rightMinimumTime) / stepSize;
+          size_t arraySize = 1 + (((currentChunk+1) * active->framesPerChunk() + smoothDelay - 1) - rightMinimumTime) / stepSize;
 
           GLfloat *vertices;
           vertices = new GLfloat[arraySize * 2];
@@ -237,7 +237,7 @@ void VibratoCircleWidget::doUpdate()
           verticesCounter = 0;
           colorsCounter = 0;
 
-          int end_i = std::min((currentChunk+1) * active->framesPerChunk() + smoothDelay, (int)pitchLookupUsed.size());
+          size_t end_i = std::min((currentChunk+1) * active->framesPerChunk() + smoothDelay, pitchLookupUsed.size());
           for (int i = rightMinimumTime; i < end_i; i += stepSize) {
 
             if (i > (int)pitchLookupUsed.size()) {

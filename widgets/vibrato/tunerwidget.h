@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratotunerwidget.h  -  description
+                          tunerwidget.h  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,17 +12,17 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#ifndef VIBRATOTUNERWIDGET_H
-#define VIBRATOTUNERWIDGET_H
+#ifndef TUNERWIDGET_H
+#define TUNERWIDGET_H
 
 #include <QGLWidget>
 
-class VibratoTunerWidget : public QGLWidget {
+class TunerWidget : public QGLWidget {
   Q_OBJECT
 
   public:
-    VibratoTunerWidget(QWidget *parent);
-    virtual ~VibratoTunerWidget();
+    TunerWidget(QWidget *parent);
+    virtual ~TunerWidget();
 
     void initializeGL();
     void resizeGL(int w, int h);
