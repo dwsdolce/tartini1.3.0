@@ -1,5 +1,7 @@
 /***************************************************************************
-                          amplitudewidget.h  -  description
+                          
+                          
+                          widget.h  -  description
                              -------------------
     begin                : 19 Mar 2005
     copyright            : (C) 2005 by Philip McLeod

@@ -29,8 +29,6 @@
 #include "channel.h"
 #include "musicnotes.h"
 
-int LEDLetterLookup[12] = { 2, 2, 3, 3, 4, 5, 5, 6, 6, 0, 0, 1 };
-
 TunerView::TunerView( int viewID_, QWidget *parent )
  : ViewWidget( viewID_, parent)
 {
@@ -80,7 +78,6 @@ TunerView::TunerView( int viewID_, QWidget *parent )
   leds.push_back(new LEDIndicator(this, "G"));
 
   leds.push_back(new LEDIndicator(this, "#"));
-
 
   // Add the leds for note names into the positions (1, 0) to (1, 6)
   for (int n = 0; n < 7; n++) {

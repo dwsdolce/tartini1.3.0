@@ -13,54 +13,22 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 
-#include "main.h"
+#include "mainwindow.h"
+#include <QApplication>
+#include <QDebug>
+#include <QSurfaceFormat>
 
 #ifdef MACX
 #include <CoreFoundation/CoreFoundation.h>
 QString macxPathString;
 #endif
 
-//#include <qtimer.h>
-//#include <stdio.h>
+
 #include "gdata.h"
 #include "myassert.h"
-//#include "myglfonts.h"
-
-//there is some compiler bug which initilises the colors wrong
-//So we fix them with a cheap hack
-#ifdef MACX
-void fixColours()
-{
-/*
-	Qt::black =       QColor(   0,   0,   0 );   // index 0     black
-  Qt::white =       QColor( 255, 255, 255 );   // index 255   white
-  Qt::darkGray =    QColor( 128, 128, 128 );   // index 248   dark gray
-  Qt::gray =        QColor( 160, 160, 164 );   // index 247   gray
-  Qt::lightGray =   QColor( 192, 192, 192 );   // index 7     light gray
-  Qt::red =         QColor( 255,   0,   0 );   // index 249   red
-  Qt::green =       QColor(   0, 255,   0 );   // index 250   green
-  Qt::blue =        QColor(   0,   0, 255 );   // index 252   blue
-  Qt::cyan =        QColor(   0, 255, 255 );   // index 254   cyan
-  Qt::magenta =     QColor( 255,   0, 255 );   // index 253   magenta
-  Qt::yellow =      QColor( 255, 255,   0 );   // index 251   yellow
-  Qt::darkRed =     QColor( 128,   0,   0 );   // index 1     dark red
-  Qt::darkGreen =   QColor(   0, 128,   0 );   // index 2     dark green
-  Qt::darkBlue =    QColor(   0,   0, 128 );   // index 4     dark blue
-  Qt::darkCyan =    QColor(   0, 128, 128 );   // index 6     dark cyan
-  Qt::darkMagenta = QColor( 128,   0, 128 );   // index 5     dark magenta
-  Qt::darkYellow =  QColor( 128, 128,   0 );   // index 3     dark yellow	
-*/
-}
-#endif
 
 int main( int argc, char **argv )
 {
-
-#ifdef WINDOWS
-	freopen("stdout.txt", "w", stdout);
-	freopen("stderr.txt", "w", stderr);
-#endif
-	
 #ifdef MACX
 	fixColours();
   
@@ -76,8 +44,17 @@ int main( int argc, char **argv )
   QApplication a( argc, argv );
   Q_INIT_RESOURCE(pitch);
 
-  fprintf(stderr, "QT_VERSION_STR=%s\n", QT_VERSION_STR);
-  fprintf(stderr, "QT_VERSION=%x\n", QT_VERSION);
+  qDebug() << "QT_VERSION_STR = " << QT_VERSION_STR;
+  qDebug() << "QT_VERSION = " << QT_VERSION;
+
+  QSurfaceFormat format;
+  format.setDepthBufferSize(24);
+  format.setVersion(3, 3);
+  format.setProfile(QSurfaceFormat::CoreProfile);
+  QSurfaceFormat::setDefaultFormat(format);
+
+  a.setApplicationName("Tartini");
+  a.setApplicationVersion("1.2.1");
 
   //Create one instance only of the global data
   gdata = new GData();

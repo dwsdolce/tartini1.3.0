@@ -61,7 +61,7 @@
 
 // Views
 #include "openfiles.h"
-#include "freqview.h"
+//DWS #include "freqview.h"
 #include "summaryview.h"
 #include "pitchcompassview.h"
 #include "volumemeterview.h"
@@ -72,13 +72,13 @@
 #include "hcircleview.h"
 #include "waveview.h"
 #include "pianoview.h"
-#include "htrackview.h"
+//DWS #include "htrackview.h"
 #include "correlationview.h"
 #include "fftview.h"
 #include "cepstrumview.h"
 #include "debugview.h"
 #include "scoreview.h"
-#include "vibratoview.h"
+//DWS #include "vibratoview.h"
 #include "musicnotes.h"
 
 #include "savedialog.h"
@@ -136,10 +136,10 @@ MainWindow *mainWindow;
 ViewData viewData[NUM_VIEWS] = {
                                /*ViewData(title,               menuName,              className,           menu type);*/
                                  ViewData("File List",         "&File List",          "OpenFiles",         0),
-                                 ViewData("Pitch Contour",     "&Pitch Contour",      "FreqView",          0),
+                                 //DWS ViewData("Pitch Contour",     "&Pitch Contour",      "FreqView",          0),
                                  ViewData("Chromatic Tuner",   "&Chromatic Tuner",    "TunerView",         0),
-                                 ViewData("Harmonic Track",    "3D Harmonic &Track",  "HTrackView",        0),
-                                 ViewData("Vibrato View",      "V&ibrato View",       "VibratoView",       0),
+                                 //DWS ViewData("Harmonic Track",    "3D Harmonic &Track",  "HTrackView",        0),
+                                 //DWS ViewData("Vibrato View",      "V&ibrato View",       "VibratoView",       0),
                                  ViewData("Musical Score",     "&Musical Score",      "ScoreView",         0),
                                  ViewData("Oscilloscope",      "&Oscilloscope",       "WaveView",          1),
                                  ViewData("Correlation View",  "Corre&lation View",   "CorrelationView",   1),
@@ -167,7 +167,6 @@ MainWindow::MainWindow()
   QFont myFont = QFont();
   myFont.setPointSize(9);
   myFont.setStyleStrategy(QFont::PreferAntialias);
-  //mygl_font = new MyGLFont(myFont);
 
 #ifndef WINDOWS
   getitimer(ITIMER_PROF, &profiler_value); //for running multi-threaded profiling
@@ -848,6 +847,8 @@ QWidget *MainWindow::openView(int viewID)
     case VIEW_OPEN_FILES:
       w = new OpenFiles(viewID, parent);
     break;
+#ifdef UNDEFINED
+    DWS
     case VIEW_FREQ:
 	  {
         FreqView *freqView = new FreqView(viewID, parent);
@@ -856,6 +857,7 @@ QWidget *MainWindow::openView(int viewID)
         w = freqView;
 	  }
 	  break;
+#endif
     case VIEW_SUMMARY:
       w = new SummaryView( viewID, parent);
       break;
@@ -886,9 +888,12 @@ QWidget *MainWindow::openView(int viewID)
    case VIEW_PIANO:
       w = new PianoView(viewID, parent);
       break;
+#ifdef UNUSED
+      DWS
    case VIEW_HTRACK:
       w = new HTrackView(viewID, parent);
       break;
+#endif
    case VIEW_CORRELATION:
       w = new CorrelationView(viewID, parent);
       break;
@@ -904,9 +909,12 @@ QWidget *MainWindow::openView(int viewID)
    case VIEW_SCORE:
       w = new ScoreView(viewID, parent);
       break;
+#ifdef UNUSED
+      DWS
    case VIEW_VIBRATO:
       w = new VibratoView(viewID, parent);
       break;
+#endif
 
    //default:
     	//return;
@@ -1214,7 +1222,7 @@ GPLDialog::GPLDialog(QWidget *parent) : QDialog(parent)
   connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
 }
 
-#include "freqdrawwidget.h"
+//DWS #include "freqdrawwidget.h"
 #include "drawwidget.h"
 
 void MainWindow::printPitch()
@@ -1237,7 +1245,7 @@ void MainWindow::printPitch()
     double viewTop = view->viewTop();//gdata->topPitch();
     double zoomX = (rightTime-leftTime) / double(w);
     double zoomY = (viewTop-viewBottom) / double(h);
-    FreqDrawWidget::drawReferenceLines(printer, p, 0.0, zoomX, viewBottom, zoomY, DRAW_VIEW_PRINT);
+   //DWS FreqDrawWidget::drawReferenceLines(printer, p, 0.0, zoomX, viewBottom, zoomY, DRAW_VIEW_PRINT);
 
     double dotsPerLineStepY = 1.0 / zoomY;
     double dotsPerMM = double(printer.height()) / double(printer.heightMM()); /*printer.resolution()*/
@@ -1307,9 +1315,9 @@ bool MainWindow::loadViewGeometry()
   }
   if(counter == 0) {
     openView(VIEW_OPEN_FILES);
-    openView(VIEW_FREQ);
+    //DWS openView(VIEW_FREQ);
     openView(VIEW_TUNER);
-    openView(VIEW_VIBRATO);
+    //DWS openView(VIEW_VIBRATO);
     return false;
   }
   return true;

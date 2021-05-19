@@ -143,8 +143,10 @@ void OpenFiles::tableWidgetChanged(QTableWidgetItem*)
         const QTableWidgetItem* fileItem = filesTable->item(row, 0);
 
         bool state = fileItem->checkState() == Qt::Checked;
-        myassert(row < int(gdata->channels.size()));
-        if (gdata->channels.at(row)->isVisible() != state) gdata->channels.at(row)->setVisible(state);
+        // row can be greater than the channel size during the closing of the app.
+        if (row < int(gdata->channels.size())) {
+            if (gdata->channels.at(row)->isVisible() != state) gdata->channels.at(row)->setVisible(state);
+        }
     }
    gdata->view->doUpdate();
 }
