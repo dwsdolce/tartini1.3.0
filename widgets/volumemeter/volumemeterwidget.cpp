@@ -65,7 +65,7 @@ void VolumeMeterWidget::paintEvent( QPaintEvent * )
   //if(!analysisData) { return; printf("failed currentLookup\n"); }
 
   beginDrawing(false);
-  fillBackground(palette().color(QPalette::WindowText));
+  fillBackground(palette().color(QPalette::Window));
   p.setFont(_font);
   
   // Work out how many labels we can draw

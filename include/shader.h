@@ -10,7 +10,7 @@ public:
 
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
-    Shader(QOpenGLShaderProgram* m_shaderProgram, QString vertexPath, QString fragmentPath)
+    Shader(QOpenGLShaderProgram* m_shaderProgram, QString vertexPath, QString fragmentPath, QString geomPath = NULL)
     {
         // build and compile our shader program
         // ------------------------------------
@@ -26,6 +26,15 @@ public:
             // check for shader compile errors
             qDebug() << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << m_shaderProgram->log();
             throw 1;
+        }
+
+        // geometcric shader
+        if (!geomPath.isNull()) {
+            if (!m_shaderProgram->addShaderFromSourceFile(QOpenGLShader::Geometry, geomPath)) {
+                // check for shader compile errors
+                qDebug() << "ERROR::SHADER::Geometric::COMPILATION_FAILED\n" << m_shaderProgram->log();
+                throw 1;
+            }
         }
 
         // link shaders

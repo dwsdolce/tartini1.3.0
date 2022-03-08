@@ -70,7 +70,7 @@ void TimeAxis::paintEvent(QPaintEvent *)
   int fontSpace = _fontSize+2;
   
   beginDrawing(false);
-  fillBackground(palette().color(QPalette::WindowText));
+  fillBackground(palette().color(QPalette::Window));
 
   double timeStep = timeWidth() / double(w) * 150.0; //time per 150 pixels
   double timeScaleBase = pow10(floor(log10(timeStep))); //round down to the nearest power of 10

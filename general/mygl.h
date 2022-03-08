@@ -1,61 +1,91 @@
 #ifndef MYGL_H
 #define MYGL_H
 
-#include <QGLWidget>
-#include "GL/glu.h"
+#include <QCoreApplication>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 
-struct MyGLfloat2d {
-  GLfloat x, y;
-  MyGLfloat2d(GLfloat _x, GLfloat _y) : x(_x), y(_y) { }
-  void set(GLfloat _x, GLfloat _y) { x=_x; y=_y; }
+class MyGL
+{
+public:
+    static void DrawLine(QOpenGLShaderProgram& program, QOpenGLVertexArrayObject& vao, QOpenGLBuffer& vbo, QOpenGLBuffer& vbo_color, int count, int lineType, float width)
+    {
+        program.bind();
+        program.setUniformValue("width", width);
+
+        vao.bind();
+        vbo.bind();
+        program.enableAttributeArray(0);
+        program.setAttributeBuffer(0, GL_FLOAT, 0, 3);
+        vbo_color.bind();
+        program.enableAttributeArray(1);
+        program.setAttributeBuffer(1, GL_FLOAT, 0, 4);
+
+        glDrawArrays(lineType, 0, count);
+
+        vbo.release();
+        vbo_color.release();
+        vao.release();
+        program.release();
+    }
+    static void DrawLine(QOpenGLShaderProgram& program, QOpenGLVertexArrayObject& vao, QOpenGLBuffer& vbo, int count, int lineType, float width, const QColor& color)
+    {
+        QVector4D colorV = QVector4D(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0, color.alpha() / 255.0);
+
+        program.bind();
+        program.setUniformValue("frag_color", colorV);
+        program.setUniformValue("width", width);
+
+        vao.bind();
+        vbo.bind();
+        program.enableAttributeArray(0);
+        program.setAttributeBuffer(0, GL_FLOAT, 0, 3);
+
+        glDrawArrays(lineType, 0, count);
+
+        vbo.release();
+        vao.release();
+        program.release();
+    }
+
+    static void DrawShape(QOpenGLShaderProgram& program, QOpenGLVertexArrayObject& vao, QOpenGLBuffer& vbo, QOpenGLBuffer& vbo_color, int count, int shapeType)
+    {
+        program.bind();
+
+        vao.bind();
+        vbo.bind();
+        program.enableAttributeArray(0);
+        program.setAttributeBuffer(0, GL_FLOAT, 0, 3);
+        vbo_color.bind();
+        program.enableAttributeArray(1);
+        program.setAttributeBuffer(1, GL_FLOAT, 0, 4);
+
+        glDrawArrays(shapeType, 0, count);
+
+        vbo.release();
+        vbo_color.release();
+        vao.release();
+        program.release();
+    }
+
+    static void DrawShape(QOpenGLShaderProgram& program, QOpenGLVertexArrayObject& vao, QOpenGLBuffer& vbo, int count, int shapeType, const QColor& color)
+    {
+        QVector4D colorV = QVector4D(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0, color.alpha() / 255.0);
+        // qDebug() << "alpha = " << color.alpha();
+        program.bind();
+        program.setUniformValue("frag_color", colorV);
+
+        vao.bind();
+        vbo.bind();
+        program.enableAttributeArray(0);
+        program.setAttributeBuffer(0, GL_FLOAT, 0, 3);
+
+        glDrawArrays(shapeType, 0, count);
+
+        vbo.release();
+        vao.release();
+        program.release();
+    }
 };
-
-inline void mygl_line(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
-{
-  glBegin(GL_LINES);
-  glVertex2f(x1, y1);
-  glVertex2f(x2, y2);
-  glEnd();
-}
-
-inline void mygl_rect(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
-{
-  glBegin(GL_QUADS);
-  glVertex2f(x, y);
-  glVertex2f(x+w, y);
-  glVertex2f(x+w, y+h);
-  glVertex2f(x, y+h);
-  glEnd();
-}
-
-inline void mygl_rect(const MyGLfloat2d &v1, const MyGLfloat2d &v2)
-{
-  glBegin(GL_QUADS);
-  glVertex2f(v1.x, v1.y);
-  glVertex2f(v2.x, v1.y);
-  glVertex2f(v2.x, v2.y);
-  glVertex2f(v1.x, v2.y);
-  glEnd();
-}
-
-inline void mygl_resize2d(int w, int h)
-{
-  glViewport(0, 0, (GLint)w, (GLint)h);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluOrtho2D(0, w, h, 0);
-}
-
-inline GLushort my_wrap_left(GLushort x, int offset)
-{
-  offset %= 16;
-  return (x << offset) + (x >> (16-offset));
-}
-
-inline GLushort my_wrap_right(GLushort x, int offset)
-{
-  offset %= 16;
-  return (x >> offset) + (x << (16-offset));
-}
-
 #endif

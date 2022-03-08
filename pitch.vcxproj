@@ -227,7 +227,6 @@
     <ClCompile Include="general\fast_smooth.cpp" />
     <ClCompile Include="widgets\fft\fftview.cpp" />
     <ClCompile Include="widgets\fft\fftwidget.cpp" />
-    <ClCompile Include="widgets\freq\freqdrawwidget.cpp" />
     <ClCompile Include="widgets\freq\freqview.cpp" />
     <ClCompile Include="widgets\freq\freqwidgetGL.cpp" />
     <ClCompile Include="global\gdata.cpp" />
@@ -246,6 +245,7 @@
     <ClCompile Include="widgets\mainwindow\mainwindow.cpp" />
     <ClCompile Include="general\musicnotes.cpp" />
     <ClCompile Include="general\myalgo.cpp" />
+    <ClCompile Include="general\myglfonts.cpp" />
     <ClCompile Include="general\myio.cpp" />
     <ClCompile Include="widgets\mylabel.cpp" />
     <ClCompile Include="general\mymatrix.cpp" />
@@ -274,7 +274,7 @@
     <ClCompile Include="dialogs\tartinisettingsdialog.cpp" />
     <ClCompile Include="widgets\timeaxis.cpp" />
     <ClCompile Include="widgets\tuner\tunerview.cpp" />
-    <ClCompile Include="widgets\vibrato\tunerwidget.cpp" />
+    <ClCompile Include="widgets\tuner\tunerwidget.cpp" />
     <ClCompile Include="general\useful.cpp" />
     <ClCompile Include="widgets\vibrato\vibratocirclewidget.cpp" />
     <ClCompile Include="widgets\vibrato\vibratoperiodwidget.cpp" />
@@ -331,8 +331,6 @@
     </QtMoc>
     <QtMoc Include="widgets\fft\fftwidget.h">
     </QtMoc>
-    <QtMoc Include="widgets\freq\freqdrawwidget.h">
-    </QtMoc>
     <ClInclude Include="include\freqpair.h" />
     <QtMoc Include="widgets\freq\freqview.h">
     </QtMoc>
@@ -370,6 +368,7 @@
     <ClInclude Include="general\myalgo.h" />
     <ClInclude Include="include\myassert.h" />
     <ClInclude Include="general\mygl.h" />
+    <ClInclude Include="general\myglfonts.h" />
     <ClInclude Include="general\myio.h" />
     <ClInclude Include="widgets\mylabel.h" />
     <ClInclude Include="general\mymatrix.h" />
@@ -413,7 +412,7 @@
     </QtMoc>
     <QtMoc Include="widgets\tuner\tunerview.h">
     </QtMoc>
-    <QtMoc Include="widgets\vibrato\tunerwidget.h">
+    <QtMoc Include="widgets\tuner\tunerwidget.h">
     </QtMoc>
     <ClInclude Include="general\useful.h" />
     <QtMoc Include="widgets\vibrato\vibratocirclewidget.h">
@@ -467,8 +466,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE.txt" />
+    <None Include="color.fs.glsl" />
+    <None Include="color.vs.glsl" />
+    <None Include="line.fs.glsl" />
+    <None Include="line.gs.glsl" />
+    <None Include="line.vs.glsl" />
     <QtRcc Include="pitch.qrc">
     </QtRcc>
+    <None Include="shader.fs.glsl" />
+    <None Include="shader.gs.glsl" />
+    <None Include="shader.vs.glsl" />
     <None Include="pics\tartinilogo.png" />
   </ItemGroup>
   <ItemGroup>

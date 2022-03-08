@@ -87,7 +87,6 @@ HEADERS += main.h \
   widgets/myscrollbar.h \
   widgets/mainwindow/mainwindow.h \
   widgets/openfiles/openfiles.h \
-  widgets/freq/freqdrawwidget.h \
   widgets/freq/freqwidgetGL.h \
   widgets/freq/freqview.h \
   widgets/pitchcompass/pitchcompassview.h \
@@ -188,7 +187,6 @@ SOURCES += main.cpp \
   widgets/viewwidget.cpp \
   widgets/mainwindow/mainwindow.cpp \
   widgets/openfiles/openfiles.cpp \
-  widgets/freq/freqdrawwidget.cpp \
   widgets/freq/freqwidgetGL.cpp \
   widgets/freq/freqview.cpp \
   widgets/pitchcompass/pitchcompassview.cpp \

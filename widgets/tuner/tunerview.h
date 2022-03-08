@@ -36,18 +36,28 @@ class TunerView : public ViewWidget {
     TunerView(int viewID_, QWidget *parent = 0);
     virtual ~TunerView();
 
+    void resizeEvent(QResizeEvent *);
+    void paintEvent( QPaintEvent* );
+
     QSize sizeHint() const { return QSize(200, 200); }
 
   public slots:
+    void slotCurrentTimeChanged(double time);
     void setLed(int index, bool value);
     void doUpdate();
 
   private:
     void resetLeds();
+    //float averageNote(Channel *ch, int begin, int end);
+	  //float averageIntensity(Channel *ch, int begin, int end);
     
-    TunerWidget *tunerWidget;
+    //TunerWidget *tunerWidget;
+    TunerWidget*tunerWidget;
     std::vector<LEDIndicator*> leds;
     QwtSlider *slider;
+
+    QPixmap *ledBuffer;
+
 };
 
 

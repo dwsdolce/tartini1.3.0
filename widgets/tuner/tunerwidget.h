@@ -1,7 +1,7 @@
 /***************************************************************************
                           tunerwidget.h  -  description
                              -------------------
-    begin                : May 18 2005
+    begin                : Mon Jan 10 2005
     copyright            : (C) 2005 by Philip McLeod
     email                : pmcleod@cs.otago.ac.nz
  
@@ -15,71 +15,34 @@
 #ifndef TUNERWIDGET_H
 #define TUNERWIDGET_H
 
-#include <QOpenGLWidget>
-#include <QOpenGLFunctions>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
+#include "drawwidget.h"
+#include <QPixmap>
+#include <QPaintEvent>
 
-class TunerWidget : public QOpenGLWidget, protected QOpenGLFunctions {
+// Forward declarations of classes the h file doesn't need to know specifics about
+class QPixmap;
+
+class TunerWidget : public DrawWidget {
   Q_OBJECT
 
   public:
-    using QOpenGLWidget::QOpenGLWidget;
-    TunerWidget(QWidget *parent);
+    TunerWidget(QWidget* parent);
     virtual ~TunerWidget();
 
-    void initializeGL() override;
-    void resizeGL(int w, int h) override;
-    void paintGL() override;
+    void paintEvent( QPaintEvent * );
 
     QSize minimumSizeHint() const { return QSize(100, 75); }
 
   private:
-    //data goes here
-    float needleValueToDraw;
-    float prevNeedleValue;
-    int prevClosePitch;
-    bool prevIsPitchBlackNote;
-    double curPitch;
-
-    QFont tunerFont;
-
-    float centsLabelX, centsLabelY;
-
-    int tunerLabelCounter;
-    struct tunerLabelStruct {
-      QString label;
-      float x;
-      float y;
-    };
-    tunerLabelStruct tunerLabels[100];
+    float value_;
 
     void resetLeds();
-
-    QOpenGLShaderProgram m_program;
-
-    // Model to world transform to move from pixels to -1.0 to 1.0
-    QMatrix4x4 m_model;
-
-    // Different parts of the dial.
-    const int VBO_DIAL = 0;
-    const int VBO_ARC = 1;
-    const int VBO_MARKERS = 2;
-    QOpenGLBuffer m_vbo_dial[3];
-    QOpenGLBuffer m_vbo_needle;
-    int m_vbo_dial_count[3];
-    int m_vbo_needle_count;
-    QVector<QVector3D> m_needleVectors;
-    QOpenGLVertexArrayObject m_vao_dial[3];
-    QOpenGLVertexArrayObject m_vao_needle;
 
   signals:
     void ledSet(int index, bool value);
 
   public slots:
     void doUpdate(double thePitch);
-
 };
 
 

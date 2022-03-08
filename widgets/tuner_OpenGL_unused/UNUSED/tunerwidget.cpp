@@ -97,8 +97,8 @@ void TunerWidget::resizeGL(int w, int h)
   float upperArcTheta = -theta;
   float upperArcThetaStep = (2 * theta) / width();
   for (int x = 0; x < width(); x++) {
-    upperArcX[x] = x;
-    upperArcY[x] = centerY + (sin(0.5*PI - upperArcTheta) * radius);
+    upperArcX[x] = (float)x;
+    upperArcY[x] = (float)(centerY + (sin(0.5*PI - upperArcTheta) * radius));
     upperArcTheta += upperArcThetaStep;
   }
 

@@ -15,9 +15,9 @@
 #ifndef VIBRATOPERIODWIDGET_H
 #define VIBRATOPERIODWIDGET_H
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 
-class VibratoPeriodWidget : public QGLWidget {
+class VibratoPeriodWidget : public QOpenGLWidget {
   Q_OBJECT
 
   public:

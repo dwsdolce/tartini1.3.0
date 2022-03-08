@@ -1,0 +1,40 @@
+amplitudewidget
+freqview
+htrackview
+DONE: tunerview
+vibratoview
+
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\freq\amplitudewidget.cpp
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\freq\amplitudewidget.h
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\freq\freqdrawwidget.cpp - UNUSED
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\freq\freqdrawwidget.h - UNUSED
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\freq\freqview.cpp
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\freq\freqview.h
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\freq\freqwidgetGL.cpp
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\freq\freqwidgetGL.h
+
+D:\Users\dws\src\Tartini\tartini1.2.0\widgets\htrack\htrackview.cpp
+D:\Users\dws\src\Tartini\tartini1.2.0\widgets\htrack\htrackview.h
+D:\Users\dws\src\Tartini\tartini1.2.0\widgets\htrack\htrackwidget.cpp
+D:\Users\dws\src\Tartini\tartini1.2.0\widgets\htrack\htrackwidget.h
+D:\Users\dws\src\Tartini\tartini1.2.0\widgets\htrack\piano3d.cpp
+D:\Users\dws\src\Tartini\tartini1.2.0\widgets\htrack\piano3d.h
+
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\tuner\tunerview.cpp
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\tuner\tunerview.h
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\tuner\tunerwidget.cpp
+DONE: D:\Users\dws\src\Tartini\tartini1.2.0\widgets\tuner\tunerwidget.h
+
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratocirclewidget.cpp
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratocirclewidget.h
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratoperiodwidget.cpp
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratoperiodwidget.h
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratospeedwidget.cpp
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratospeedwidget.h
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratotimeaxis.cpp
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratotimeaxis.h
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratoview.cpp
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratoview.h
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratowidget.cpp
+=D:\Users\dws\src\Tartini\tartini1.2.0\widgets\vibrato\vibratowidget.h
+

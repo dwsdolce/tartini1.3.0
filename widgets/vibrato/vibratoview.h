@@ -18,10 +18,12 @@
 #include "viewwidget.h"
 
 class VibratoSpeedWidget;
+#ifdef DWS
 class VibratoPeriodWidget;
 class VibratoCircleWidget;
 class VibratoTimeAxis;
 class VibratoWidget;
+#endif
 class LEDIndicator;
 
 class VibratoView : public ViewWidget {
@@ -37,10 +39,12 @@ class VibratoView : public ViewWidget {
 
   private:
     VibratoSpeedWidget *vibratoSpeedWidget;
+#ifdef DWS
     VibratoPeriodWidget *vibratoPeriodWidget;
     VibratoCircleWidget *vibratoCircleWidget;
     VibratoTimeAxis *vibratoTimeAxis;
     VibratoWidget *vibratoWidget;
+#endif
 };
 
 

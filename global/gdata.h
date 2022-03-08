@@ -104,9 +104,6 @@ public:
   std::vector<Filter*> filter_hp; //highpass filter
   std::vector<Filter*> filter_lp; //lowpass filter
 
-  //bool equalLoudness;
-  //bool useMasking;
-  //bool useRidgeFile; //output a file with ridges found
   double cur_note;
   float peakThreshold;
   float correlationThreshold;
@@ -118,22 +115,11 @@ public:
   QMutex frameCounterMutex;
   int frameCounter;
 
-  //char *inputFile;
-
-  //int in_channels;
-  //int process_channels;
-  //int out_channels;
-  //int pitch_method[2]; //a pitch method for each channel
   int interpolating_type;
   int bisection_steps;
   int fast_correlation_repeats;
   int running;
   bool using_coefficients_table;
-  //chirp_xform fct;QColor myLineColor1(32, 32, 32);
-
-  //float *fct_in_data;
-  //float *fct_out_data;
-  //FrameRGB *fct_draw_data;
 
   std::vector<SoundFile*> soundFiles;
   std::vector<Channel*> channels;
@@ -162,16 +148,12 @@ private:
   bool _showMeanVarianceBars;
   int _savingMode;
   bool _vibratoSineStyle;
-  //int _musicKey;
   int _musicKeyType;
   int _temperedType;
   bool _mouseWheelZooms;
   double _freqA;
   double _semitoneOffset;
 
-  //double _noiseThreshold;
-  //double _noiseThresholdDB;
-  //double _changenessThreshold;
   int _amplitudeMode;
   int _pitchContourMode;
   int _analysisType;
@@ -221,20 +203,13 @@ public:
   int       slowUpdateSpeed() { return _slowUpdateSpeed; }
   bool      mouseWheelZooms() { return _mouseWheelZooms; }
 
-  //double  noiseThreshold() { return _noiseThreshold; }
-  //double  noiseThresholdDB() { return _noiseThresholdDB; }
-  //double  changenessThreshold() { return _changenessThreshold; }
-  //void    setNoiseThresholdDB(double noiseThresholdDB_);
-  //void    setChangenessThreshold(double changenessThreshold_);
   void      setAmpThreshold(int mode, int index, double value);
   double    ampThreshold(int mode, int index);
   void      setAmpWeight(int mode, double value);
   double    ampWeight(int mode);
   int       analysisType() { return _analysisType; }
   bool      polish() { return _polish; }
-  //void    setPolish(bool polish_) { _polish = polish_; }
   bool      showMeanVarianceBars() { return _showMeanVarianceBars; }
-  //void    setShowMeanVarianceBars(bool showMeanVarianceBars_) { _showMeanVarianceBars = showMeanVarianceBars_; }
   int       savingMode() { return _savingMode; }
 
   QColor    backgroundColor() { return _backgroundColor; }
@@ -272,10 +247,6 @@ signals:
   void      temperedTypeChanged(int type);
 
 public slots:
-  //void    setBuffers(int freq, int channels);
-  //void    setFrameWindowSize(int index);
-  //void    setWinFunc(int index);
-  //void    setPitchMethod(int channel, int index) { pitch_method[channel] = index; }
   void      setInterpolatingType(int type) { interpolating_type = type; }
   void      setBisectionSteps(int num_steps) { bisection_steps = num_steps; }
   void      setFastRepeats(int num_repeats) { fast_correlation_repeats = num_repeats; }

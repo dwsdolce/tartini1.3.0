@@ -129,9 +129,6 @@
     <ClCompile Include="widgets\fft\fftwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="widgets\freq\freqdrawwidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="widgets\freq\freqview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -184,6 +181,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="general\myalgo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="general\myglfonts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="general\myio.cpp">
@@ -270,6 +270,9 @@
     <ClCompile Include="widgets\tuner\tunerview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="widgets\tuner\tunerwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="general\useful.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -283,9 +286,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="widgets\vibrato\vibratotimeaxis.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="widgets\vibrato\tunerwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="widgets\vibrato\vibratoview.cpp">
@@ -407,9 +407,6 @@
     <QtMoc Include="widgets\fft\fftwidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="widgets\freq\freqdrawwidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <ClInclude Include="include\freqpair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -474,6 +471,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="general\mygl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="general\myglfonts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="general\myio.h">
@@ -569,6 +569,9 @@
     <QtMoc Include="widgets\tuner\tunerview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="widgets\tuner\tunerwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <ClInclude Include="general\useful.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -582,9 +585,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratotimeaxis.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="widgets\vibrato\tunerwidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoview.h">
@@ -619,12 +619,115 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="dialogs\settingsdialog.ui">
@@ -635,15 +738,36 @@
     <None Include="LICENSE.txt">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="color.fs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="color.vs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="line.fs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="line.gs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="line.vs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
     <QtRcc Include="pitch.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <None Include="shader.fs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shader.gs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shader.vs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="pics\tartinilogo.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="LICENSE.txt" />
-    <None Include="LICENSE.txt" />
-    <None Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="INSTALL.txt">
@@ -741,6 +865,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include=".\tartini_resource.rc" />
+    <ResourceCompile Include="D:\Users\dws\src\Tartini\tartini1.2.0\tartini_resource.rc" />
   </ItemGroup>
 </Project>

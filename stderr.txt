@@ -1,21 +1,2 @@
 QT_VERSION_STR=5.15.2
 QT_VERSION=50f02
-Opening file: D:\Users\dws\src\Tartini\example.wav
-(FilteredFilename: D:/Users/dws/src/Tartini/Release/temp026.wav)
-File: channels=1, freq=44100, bits=16
-channels = 1
-channel size = 2048
-----------Opening------------
-filename = D:\Users\dws\src\Tartini\example.wav
-rate = 44100
-channels = 1
-bits = 16
-windowSize = 2048
-stepSize = 1024
------------------------------
-File: channels=1, freq=44100, bits=16
-Input Device 0: Default
-Output Device 0: Default
-Audio thread created for
-Playing file D:\Users\dws\src\Tartini\example.wav
-Has pending events = Yes

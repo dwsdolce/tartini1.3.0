@@ -4,7 +4,13 @@
         <file>LICENSE.txt</file>
     </qresource>
     <qresource prefix="/">
+        <file>line.vs.glsl</file>
+        <file>line.fs.glsl</file>
+        <file>line.gs.glsl</file>
+        <file>color.fs.glsl</file>
+        <file>color.vs.glsl</file>
         <file>shader.fs.glsl</file>
         <file>shader.vs.glsl</file>
+        <file>shader.gs.glsl</file>
     </qresource>
 </RCC>
