@@ -15,9 +15,9 @@
 #ifndef VIBRATOCIRCLEWIDGET_H
 #define VIBRATOCIRCLEWIDGET_H
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 
-class VibratoCircleWidget : public QGLWidget {
+class VibratoCircleWidget : public QOpenGLWidget {
   Q_OBJECT
 
   public:

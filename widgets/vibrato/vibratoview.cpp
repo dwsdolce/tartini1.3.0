@@ -28,8 +28,8 @@
 #include "vibratoview.h"
 
 #include "vibratospeedwidget.h"
-#ifdef DWS
 #include "vibratocirclewidget.h"
+#ifdef DWS
 #include "vibratoperiodwidget.h"
 #include "vibratotimeaxis.h"
 #include "vibratowidget.h"
@@ -109,12 +109,10 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   QFrame *circleFrame = new QFrame;
   circleFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout *circleFrameLayout = new QVBoxLayout;
-#ifdef DWS
   vibratoCircleWidget = new VibratoCircleWidget(0);
   vibratoCircleWidget->setWhatsThis("Each cycle of your vibrato is represented by a 2D shape. A current cycle produces a circle if it has a perfect sine wave shape. "
     "Going outside the line indicates your phase is ahead of a sine-wave, and inside the line slower. Note: The shape of one cycle is blended into the next.");
   circleFrameLayout->addWidget(vibratoCircleWidget);
-#endif
   circleFrameLayout->setMargin(0);
   circleFrameLayout->setSpacing(0);
   circleFrame->setLayout(circleFrameLayout);
@@ -322,9 +320,8 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   // Make signal/slot connections
 
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoSpeedWidget, SLOT(doUpdate()));
-#ifdef DWS
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoCircleWidget, SLOT(doUpdate()));
-
+#ifdef DWS
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoPeriodWidget, SLOT(doUpdate()));
 
   connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoTimeAxis, SLOT(update()));

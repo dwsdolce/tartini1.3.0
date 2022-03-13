@@ -34,7 +34,10 @@ class TunerWidget : public DrawWidget {
     QSize minimumSizeHint() const { return QSize(100, 75); }
 
   private:
-    float value_;
+    float needleValueToDraw;
+    float prevNeedleValue;
+    int prevClosePitch;
+    double curPitch;
 
     void resetLeds();
 

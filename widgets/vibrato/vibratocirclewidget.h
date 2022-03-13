@@ -15,18 +15,24 @@
 #ifndef VIBRATOCIRCLEWIDGET_H
 #define VIBRATOCIRCLEWIDGET_H
 
-#include <QOpenGLWidget>
+#include "drawwidget.h"
+#include <QPixmap>
+#include <QPaintEvent>
 
-class VibratoCircleWidget : public QOpenGLWidget {
+class VibratoCircleWidget : public DrawWidget {
   Q_OBJECT
 
   public:
     VibratoCircleWidget(QWidget *parent);
     virtual ~VibratoCircleWidget();
 
+#ifdef DWS
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
+#endif
+    void paintEvent(QPaintEvent* event);
+    void resizeEvent(QResizeEvent* event);
 
     QSize minimumSizeHint() const { return QSize(100, 75); }
     int getType() { return type; }
@@ -35,10 +41,12 @@ class VibratoCircleWidget : public QOpenGLWidget {
     float accuracy;
     int type;
     int lastPeriodToDraw;
+    bool doPaint;
 
-    GLuint referenceCircle;
-    GLuint currentPeriod;
-    GLuint prevPeriods[6];
+    QPolygonF patternVertices;
+    QColor patternColor;
+    std::vector<QPolygonF> prevPeriods;
+    std::vector<QColor> patternColorVector;
 
   public slots:
     void doUpdate();

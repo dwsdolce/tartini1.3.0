@@ -15,33 +15,32 @@
 #ifndef VIBRATOSPEEDWIDGET_H
 #define VIBRATOSPEEDWIDGET_H
 
-#include <QOpenGLWidget>
+#include "drawwidget.h"
+#include <QPixmap>
+#include <QPaintEvent>
 
-class VibratoSpeedWidget : public QOpenGLWidget {
+class VibratoSpeedWidget : public DrawWidget {
   Q_OBJECT
 
   public:
     VibratoSpeedWidget(QWidget *parent);
     virtual ~VibratoSpeedWidget();
 
-    void initializeGL();
-    void resizeGL(int w, int h);
-    void paintGL();
+    void resizeEvent(QResizeEvent* event);
+    void paintEvent(QPaintEvent*);
 
     QSize minimumSizeHint() const { return QSize(100, 75); }
 
   private:
     //data goes here
-    float speedValueToDraw, widthValueToDraw;
-    float prevVibratoSpeed, prevVibratoWidth;
+    double speedValueToDraw, widthValueToDraw;
+    double prevVibratoSpeed, prevVibratoWidth;
 
     QFont speedWidthFont;
 
     int widthLimit;
+    int currentNoteNumber;
     int prevNoteNumber;
-
-    float hzLabelX, hzLabelY;
-    float centsLabelX, centsLabelY;
 
     struct labelStruct {
       QString label;
@@ -54,11 +53,6 @@ class VibratoSpeedWidget : public QOpenGLWidget {
 
     int widthLabelCounter;
     labelStruct widthLabels[100];
-
-    GLuint speedDial;
-    GLuint speedNeedle;
-    GLuint widthDial;
-    GLuint widthNeedle;
 
   public slots:
     void doUpdate();

@@ -20,7 +20,7 @@
 #include "analysisdata.h"
 
 VibratoCircleWidget::VibratoCircleWidget(QWidget *parent)
-  : QGLWidget(parent)
+  : QOpenGLWidget(parent)
 {
   accuracy = 1.0;
   type = 5;
@@ -72,9 +72,7 @@ void VibratoCircleWidget::resizeGL(int w, int h)
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluOrtho2D(0, w, 0, h);
-  //glMatrixMode(GL_MODELVIEW);
-
+  // DWS gluOrtho2D(0, w, 0, h);
 
   // Calculate reference circle + lines
   glNewList(referenceCircle, GL_COMPILE);
@@ -122,7 +120,6 @@ void VibratoCircleWidget::paintGL()
 
   // Draw the reference circle
   glLineWidth(1.5);
-  //glColor3ub(0, 0, 255);
   glCallList(referenceCircle);
 
   if ((type == 1) || (type == 2) || (type == 4) || (type == 5)) {
@@ -559,7 +556,7 @@ void VibratoCircleWidget::doUpdate()
       }
     }
   }
-  updateGL();
+  update();
 }
 
 void VibratoCircleWidget::setAccuracy(int value)

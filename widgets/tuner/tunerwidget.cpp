@@ -4,16 +4,16 @@
     begin                : Mon Jan 10 2005
     copyright            : (C) 2005 by Philip McLeod
     email                : pmcleod@cs.otago.ac.nz
- 
+
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
    (at your option) any later version.
-   
+
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#include <qpixmap.h>
-#include <qpainter.h>
+#include <QPixmap>
+#include <QPainter>
 #include <QPolygon>
 #include <QPaintEvent>
 #include <QDebug>
@@ -25,23 +25,24 @@
 #include "musicnotes.h"
 #include "useful.h"
 
-TunerWidget::TunerWidget(QWidget *parent)
+TunerWidget::TunerWidget(QWidget* parent)
   : DrawWidget(parent)
 {
-  value_ = 0;
+  curPitch = 0;
+  p.setRenderHint(QPainter::Antialiasing, true);
+  p.setRenderHint(QPainter::TextAntialiasing, true);
 }
 
 TunerWidget::~TunerWidget()
-{
-}
+{}
 
-void TunerWidget::paintEvent( QPaintEvent * )
+void TunerWidget::paintEvent(QPaintEvent*)
 {
   beginDrawing();
 
   /*
-    The tuner is basically just a sector. It has a radius of 1.2 * height() or 
-	1.2 * width() when appropriate, and we draw the largest sector we can fit on screen.
+    The tuner is basically just a sector. It has a radius of 1.2 * height() or
+  1.2 * width() when appropriate, and we draw the largest sector we can fit on screen.
 
     To calculate this sector, we have to work out the starting angle, and work out how
     much we should draw. From basic trig, we can calculate the starting angle:
@@ -73,109 +74,120 @@ void TunerWidget::paintEvent( QPaintEvent * )
   p.setPen(pen);  // Border
 
   double halfWidth = double(width()) / 2.0;
-  double radius = 1.8 * MAX(height()/2, halfWidth);
-  QPoint center(toInt(halfWidth), toInt(radius));
+  double radius = 1.8 * MAX(height() / 2, halfWidth);
+  QPointF center(halfWidth, radius);
   double theta = asin(double(width()) / (2 * radius));
-  double thetaDeg = theta *180.0 / PI;
+  double thetaDeg = theta * 180.0 / PI;
   double rho = (PI / 2.0) - theta;
 
   {// Draw the semicircle
     p.setBrush(Qt::white);  // Fill colour
-    p.drawPie(toInt(halfWidth - radius), 0, toInt(2.0 * radius), toInt(2.0 * radius), toInt((90 - thetaDeg) * 16), toInt(2*thetaDeg*16));
-    p.drawArc(toInt(halfWidth - (radius/2.0)), toInt(radius/2.0), toInt(radius), toInt(radius), toInt((90 - thetaDeg) * 16), toInt(2*thetaDeg*16));
+    // Draw Outer pie shape including the outline
+    p.drawPie(QRectF(halfWidth - radius, 0, 2.0 * radius, 2.0 * radius), toInt((90 - thetaDeg) * 16), toInt(2 * thetaDeg * 16));
+    // Draw a dividing arc within the pie.
+    p.drawArc(QRectF(halfWidth - (radius / 2.0), radius / 2.0, radius, radius), toInt((90 - thetaDeg) * 16), toInt(2 * thetaDeg * 16));
   }
- 
+
   p.setPen(palette().color(QPalette::Foreground));
   p.setBrush(palette().color(QPalette::Foreground));
-  
-   
+
   double step = (2 * theta) / 12.0;
   double stop = rho + (2 * theta) - (step / 2);
   {// Draw line markings
     for (double i = rho + step; i < stop; i += step) {
-      int x = toInt(halfWidth + radius * cos(i));
-      int y = toInt(radius - radius * sin(i));
-      QPoint start(x, y);
+      qreal x = halfWidth + radius * cos(i);
+      qreal y = radius - radius * sin(i);
+      QPointF start(x, y);
       double t = 0.05; //0.025;
       p.drawLine(start, start + t * (center - start));
     }
   }
-  
+
   {//Draw the text labels
     p.setPen(palette().color(QPalette::Foreground));
 
-    const char *theNames[11] = { "+50", "+40", "+30", "+20", "+10", "0", "-10", "-20", "-30", "-40", "-50" };
+    const char* theNames[11] = { "+50", "+40", "+30", "+20", "+10", "0", "-10", "-20", "-30", "-40", "-50" };
     QFontMetrics fm = p.fontMetrics();
     int halfFontHeight = fm.height() / 2;
     int halfFontWidth;
-    
-    for (int j=0; j<11;) {
-      double i = rho + step*(j+1);
-      int x = toInt(halfWidth + radius * cos(i));
-      int y = toInt(radius - radius * sin(i));
-      QPoint start(x, y);
+
+    for (int j = 0; j < 11;) {
+      double i = rho + step * (j + 1);
+      qreal x = halfWidth + radius * cos(i);
+      qreal y = radius - radius * sin(i);
+      QPointF start(x, y);
       double t = 0.08; //0.025;
-      QPoint pt = start + t * (center - start);
+      QPointF pt = start + t * (center - start);
       halfFontWidth = fm.width(theNames[j]) / 2;
-      
+
       p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, theNames[j]);
-      if(radius < 300) j+=2; else j++;
+      if (radius < 300) j += 2; else j++;
     }
     halfFontWidth = fm.width("Cents") / 2;
-    p.drawText(center.x() - halfFontWidth, toInt(center.y() * 0.2) + halfFontHeight, "Cents");
+    p.drawText(center.x() - halfFontWidth, center.y() * 0.2 + halfFontHeight, "Cents");
   }
-    
+
   { //draw needle
-	int closePitch = toInt(value_);
-	double needleValue = 100 * (value_ - float(closePitch));
+    qreal closePitch = toInt(curPitch);
+    double needleValue = 100 * (curPitch - float(closePitch));
 
-    double centAngle = (2*theta) / 120;
-    double note = rho + (fabs(needleValue - 60) * centAngle);
+    resetLeds();
+    if (closePitch == 0) {
+        // No pitch, don't draw the needle this update
+      prevNeedleValue = -999;
+      prevClosePitch = 0;
+      needleValueToDraw = -999;
 
-	resetLeds();
-	if (closePitch != 0) {
-		int VTLEDLetterLookup[12] = { 2, 2, 3, 3, 4, 5, 5, 6, 6, 0, 0, 1 };
-		emit(ledSet(VTLEDLetterLookup[noteValue(closePitch)], true));
-		if (isBlackNote(closePitch)) {
-			emit(ledSet(7, true));
-		}
+      resetLeds();
+    } else {
+      int VTLEDLetterLookup[12] = { 2, 2, 3, 3, 4, 5, 5, 6, 6, 0, 0, 1 };
+      emit(ledSet(VTLEDLetterLookup[noteValue(closePitch)], true));
+      if (isBlackNote(closePitch)) {
+        emit(ledSet(7, true));
+      }
 
-		if ((needleValue > -60.0) && (needleValue < 60.0)) {
-			p.setPen(Qt::darkRed);
+      prevNeedleValue = needleValue;
+      prevClosePitch = closePitch;
+      needleValueToDraw = needleValue;
 
-			int halfKnobWidth = MAX(toInt(radius * 0.02), 1);
+      if ((needleValueToDraw > -60.0) && (needleValueToDraw < 60.0)) {
 
-			QPoint noteX(toInt(halfWidth + radius * cos(note)),
-				toInt(radius - radius * sin(note)));
+        double centAngle = (2 * theta) / 120;
+        double note = rho + (fabs(needleValueToDraw - 60) * centAngle);
+        qreal halfKnobWidth = MAX(radius * 0.02, 1);
 
-			QPoint knobNote(toInt(halfWidth + halfKnobWidth * cos(note)),
-				toInt(height() - halfKnobWidth * sin(note)));
+        p.setPen(Qt::darkRed);
+        QPointF noteX(halfWidth + radius * cos(note), radius - radius * sin(note));
+        QPointF knobNote(halfWidth + halfKnobWidth * cos(note), height() - halfKnobWidth * sin(note));
+        QPointF knobLeft = center - QPointF(halfKnobWidth, 0);
+        QPointF knobRight = center + QPointF(halfKnobWidth, 0);
 
-			QPoint knobLeft = center - QPoint(halfKnobWidth, 0);
-			QPoint knobRight = center + QPoint(halfKnobWidth, 0);
-			//QPoint knobRight(width() / 2 + halfKnobWidth, radius);
-
-			p.setBrush(Qt::red);
-			QPolygon points(3);
-			points.setPoint(0, noteX);
-			points.setPoint(1, knobRight);
-			points.setPoint(2, knobLeft);
-			p.drawPolygon(points);
-		}
-	}
+        p.setBrush(Qt::red);
+        QPolygonF points;
+        points << noteX << knobRight<< knobLeft;
+        p.drawPolygon(points);
+      }
+    }
   }
   endDrawing();
 }
 
 void TunerWidget::doUpdate(double thePitch)
 {
-		value_ = thePitch;
-		update();
+  curPitch = thePitch;
+  qreal closePitch = thePitch;
+  double needleValue = 100 * (thePitch - float(closePitch));
+
+  if ((fabs(prevNeedleValue - needleValue) < 0.05) && (prevClosePitch == closePitch)) {
+    // Pitch hasn't changed (much), no update needed
+    return;
+  }
+  update();
 }
 
 void TunerWidget::resetLeds()
 {
-	for (int i = 0; i < 8; i++) {
-		emit(ledSet(i, false));
-	}
+  for (int i = 0; i < 8; i++) {
+    emit(ledSet(i, false));
+  }
 }
