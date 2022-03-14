@@ -24,7 +24,7 @@
 #include "musicnotes.h"
 
 VibratoWidget::VibratoWidget(QWidget *parent, int nls)
-  : QGLWidget(parent)
+  : QOpenGLWidget(parent)
 {
   noteLabelOffset = nls; // The horizontal space in pixels a note label requires
   zoomFactorX = 2.0;
@@ -60,8 +60,9 @@ VibratoWidget::~VibratoWidget()
 
 void VibratoWidget::initializeGL()
 {
-  qglClearColor(gdata->backgroundColor());
-
+  QColor bg = gdata->backgroundColor();
+  glClearColor(double(bg.red()) / 255.0, double(bg.green()) / 255.0, double(bg.blue()) / 255.0, 0.0);
+  
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   glEnable(GL_BLEND);
@@ -84,8 +85,7 @@ void VibratoWidget::resizeGL(int w, int h)
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluOrtho2D(0, w, 0, h);
-  //glMatrixMode(GL_MODELVIEW);
+  // dws gluOrtho2D(0, w, 0, h);
 
   update();
 }
@@ -97,6 +97,11 @@ void VibratoWidget::paintGL()
 
   // Clear background
   glClear(GL_COLOR_BUFFER_BIT);
+
+  QPainter p;
+  p.begin(this);
+
+  p.beginNativePainting();
 
   // Draw the vertical bars that indicate the vibrato periods
   glCallList(verticalPeriodBars);
@@ -140,10 +145,16 @@ void VibratoWidget::paintGL()
   glPointSize(3.0);
   glCallList(maximaMinimaPoints);
 
+  p.endNativePainting();
+
+  // Draw the labels
+  QFontMetrics fm = QFontMetrics(vibratoFont);
+  setFont(vibratoFont);
+
   // Draw the note labels
   for (int i = 0; i < noteLabelCounter; i++) {
-    renderText(3, noteLabels[i].y - 4, 0, noteLabels[i].label, vibratoFont);
-    renderText(width() - noteLabelOffset + 3, noteLabels[i].y - 4, 0, noteLabels[i].label, vibratoFont);
+    p.drawText(3, height() - noteLabels[i].y + 4, noteLabels[i].label);
+    p.drawText(width() - noteLabelOffset + 3, height() - noteLabels[i].y + 4, noteLabels[i].label);
   }
 }
 

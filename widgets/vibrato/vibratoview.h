@@ -19,12 +19,9 @@
 
 class VibratoSpeedWidget;
 class VibratoCircleWidget;
-#ifdef DWS
 class VibratoPeriodWidget;
-
 class VibratoTimeAxis;
 class VibratoWidget;
-#endif
 class LEDIndicator;
 
 class VibratoView : public ViewWidget {
@@ -36,17 +33,14 @@ class VibratoView : public ViewWidget {
 
     QSize sizeHint() const { return QSize(500, 300); }
 
-    std::vector<LEDIndicator*> leds;
+    QVector<LEDIndicator*> leds;
 
   private:
     VibratoSpeedWidget *vibratoSpeedWidget;
     VibratoCircleWidget* vibratoCircleWidget;
-#ifdef DWS
-    VibratoPeriodWidget *vibratoPeriodWidget;
-
-    VibratoTimeAxis *vibratoTimeAxis;
+    VibratoPeriodWidget* vibratoPeriodWidget;
+    VibratoTimeAxis* vibratoTimeAxis;
     VibratoWidget *vibratoWidget;
-#endif
 };
 
 

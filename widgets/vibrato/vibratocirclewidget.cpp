@@ -24,11 +24,12 @@
 VibratoCircleWidget::VibratoCircleWidget(QWidget *parent)
   : DrawWidget(parent)
 {
+  p.setRenderHint(QPainter::Antialiasing, true);
+  p.setRenderHint(QPainter::TextAntialiasing, true);
+
   accuracy = 1.0;
   type = 5;
   lastPeriodToDraw = -1;
-  p.setRenderHint(QPainter::Antialiasing, true);
-  p.setRenderHint(QPainter::TextAntialiasing, true);
   doPaint = true;
   prevPeriods.resize(6);
   patternColorVector.resize(6);
@@ -79,12 +80,14 @@ void VibratoCircleWidget::paintEvent(QPaintEvent*)
     p.drawPolyline(patternVertices);
   } else if ((type == 4) || (type == 5)) {
     // Draw a polygon using the patternVertices and the patternColor
+    p.setPen(patternColor);
     p.setBrush(QBrush(patternColor));
     p.drawPolygon(patternVertices, Qt::WindingFill);
   } else if (type == 3) {
     // Draw the last 6 periods using the patterVerticesVector and the patternColorVector
     for (int i = 5; i >= 0; i--) {
       if (lastPeriodToDraw >= i) {
+        p.setPen(patternColorVector.at(i));
         p.setBrush(QBrush(patternColorVector.at(i)));
         p.drawPolygon(prevPeriods.at(i));
       }

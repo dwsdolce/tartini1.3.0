@@ -15,18 +15,19 @@
 #ifndef VIBRATOPERIODWIDGET_H
 #define VIBRATOPERIODWIDGET_H
 
-#include <QOpenGLWidget>
+#include "drawwidget.h"
+#include <QPixmap>
+#include <QPaintEvent>
 
-class VibratoPeriodWidget : public QOpenGLWidget {
+class VibratoPeriodWidget : public DrawWidget {
   Q_OBJECT
 
   public:
     VibratoPeriodWidget(QWidget *parent);
     virtual ~VibratoPeriodWidget();
 
-    void initializeGL();
-    void resizeGL(int w, int h);
-    void paintGL();
+    void resizeEvent(QResizeEvent* event);
+    void paintEvent(QPaintEvent*);
 
     QSize minimumSizeHint() const { return QSize(100, 75); }
 
@@ -38,12 +39,16 @@ class VibratoPeriodWidget : public QOpenGLWidget {
     bool drawPrevPeriods;
     bool periodScaling;
     bool drawComparison;
+    bool doPaint;
 
-    GLuint sineReference;
-    GLuint previousPoly[5];
-    GLuint currentPeriod;
-    GLuint comparisonPoly;
-    GLuint comparisonReference;
+    QPolygonF sineReference;
+    QColor sineReferenceColor;
+    QVector<QPolygonF> previousPoly;
+    QVector<QColor> previousPolyColor;
+    QPolygonF currentPeriod;
+    QColor currentPeriodColor;
+    QPolygonF comparisonPoly;
+    QColor comparisonPolyColor;
 
     int lastPeriodToDraw;
 

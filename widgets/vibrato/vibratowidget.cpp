@@ -13,19 +13,19 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 #include <QPainter>
-#include <QOpenGLContext>
 
 #include "vibratowidget.h"
-#include "GL/glu.h"
 #include "gdata.h"
 #include "channel.h"
 #include "analysisdata.h"
-//#include "myglfonts.h"
 #include "musicnotes.h"
 
 VibratoWidget::VibratoWidget(QWidget *parent, int nls)
-  : QOpenGLWidget(parent)
+  : DrawWidget(parent)
 {
+  p.setRenderHint(QPainter::Antialiasing, true);
+  p.setRenderHint(QPainter::TextAntialiasing, true);
+
   noteLabelOffset = nls; // The horizontal space in pixels a note label requires
   zoomFactorX = 2.0;
   zoomFactorY = 1.0;
@@ -33,163 +33,118 @@ VibratoWidget::VibratoWidget(QWidget *parent, int nls)
   noteLabelCounter = 0;
   for (int i = 0; i < 100; i++) {
     noteLabels[i].label = QString(8,' ');
-    noteLabels[i].y = 0.0f;
+    noteLabels[i].y = 0.0;
   }
   vibratoFont = QFont();
   vibratoFont.setPointSize(9);
+
+  // Set the colors for all of the items with static color
+  verticalSeparatorLinesColor = QColor(131, 144, 159);
+  referenceLinesColor = QColor(144, 156, 170);
+  pronyWidthBandColor = QColor(0, 0, 0, 64);
+  pronyAveragePitchColor = QColor(0, 0, 0, 127);
+  vibratoPolylineColor = QColor(127, 0, 0);
+  currentWindowBandColor = QColor(palette().color(QPalette::Foreground).red(), palette().color(QPalette::Foreground).green(), palette().color(QPalette::Foreground).blue(), 65);
+  currentTimeLineColor = QColor(Qt::black);
+  maximaPointsColor = QColor(255, 255, 0);
+  minimaPointsColor = QColor(0, 255, 0);
 }
 
 VibratoWidget::~VibratoWidget()
 {
   // Remove display lists
-    QOpenGLContext* c = QOpenGLContext::currentContext();
-    if (c) {
-        makeCurrent();
-    }
-
-  glDeleteLists(verticalPeriodBars, 1);
-  glDeleteLists(verticalSeparatorLines, 1);
-  glDeleteLists(referenceLines, 1);
-  glDeleteLists(pronyWidthBand, 1);
-  glDeleteLists(pronyAveragePitch, 1);
-  glDeleteLists(vibratoPolyline, 1);
-  glDeleteLists(currentWindowBand, 1);
-  glDeleteLists(currentTimeLine, 1);
-  glDeleteLists(maximaMinimaPoints, 1);
-}
-
-void VibratoWidget::initializeGL()
-{
-  QColor bg = gdata->backgroundColor();
-  glClearColor(double(bg.red()) / 255.0, double(bg.green()) / 255.0, double(bg.blue()) / 255.0, 0.0);
+  verticalPeriodBarsShading1.clear();
+  verticalPeriodBarsShading2.clear();
+  verticalSeparatorLines.clear();
+  referenceLines.clear();
+  int count = pronyWidthBand.count();
+  for (int p = 0; p < count; p++) {
+    pronyWidthBand[p].clear();
+  }
+  pronyWidthBand.clear();
+  pronyAveragePitch.clear();
+  vibratoPolyline.clear();
+  currentWindowBand.clear();
+  maximaPoints.clear();
+  minimaPoints.clear();
   
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  verticalPeriodBars = glGenLists(1);
-  verticalSeparatorLines = glGenLists(1);
-  referenceLines = glGenLists(1);
-  pronyWidthBand = glGenLists(1);
-  pronyAveragePitch = glGenLists(1);
-  vibratoPolyline = glGenLists(1);
-  currentWindowBand = glGenLists(1);
-  currentTimeLine = glGenLists(1);
-  maximaMinimaPoints = glGenLists(1);
+#ifdef DWS
+  glDeleteLists(maximaMinimaPoints, 1);
+#endif
 }
 
-void VibratoWidget::resizeGL(int w, int h)
+void VibratoWidget::paintEvent(QPaintEvent*)
 {
-  glViewport(0, 0, (GLint)w, (GLint)h);
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  // dws gluOrtho2D(0, w, 0, h);
-
-  update();
-}
-
-void VibratoWidget::paintGL()
-{
+  beginDrawing();
 
   doUpdate();
 
-  // Clear background
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  QPainter p;
-  p.begin(this);
-
-  p.beginNativePainting();
-
   // Draw the vertical bars that indicate the vibrato periods
-  glCallList(verticalPeriodBars);
+  p.setBrush(QBrush(verticalPeriodBarsShading1Color));
+  p.drawRects(verticalPeriodBarsShading1);
+  p.setBrush(verticalPeriodBarsShading2Color);
+  p.drawRects(verticalPeriodBarsShading2);
 
   // Draw the vertical separator lines through the extrema
-  glDisable(GL_LINE_SMOOTH);
-  glLineWidth(1.0);
-  glCallList(verticalSeparatorLines);
+  p.setPen(verticalSeparatorLinesColor);
+  p.drawLines(verticalSeparatorLines);
 
   // Draw the horizontal reference lines
-  glDisable(GL_LINE_SMOOTH);
-  glEnable(GL_LINE_STIPPLE);
-  glLineWidth(1.0);
-  glLineStipple(1, 64716);  // bitpattern 64716 = 1111110011001100
-  glCallList(referenceLines);
-  glDisable(GL_LINE_STIPPLE);
+  QPen stipplePen(referenceLinesColor);
+  stipplePen.setStyle(Qt::DashDotDotLine);
+  p.setPen(stipplePen);
+  p.drawLines(referenceLines);
 
   // Draw the light grey band indicating the vibratowidth according to the Prony-algorithm
-  glCallList(pronyWidthBand);
+  p.setBrush(QBrush(pronyWidthBandColor));
+  int count = pronyWidthBand.count();
+  for (int index = 0; index < count; index++) {
+    p.drawPolygon(pronyWidthBand[index]);
+  }
 
   // Draw the average pitch according to the Prony-algorithm
-  glEnable(GL_LINE_SMOOTH);
-  glLineWidth(1.0);
-  glCallList(pronyAveragePitch);
+  p.setPen(pronyAveragePitchColor);
+  p.drawPolyline(pronyAveragePitch);
 
   // Draw the vibrato-polyline
-  glEnable(GL_LINE_SMOOTH);
-  glLineWidth(2.0);
-  glCallList(vibratoPolyline);
+  QPen vpen(vibratoPolylineColor, 2.0);
+  p.setPen(vpen);
+  p.drawPolyline(vibratoPolyline);
 
   // Draw the light grey band indicating which time is being used in the current window
-  glCallList(currentWindowBand);
+  p.setPen(currentWindowBandColor);
+  p.setBrush(QBrush(currentWindowBandColor));
+  p.drawRects(currentWindowBand);
 
   // Draw the current timeline
-  glDisable(GL_LINE_SMOOTH);
-  glLineWidth(1.0);
-  glCallList(currentTimeLine);
+  p.setPen(currentTimeLineColor);
+  p.drawLine(currentTimeLine);
 
   // Draw the maxima & minima
-  glEnable(GL_POINT_SMOOTH);
-  glPointSize(3.0);
-  glCallList(maximaMinimaPoints);
-
-  p.endNativePainting();
+  p.setPen(maximaPointsColor);
+  p.setBrush(maximaPointsColor);
+  p.drawRects(maximaPoints);
+  p.setPen(minimaPointsColor);
+  p.setBrush(minimaPointsColor);
+  p.drawRects(minimaPoints);
 
   // Draw the labels
   QFontMetrics fm = QFontMetrics(vibratoFont);
   setFont(vibratoFont);
 
   // Draw the note labels
+  p.setPen(Qt::black);
   for (int i = 0; i < noteLabelCounter; i++) {
     p.drawText(3, height() - noteLabels[i].y + 4, noteLabels[i].label);
     p.drawText(width() - noteLabelOffset + 3, height() - noteLabels[i].y + 4, noteLabels[i].label);
   }
+
+  endDrawing();
 }
 
 void VibratoWidget::doUpdate()
 {
   noteLabelCounter = 0;
-
-  makeCurrent();
-
-  glNewList(verticalPeriodBars, GL_COMPILE);
-  glEndList();
-
-  glNewList(verticalSeparatorLines, GL_COMPILE);
-  glEndList();
-
-  glNewList(referenceLines, GL_COMPILE);
-  glEndList();
-
-  glNewList(pronyWidthBand, GL_COMPILE);
-  glEndList();
-
-  glNewList(pronyAveragePitch, GL_COMPILE);
-  glEndList();
-
-  glNewList(vibratoPolyline, GL_COMPILE);
-  glEndList();
-
-  glNewList(currentWindowBand, GL_COMPILE);
-  glEndList();
-
-  glNewList(currentTimeLine, GL_COMPILE);
-  glEndList();
-
-  glNewList(maximaMinimaPoints, GL_COMPILE);
-  glEndList();
 
   Channel *active = gdata->getActiveChannel();
 
@@ -229,13 +184,6 @@ void VibratoWidget::doUpdate()
         windowOffset = 0 - noteLabelOffset;
       }
 
-      GLfloat *vertices;
-      GLubyte *colors;
-      uint verticesCounter, colorsCounter;
-
-      glEnableClientState(GL_VERTEX_ARRAY);
-      glEnableClientState(GL_COLOR_ARRAY);
-
       // Calculate the alternating vertical bars that indicate the vibrato periods
       if ((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
         int color1Bars = 0;  // No. of bars with the left side at a maximum
@@ -260,52 +208,27 @@ void VibratoWidget::doUpdate()
           }
         }
 
-        float x1, x2;
-
+        qreal x1, x2;
         // Calculate the bars with the left side at a maximum
-        vertices = new GLfloat[(color1Bars + color2Bars) * 8];
-        colors = new GLubyte[(color1Bars + color2Bars) * 12];
-
-        const char color1Red = gdata->shading1Color().red();
-        const char color1Green = gdata->shading1Color().green();
-        const char color1Blue = gdata->shading1Color().blue();
-
-        verticesCounter = 0;
-        colorsCounter = 0;
-
+        verticalPeriodBarsShading1.clear();
         for (int i = 0; i < color1Bars; i++) {
-          x1 = ((((float)note->maxima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
+          x1 = ((((qreal)note->maxima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           if (x1 < noteLabelOffset) { x1 = noteLabelOffset; }
           if (x1 > width() - noteLabelOffset) { break; }
           if (maximumFirst) {
-            x2 = ((((float)note->minima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
+            x2 = ((((qreal)note->minima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           } else {
-            x2 = ((((float)note->minima->at(i+1) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
+            x2 = ((((qreal)note->minima->at(i+1) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           }
           if (x2 < noteLabelOffset) { continue; }
           if (x2 > width() - noteLabelOffset) { x2 = width() - noteLabelOffset; }
 
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x2;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x2;
-          vertices[verticesCounter++] = height();
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = height();
-
-          for (int j=1; j <= 4; j++) {
-            colors[colorsCounter++] = color1Red;
-            colors[colorsCounter++] = color1Green;
-            colors[colorsCounter++] = color1Blue;
-          }
+          verticalPeriodBarsShading1 << QRectF(QPointF(x1, 0), QPointF(x2, height()));
         }
+        verticalPeriodBarsShading1Color = gdata->shading1Color();
 
         // Calculate the bars with the left side at a minimum
-        const char color2Red = gdata->shading2Color().red();
-        const char color2Green = gdata->shading2Color().green();
-        const char color2Blue = gdata->shading2Color().blue();
-
+        verticalPeriodBarsShading2.clear();
         for (int i = 0; i < color2Bars; i++) {
           x1 = ((((float)note->minima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           if (x1 < noteLabelOffset) { x1 = noteLabelOffset; }
@@ -318,55 +241,17 @@ void VibratoWidget::doUpdate()
           if (x2 < noteLabelOffset) { continue; }
           if (x2 > width() - noteLabelOffset) { x2 = width() - noteLabelOffset; }
 
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x2;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x2;
-          vertices[verticesCounter++] = height();
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = height();
-
-          for (int j=1; j <= 4; j++) {
-            colors[colorsCounter++] = color2Red;
-            colors[colorsCounter++] = color2Green;
-            colors[colorsCounter++] = color2Blue;
-          }
+          verticalPeriodBarsShading2 << QRectF(QPointF(x1, 0), QPointF(x2, height()));
         }
-
-        glVertexPointer(2, GL_FLOAT, 0, vertices);
-        glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-        glNewList(verticalPeriodBars, GL_COMPILE);
-        glDrawArrays(GL_QUADS, 0, verticesCounter/2);
-        glEndList();
-
-        delete[] vertices;
-        delete[] colors;
-
+        verticalPeriodBarsShading2Color = gdata->shading2Color();
 
         // Calculate the vertical separator lines through the maxima
-        vertices = new GLfloat[(maximaSize + minimaSize) * 4];
-        colors = new GLubyte[(maximaSize + minimaSize) * 6];
-
-        verticesCounter = 0;
-        colorsCounter = 0;
-
+        verticalSeparatorLines.clear();
         for (int i = 0; i < maximaSize; i++) {
           x1 = ((((float)note->maxima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           if (x1 < noteLabelOffset) { continue; }
           if (x1 > width() - noteLabelOffset) { break; }
-
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = height();
-
-          colors[colorsCounter++] = 131;
-          colors[colorsCounter++] = 144;
-          colors[colorsCounter++] = 159;
-          colors[colorsCounter++] = 131;
-          colors[colorsCounter++] = 144;
-          colors[colorsCounter++] = 159;
+          verticalSeparatorLines << QLineF(QPointF(x1, 0), QPointF(x1, height()));
         }
 
         // Calculate the vertical separator lines through the minima
@@ -374,58 +259,21 @@ void VibratoWidget::doUpdate()
           x1 = ((((float)note->minima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           if (x1 < noteLabelOffset) { continue; }
           if (x1 > width() - noteLabelOffset) { break; }
-
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = height();
-
-          colors[colorsCounter++] = 131;
-          colors[colorsCounter++] = 144;
-          colors[colorsCounter++] = 159;
-          colors[colorsCounter++] = 131;
-          colors[colorsCounter++] = 144;
-          colors[colorsCounter++] = 159;
+          verticalSeparatorLines << QLineF(QPointF(x1, 0), QPointF(x1, height()));
         }
-
-        glVertexPointer(2, GL_FLOAT, 0, vertices);
-        glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-        glNewList(verticalSeparatorLines, GL_COMPILE);
-        glDrawArrays(GL_LINES, 0, verticesCounter/2);
-        glEndList();
-
-        delete[] vertices;
-        delete[] colors;
       }
 
-
       // Calculate the horizontal reference lines + note labels
-      vertices = new GLfloat[100 * 4];
-      colors = new GLubyte[100 * 6];
-
-      verticesCounter = 0;
-      colorsCounter = 0;
-
+      referenceLines.clear();
       const int nearestNote = toInt(avgPitch);
       QString noteLabel;
-      const float referenceLineX1 = noteLabelOffset;
-      const float referenceLineX2 = width() - noteLabelOffset;
-      float referenceLineY;
+      const qreal referenceLineX1 = noteLabelOffset;
+      const qreal referenceLineX2 = width() - noteLabelOffset;
+      qreal referenceLineY;
 
       // Calculate the nearest reference line + note label
-      referenceLineY = halfHeight + ((nearestNote - avgPitch) * zoomFactorYx100) + offsetY;
-
-      vertices[verticesCounter++] = referenceLineX1;
-      vertices[verticesCounter++] = referenceLineY;
-      vertices[verticesCounter++] = referenceLineX2;
-      vertices[verticesCounter++] = referenceLineY;
-
-      colors[colorsCounter++] = 144;
-      colors[colorsCounter++] = 156;
-      colors[colorsCounter++] = 170;
-      colors[colorsCounter++] = 144;
-      colors[colorsCounter++] = 156;
-      colors[colorsCounter++] = 170;
+      referenceLineY = halfHeight + (((nearestNote - avgPitch) * zoomFactorYx100) + offsetY);
+      referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
       if ((noteOctave(nearestNote) >= 0) && (noteOctave(nearestNote) <= 9)) {
         noteLabel.sprintf("%s%d", noteName(nearestNote), noteOctave(nearestNote));
@@ -438,20 +286,9 @@ void VibratoWidget::doUpdate()
 
       // Calculate as many reference lines + note labels above the note as can be seen
       for (int i = 1; ; i++) {
-        referenceLineY = halfHeight + ((nearestNote + i - avgPitch) * zoomFactorYx100) + offsetY;
+        referenceLineY = halfHeight + (((nearestNote + i - avgPitch) * zoomFactorYx100) + offsetY);
         if (referenceLineY > height()) { break; }
-
-        vertices[verticesCounter++] = referenceLineX1;
-        vertices[verticesCounter++] = referenceLineY;
-        vertices[verticesCounter++] = referenceLineX2;
-        vertices[verticesCounter++] = referenceLineY;
-
-        colors[colorsCounter++] = 144;
-        colors[colorsCounter++] = 156;
-        colors[colorsCounter++] = 170;
-        colors[colorsCounter++] = 144;
-        colors[colorsCounter++] = 156;
-        colors[colorsCounter++] = 170;
+        referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
         if ((noteOctave(nearestNote + i) >= 0) && (noteOctave(nearestNote + i) <= 9)) {
           noteLabel.sprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
@@ -465,20 +302,9 @@ void VibratoWidget::doUpdate()
 
       // Calculate as many reference lines + note labels below the note as can be seen
       for (int i = -1; ; i--) {
-        referenceLineY = halfHeight + ((nearestNote + i - avgPitch) * zoomFactorYx100) + offsetY;
+        referenceLineY = halfHeight + (((nearestNote + i - avgPitch) * zoomFactorYx100) + offsetY);
         if (referenceLineY < 0) { break; }
-
-        vertices[verticesCounter++] = referenceLineX1;
-        vertices[verticesCounter++] = referenceLineY;
-        vertices[verticesCounter++] = referenceLineX2;
-        vertices[verticesCounter++] = referenceLineY;
-
-        colors[colorsCounter++] = 144;
-        colors[colorsCounter++] = 156;
-        colors[colorsCounter++] = 170;
-        colors[colorsCounter++] = 144;
-        colors[colorsCounter++] = 156;
-        colors[colorsCounter++] = 170;
+        referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
         if ((noteOctave(nearestNote + i) >= 0) && (noteOctave(nearestNote + i) <= 9)) {
           noteLabel.sprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
@@ -490,23 +316,12 @@ void VibratoWidget::doUpdate()
         noteLabelCounter++;
       }
 
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(referenceLines, GL_COMPILE);
-      glDrawArrays(GL_LINES, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
-
       // Calculate the light grey band indicating the vibratowidth according to the Prony-algorithm
-      verticesCounter = 0;
-      colorsCounter = 0;
-
-      vertices = new GLfloat[(myEndChunk - myStartChunk) * 8];
-      colors = new GLubyte[(myEndChunk - myStartChunk) * 16];
-
+      int count = pronyWidthBand.count();
+      for (int p = 0; p < count; p++) {
+        pronyWidthBand[p].clear();
+      }
+      pronyWidthBand.clear();
       for (int chunk = myStartChunk; chunk < myEndChunk - 1; chunk++) {
         float x1 = (chunk - myStartChunk) * zoomFactorX - windowOffset;
         if (x1 < noteLabelOffset) { x1 = noteLabelOffset; }
@@ -519,79 +334,31 @@ void VibratoWidget::doUpdate()
         float vibratoWidth1 = active->dataAtChunk(chunk)->vibratoWidth;
         float vibratoPitch2 = active->dataAtChunk(chunk + 1)->vibratoPitch;
         float vibratoWidth2 = active->dataAtChunk(chunk + 1)->vibratoWidth;
+
         float y1 = halfHeight + ((vibratoPitch1 + vibratoWidth1 - avgPitch) * zoomFactorYx100) + offsetY;
         float y2 = halfHeight + ((vibratoPitch1 - vibratoWidth1 - avgPitch) * zoomFactorYx100) + offsetY;
         float y3 = halfHeight + ((vibratoPitch2 - vibratoWidth2 - avgPitch) * zoomFactorYx100) + offsetY;
         float y4 = halfHeight + ((vibratoPitch2 + vibratoWidth2 - avgPitch) * zoomFactorYx100) + offsetY;
 
-        vertices[verticesCounter++] = x1;
-        vertices[verticesCounter++] = y1;
-        vertices[verticesCounter++] = x1;
-        vertices[verticesCounter++] = y2;
-        vertices[verticesCounter++] = x2;
-        vertices[verticesCounter++] = y3;
-        vertices[verticesCounter++] = x2;
-        vertices[verticesCounter++] = y4;
-
-        for (int j=1; j <= 4; j++) {
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 64;
-        }
+        QPolygonF trap;
+        trap << QPointF(x1, height() - y1) << QPointF(x1, height() - y2) << QPointF(x2, height() - y3) << QPointF(x2, height() - y4);
+        pronyWidthBand << trap;
       }
 
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(pronyWidthBand, GL_COMPILE);
-      glDrawArrays(GL_QUADS, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
-
       // Calculate the average pitch according to the Prony-algorithm
-      verticesCounter = 0;
-      colorsCounter = 0;
-
-      vertices = new GLfloat[(myEndChunk - myStartChunk) * 2];
-      colors = new GLubyte[(myEndChunk - myStartChunk) * 4];
-
+      pronyAveragePitch.clear();
       for (int chunk = myStartChunk; chunk < myEndChunk; chunk++) {
         float x = (chunk - myStartChunk) * zoomFactorX - windowOffset;
         if (x < noteLabelOffset) { continue; }
         if (x > width() - noteLabelOffset) { break; }
         float y = halfHeight + ((active->dataAtChunk(chunk)->vibratoPitch - avgPitch) * zoomFactorYx100) + offsetY;
-
-        vertices[verticesCounter++] = x;
-        vertices[verticesCounter++] = y;
-
-        colors[colorsCounter++] = 0;
-        colors[colorsCounter++] = 0;
-        colors[colorsCounter++] = 0;
-        colors[colorsCounter++] = 127;
+        pronyAveragePitch << QPointF(x, height() - y);
       }
 
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(pronyAveragePitch, GL_COMPILE);
-      glDrawArrays(GL_LINE_STRIP, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
-
       // Calculate the vibrato-polyline
-      verticesCounter = 0;
-      colorsCounter = 0;
-
+      vibratoPolyline.clear();
       if ((active->doingDetailedPitch()) && (pitchLookupUsed.size() > 0)) {
         // Detailed pitch information available, calculate polyline using this info
-        vertices = new GLfloat[(width() + 1) * 2];
-        colors = new GLubyte[(width() + 1) * 3];
-
         const int pitchLookupUsedSizeLimit = int(pitchLookupUsed.size() - 1);
         const int beginningOfNote = myStartChunk * framesPerChunk;
         const int endOfNote = myEndChunk * framesPerChunk - 1;
@@ -621,115 +388,35 @@ void VibratoWidget::doUpdate()
             }
 
             y += offsetY;  // Vertical scrollbar offset
-
-            vertices[verticesCounter++] = x;
-            vertices[verticesCounter++] = y;
-
-            colors[colorsCounter++] = 127;
-            colors[colorsCounter++] = 0;
-            colors[colorsCounter++] = 0;
+            vibratoPolyline << QPointF(x, height() - y);
           }
         }
       } else {  // No detailed pitch information available, calculate polyline using the chunkdata
-        vertices = new GLfloat[(myEndChunk - myStartChunk) * 2];
-        colors = new GLubyte[(myEndChunk - myStartChunk) * 3];
-
         float x, y;
         for (int chunk = myStartChunk; chunk < myEndChunk; chunk++) {
           x = (chunk - myStartChunk) * zoomFactorX - windowOffset;
           if (x < noteLabelOffset) { continue; }
           if (x > width() - noteLabelOffset) { break; }
           y = halfHeight + ((active->dataAtChunk(chunk)->pitch - avgPitch) * zoomFactorYx100) + offsetY;
-
-          vertices[verticesCounter++] = x;
-          vertices[verticesCounter++] = y;
-
-          colors[colorsCounter++] = 127;
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 0;
+          vibratoPolyline << QPointF(x, height() - y);
         }
       }
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(vibratoPolyline, GL_COMPILE);
-      glDrawArrays(GL_LINE_STRIP, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
 
       // Calculate a light grey band indicating which time is being used in the current window
-      vertices = new GLfloat[8];
-      colors = new GLubyte[16];
-
-      verticesCounter = 0;
-      colorsCounter = 0;
+      currentWindowBand.clear();
 
       const double halfWindowTime = (double)active->size() / (double)(active->rate() * 2);
       int pixelLeft = toInt((active->chunkAtTime(gdata->view->currentTime() - halfWindowTime) - myStartChunk) * zoomFactorX - windowOffset);
       int pixelRight = toInt((active->chunkAtTime(gdata->view->currentTime() + halfWindowTime) - myStartChunk) * zoomFactorX - windowOffset);
-
-      vertices[verticesCounter++] = pixelLeft;
-      vertices[verticesCounter++] = 0;
-      vertices[verticesCounter++] = pixelRight;
-      vertices[verticesCounter++] = 0;
-      vertices[verticesCounter++] = pixelRight;
-      vertices[verticesCounter++] = height();
-      vertices[verticesCounter++] = pixelLeft;
-      vertices[verticesCounter++] = height();
-
-      for (int j=1; j <= 4; j++) {
-        colors[colorsCounter++] = palette().color(QPalette::Foreground).red();
-        colors[colorsCounter++] = palette().color(QPalette::Foreground).green();
-        colors[colorsCounter++] = palette().color(QPalette::Foreground).blue();
-        colors[colorsCounter++] = 64;
-      }
-
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(currentWindowBand, GL_COMPILE);
-      glDrawArrays(GL_QUADS, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
+      currentWindowBand << QRectF(QPointF(pixelLeft, 0), QPointF(pixelRight, height()));
 
       // Calculate the current timeline
-      vertices = new GLfloat[4];
-      colors = new GLubyte[6];
-
-      verticesCounter = 0;
-
       const float timeLineX = toInt((myCurrentChunk - myStartChunk) * zoomFactorX - windowOffset);
-
-      vertices[verticesCounter++] = timeLineX;
-      vertices[verticesCounter++] = 0;
-      vertices[verticesCounter++] = timeLineX;
-      vertices[verticesCounter++] = height();
-
-      for (colorsCounter = 0; colorsCounter < 6; colorsCounter++) {
-        colors[colorsCounter] = 0;
-      }
-
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(currentTimeLine, GL_COMPILE);
-      glDrawArrays(GL_LINES, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
+      currentTimeLine = QLineF(QPointF(timeLineX, 0.0), QPointF(timeLineX, height()));
 
       // Calculate the points of maxima and minima
-      vertices = new GLfloat[(maximaSize + minimaSize) * 2];
-      colors = new GLubyte[(maximaSize + minimaSize) * 3];
-
-      verticesCounter = 0;
-      colorsCounter = 0;
-
+      maximaPoints.clear();
+      minimaPoints.clear();
       // Calculate the maxima
       if ((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
         float x, y;
@@ -738,15 +425,10 @@ void VibratoWidget::doUpdate()
           if (x < noteLabelOffset) { continue; }
           if (x > width() - noteLabelOffset) { break; }
           y = halfHeight + ((pitchLookupUsed.at(note->maxima->at(i)) - avgPitch) * zoomFactorYx100) + offsetY;
-
-          vertices[verticesCounter++] = x;
-          vertices[verticesCounter++] = y;
-
-          colors[colorsCounter++] = 255;
-          colors[colorsCounter++] = 255;
-          colors[colorsCounter++] = 0;
+          maximaPoints << QRectF(QPointF(x - 1, height() - (y - 1)), QPointF(x + 1, height() - (y + 1)));
         }
       }
+
       // Calculate the minima
       if ((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
         float x, y;
@@ -755,26 +437,12 @@ void VibratoWidget::doUpdate()
           if (x < noteLabelOffset) { continue; }
           if (x > width() - noteLabelOffset) { break; }
           y = halfHeight + ((pitchLookupUsed.at(note->minima->at(i)) - avgPitch) * zoomFactorYx100) + offsetY;
-
-          vertices[verticesCounter++] = x;
-          vertices[verticesCounter++] = y;
-
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 255;
-          colors[colorsCounter++] = 0;
+          minimaPoints << QRectF(QPointF(x - 1, height() - (y - 1)), QPointF(x + 1, height() - (y + 1)));
         }
       }
-
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(maximaMinimaPoints, GL_COMPILE);
-      glDrawArrays(GL_POINTS, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
     }
   }
+  update();
 }
 
 void VibratoWidget::setZoomFactorX(double x)

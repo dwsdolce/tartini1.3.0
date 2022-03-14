@@ -13,17 +13,24 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 #include "vibratoperiodwidget.h"
-#include <QOpenGLContext>
-#include "GL/glu.h"
+#include <QPainter>
+#include <QDebug>
+
 #include "gdata.h"
 #include "channel.h"
 #include "analysisdata.h"
 
 VibratoPeriodWidget::VibratoPeriodWidget(QWidget *parent)
-  : QOpenGLWidget(parent)
+  : DrawWidget(parent)
 {
+  p.setRenderHint(QPainter::Antialiasing, true);
+  p.setRenderHint(QPainter::TextAntialiasing, true);
+
   prevLeftMinimumTime = -1;
   lastPeriodToDraw = -1;
+
+  previousPoly.resize(6);
+  previousPolyColor.resize(6);
 
   smoothedPeriods = true;
   drawSineReference = false;
@@ -31,100 +38,64 @@ VibratoPeriodWidget::VibratoPeriodWidget(QWidget *parent)
   drawPrevPeriods = false;
   periodScaling = false;
   drawComparison = false;
+  doPaint = true;
 }
 
 VibratoPeriodWidget::~VibratoPeriodWidget()
 {
   // Remove display lists
-    QOpenGLContext* c = QOpenGLContext::currentContext();
-    if (c) {
-        makeCurrent();
-    }
-
-  glDeleteLists(sineReference, 1);
+  sineReference.clear();
   for (int i = 0; i < 5; i++) {
-    glDeleteLists(previousPoly[i], 1);
+    previousPoly[i].clear();
   }
-  glDeleteLists(currentPeriod, 1);
-  glDeleteLists(comparisonPoly, 1);
-  glDeleteLists(comparisonReference, 1);
+  currentPeriod.clear();
+  comparisonPoly.clear();
 }
 
-void VibratoPeriodWidget::initializeGL()
+void VibratoPeriodWidget::resizeEvent(QResizeEvent*)
 {
-  QColor bg = gdata->backgroundColor();
-  glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  glEnable(GL_LINE_SMOOTH);
-  glLineWidth(2.0);
-
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_COLOR_ARRAY);
-
-  sineReference = glGenLists(1);
-  for (int i = 0; i < 5; i++) {
-    previousPoly[i] = glGenLists(1);
-  }
-  currentPeriod = glGenLists(1);
-  comparisonPoly = glGenLists(1);
-  comparisonReference = glGenLists(1);
-}
-
-void VibratoPeriodWidget::resizeGL(int w, int h)
-{
-  glViewport(0, 0, (GLint)w, (GLint)h);
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  // DWS gluOrtho2D(0, w, 0, h);
-
-  // Calculate the horizontal reference line
-  const float halfHeight = 0.5 * height();
-
-  glNewList(comparisonReference, GL_COMPILE);
-  glColor4ub(0, 0, 0, 64);
-  glBegin(GL_LINES);
-  glVertex2f(0, halfHeight);
-  glVertex2f(w, halfHeight);
-  glEnd();
-  glEndList();
-
-  // Do forced update on resize
+    // Do forced update on resize
   prevLeftMinimumTime = -1;
+  doPaint = false;
   doUpdate();
+  doPaint = true;
 }
 
-void VibratoPeriodWidget::paintGL()
+void VibratoPeriodWidget::paintEvent(QPaintEvent*)
 {
-  QColor bg = gdata->backgroundColor();
-  glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
-  glClear(GL_COLOR_BUFFER_BIT);
+  beginDrawing();
 
   // Draw the horizontal reference line
-  glLineWidth(1.5);
-  glCallList(comparisonReference);
-
+  const qreal halfHeight = 0.5 * height();
+  QPen comparisonReferencePen = QPen(Qt::black, 1.5);
+  p.setPen(comparisonReferencePen);
+  p.drawLine(QPointF(0, halfHeight), QPointF(width(), halfHeight));
+    
   // Draw the sinewave
-  glLineWidth(2.0);
-  glCallList(sineReference);
+  QPen sineReferencePen = QPen(sineReferenceColor, 2.0);
+  p.setPen(sineReferencePen);
+  p.drawPolyline(sineReference);
 
   // Draw the comparison
-  glCallList(comparisonPoly);
+  QPen comparisonPolyPen = QPen(comparisonPolyColor, 2.0);
+  p.setPen(comparisonPolyPen);
+  p.drawPolyline(comparisonPoly);
 
   // Draw the previous periods
   for (int i = 4; i >= 0; i--) {
     if (lastPeriodToDraw >= i) {
-      glCallList(previousPoly[i]);
+      QPen previousPolyPen = QPen(previousPolyColor[i], 2.0);
+      p.setPen(previousPolyPen);
+      p.drawPolyline(previousPoly[i]);
     }
   }
 
   // Draw the current period
-  glCallList(currentPeriod);
+  QPen currentPeriodPen = QPen(currentPeriodColor, 2.0);
+  p.setPen(currentPeriodPen);
+  p.drawPolyline(currentPeriod);
 
+  endDrawing();
 }
 
 void VibratoPeriodWidget::doUpdate()
@@ -183,49 +154,33 @@ void VibratoPeriodWidget::doUpdate()
 
   if (prevLeftMinimumTime == leftMinimumTime) {
     // Same period as previous, don't change the polys & no update needed
-
   } else {
     // Period has changed
-
-    makeCurrent();
-
     if (leftMinimumTime == -1) {
       // No period to draw, erase polys & update
-
-      glNewList(sineReference, GL_COMPILE);
-      glEndList();
+      sineReference.clear();
 
       for (int i = 0; i < 5; i++) {
-        glNewList(previousPoly[i], GL_COMPILE);
-        glEndList();
+        previousPoly[i].clear();
       }
 
-      glNewList(currentPeriod, GL_COMPILE);
-      glEndList();
-
-      glNewList(comparisonPoly, GL_COMPILE);
-      glEndList();
+      currentPeriod.clear();
+      comparisonPoly.clear();
 
       prevLeftMinimumTime = -1;
-
-      update();
-
+      if (doPaint) {
+        update();
+      }
     } else {
       // New period, calculate new polys & update
-
-      glNewList(sineReference, GL_COMPILE);
-      glEndList();
+      sineReference.clear();
 
       for (int i = 0; i < 5; i++) {
-        glNewList(previousPoly[i], GL_COMPILE);
-        glEndList();
+        previousPoly[i].clear();
       }
 
-      glNewList(currentPeriod, GL_COMPILE);
-      glEndList();
-
-      glNewList(comparisonPoly, GL_COMPILE);
-      glEndList();
+      currentPeriod.clear();
+      comparisonPoly.clear();
 
       AnalysisData *data = active->dataAtCurrentChunk();
       NoteData *note = new NoteData();
@@ -261,46 +216,19 @@ void VibratoPeriodWidget::doUpdate()
         theSineDelay = toInt((rightMinimumTime - leftMinimumTime) * 0.25);
       }
 
-      GLfloat *vertices;
-      vertices = new GLfloat[(width() + 1) * 2];
-
-      GLfloat *sineVertices;
-      sineVertices = new GLfloat[(width() + 1) * 2];
-
-      GLubyte *colors;
-      colors = new GLubyte[(width() + 1) * 4];
-      glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
-
-
       // Calculate the sinewave
       if (drawSineReference && (width() > 0) && (height() > 0)) {
-        uint v = 0;
-        uint c = 0;
         if (sineStyle) {
           for (float xx = 0; xx < width(); xx++) {
-            sineVertices[v++] = 0.05 * width() + 0.9 * xx;
-            sineVertices[v++] = halfHeight + halfHeight * 0.9 * sin((xx/width()) * 2 * PI);
-            colors[c++] = 255;
-            colors[c++] = 255;
-            colors[c++] = 0;
-            colors[c++] = 255;
+            sineReference << QPointF(0.05 * width() + 0.9 * xx, halfHeight - halfHeight * 0.9 * sin((xx/width()) * 2 * PI));
           }
         } else {
           for (float xx = 0; xx < width(); xx++) {
-            sineVertices[v++] = 0.05 * width() + 0.9 * xx;;
-            sineVertices[v++] = halfHeight + halfHeight * -0.9 * cos((xx/width()) * 2 * PI);
-            colors[c++] = 255;
-            colors[c++] = 255;
-            colors[c++] = 0;
-            colors[c++] = 255;
+            sineReference << QPointF(0.05 * width() + 0.9 * xx, halfHeight - halfHeight * -0.9 * cos((xx/width()) * 2 * PI));
           }
         }
-        glVertexPointer(2, GL_FLOAT, 0, sineVertices);
-        glNewList(sineReference, GL_COMPILE);
-        glDrawArrays(GL_LINE_STRIP, 0, width());
-        glEndList();
+        sineReferenceColor = QColor(255, 255, 0, 255);
       }
-
 
       // Calculate the previous period(s)
       if (drawPrevPeriods && (width() > 0) && (height() > 0)) {
@@ -310,8 +238,6 @@ void VibratoPeriodWidget::doUpdate()
             break;
           }
 
-          uint v = 0;
-          uint c = 0;
           int thisPrevLeftMinimumTime = note->minima->at(leftMinimumAt - (i+1)) - theDelay;
           int thisPrevRightMinimumTime = note->minima->at(leftMinimumAt - i) - theDelay;
           int thisPrevDuration = thisPrevRightMinimumTime - thisPrevLeftMinimumTime;
@@ -333,35 +259,19 @@ void VibratoPeriodWidget::doUpdate()
           if (periodScaling) {
             for (float xx = 0; xx < width(); xx++) {
               int offset = toInt((xx / width()) * thisPrevDuration + thisPrevLeftMinimumTime + theSineDelay);
-              vertices[v++] = 0.05 * width() + 0.9 * xx;
-              vertices[v++] = 0.05 * height() + 0.9 * ((thePitchLookup.at(offset) - thisPrevMinimumPitch) / thisPrevWidth) * height();
-              colors[c++] = 127;
-              colors[c++] = 0;
-              colors[c++] = 0;
-              colors[c++] = toInt(float(1/pow(2,i+1)) * 255);
+              previousPoly[i] << QPointF(0.05 * width() + 0.9 * xx,
+                                         0.95 * height() - 0.9 * ((thePitchLookup.at(offset) - thisPrevMinimumPitch) / thisPrevWidth) * height());
             }
-            glVertexPointer(2, GL_FLOAT, 0, vertices);
-            glNewList(previousPoly[i], GL_COMPILE);
-            glDrawArrays(GL_LINE_STRIP, 0, width());
-            glEndList();
           } else {
             for (float xx = 0; xx < width(); xx++) {
               int offset = toInt((xx / width()) * thisPrevDuration + thisPrevLeftMinimumTime + theSineDelay);
               float xxx = xx * (float(thisPrevDuration) / periodDuration);
               xxx = xxx + ((0.5 * (periodDuration - thisPrevDuration) / periodDuration) * width());
-              vertices[v++] = 0.05 * width() + 0.9 * xxx;
-              vertices[v++] = 0.05 * height() + 0.9 * ((thePitchLookup.at(offset) - minimumPitch) / periodWidth) * height();
-              colors[c++] = 127;
-              colors[c++] = 0;
-              colors[c++] = 0;
-              colors[c++] = toInt(float(1/pow(2,i+1)) * 255);
+              previousPoly[i] << QPointF(0.05 * width() + 0.9 * xxx,
+                                         0.95 * height() - 0.9 * ((thePitchLookup.at(offset) - minimumPitch) / periodWidth) * height());
             }
-
-            glVertexPointer(2, GL_FLOAT, 0, vertices);
-            glNewList(previousPoly[i], GL_COMPILE);
-            glDrawArrays(GL_LINE_STRIP, 0, width());
-            glEndList();
           }
+          previousPolyColor[i] = QColor(127, 0, 0, toInt(float(1 / pow(2, i + 1)) * 255));
           lastPeriodToDraw = i;
         }
       }
@@ -369,48 +279,27 @@ void VibratoPeriodWidget::doUpdate()
 
       // Calculate the current period
       if ((width() > 0) && (height() > 0)) {
-        uint v = 0;
-        uint c = 0;
         for (float xx = 0; xx < width(); xx++) {
-          vertices[v++] = 0.05 * width() + 0.9 * xx;
-          vertices[v++] = 0.05 * height() + 0.9 * ((thePitchLookup.at(toInt((xx / width()) * periodDuration + theLeftMinimumTime + theSineDelay)) - minimumPitch) / periodWidth) * height();
-          colors[c++] = 127;
-          colors[c++] = 0;
-          colors[c++] = 0;
-          colors[c++] = 255;
+          currentPeriod << QPointF(0.05 * width() + 0.9 * xx,
+                                   0.95 * height() - 0.9 * ((thePitchLookup.at(toInt((xx / width()) * periodDuration + theLeftMinimumTime + theSineDelay)) - minimumPitch) / periodWidth) * height());
         }
-        glVertexPointer(2, GL_FLOAT, 0, vertices);
-        glNewList(currentPeriod, GL_COMPILE);
-        glDrawArrays(GL_LINE_STRIP, 0, width());
-        glEndList();
+        currentPeriodColor = QColor(127, 0, 0, 255);
       }
 
 
       // Calculate the comparison
       if (drawComparison && drawSineReference && (width() > 0) && (height() > 0)) {
-        uint v = 0;
-        uint c = 0;
         for (int xx = 0; xx < width(); xx++) {
-          vertices[v++] = 0.05 * width() + 0.9 * xx;
-          vertices[v] = halfHeight + vertices[v] - sineVertices[v]; ++v;
-          colors[c++] = 0;
-          colors[c++] = 255;
-          colors[c++] = 0;
-          colors[c++] = 255;
+          comparisonPoly << QPointF(0.05 * width() + 0.9 * xx, halfHeight - (sineReference[xx].y() - currentPeriod[xx].y()));
         }
-        glVertexPointer(2, GL_FLOAT, 0, vertices);
-        glNewList(comparisonPoly, GL_COMPILE);
-        glDrawArrays(GL_LINE_STRIP, 0, width());
-        glEndList();
+        comparisonPolyColor = QColor(0, 255, 0, 255);
       }
-
-      delete[] vertices;
-      delete[] sineVertices;
-      delete[] colors;
 
       prevLeftMinimumTime = leftMinimumTime;
 
-      update();
+      if (doPaint) {
+        update();
+      }
     }
   }
 }

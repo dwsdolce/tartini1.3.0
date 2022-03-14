@@ -15,9 +15,9 @@
 #ifndef VIBRATOWIDGET_H
 #define VIBRATOWIDGET_H
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 
-class VibratoWidget : public QGLWidget {
+class VibratoWidget : public QOpenGLWidget {
   Q_OBJECT
 
   public:

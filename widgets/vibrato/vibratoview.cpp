@@ -29,11 +29,9 @@
 
 #include "vibratospeedwidget.h"
 #include "vibratocirclewidget.h"
-#ifdef DWS
 #include "vibratoperiodwidget.h"
 #include "vibratotimeaxis.h"
 #include "vibratowidget.h"
-#endif
 #include "ledindicator.h"
 #include "timeaxis.h"
 #include "gdata.h"
@@ -52,9 +50,7 @@
 VibratoView::VibratoView( int viewID_, QWidget *parent )
  : ViewWidget( viewID_, parent)
 {
-#ifdef DWS
   int noteLabelOffset = 28;
-#endif
 
   setWindowTitle("Vibrato View");
 
@@ -141,11 +137,9 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   QFrame *periodFrame = new QFrame;
   periodFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout *periodFrameLayout = new QVBoxLayout;
-#ifdef DWS
   vibratoPeriodWidget = new VibratoPeriodWidget(0);
   vibratoPeriodWidget->setWhatsThis("A detailed view of the current vibrato period. You can turn on and off some different options with the buttons. ");
   periodFrameLayout->addWidget(vibratoPeriodWidget);
-#endif
   periodFrameLayout->setMargin(0);
   periodFrameLayout->setSpacing(0);
   periodFrame->setLayout(periodFrameLayout);
@@ -225,22 +219,18 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   QGridLayout *bottomLayout = new QGridLayout;
 
   // The timeaxis
-#ifdef DWS
   vibratoTimeAxis = new VibratoTimeAxis(0, noteLabelOffset);
-#endif
 
   // The drawing object for displaying vibrato notes
   QFrame *vibratoFrame = new QFrame;
   vibratoFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout *vibratoFrameLayout = new QVBoxLayout;
-#ifdef DWS
   vibratoWidget = new VibratoWidget(0, noteLabelOffset);
   vibratoWidget->setWhatsThis("Shows the vibrato of the current note. "
     "Grey shading indicates the vibrato envelope. The black line indicates the center pitch. "
     "Other shading indicates half period times. "
     "If there is no vibrato (i.e. no wobbling frequency) it will probably just look a mess. ");
   vibratoFrameLayout->addWidget(vibratoWidget);
-#endif
   vibratoFrameLayout->setMargin(0);
   vibratoFrameLayout->setSpacing(0);
   vibratoFrame->setLayout(vibratoFrameLayout);
@@ -297,10 +287,7 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
 
   bottomBottomLayout->setMargin(1);
   bottomBottomLayout->setSpacing(1);
-
-#ifdef DWS
   bottomLayout->addWidget(vibratoTimeAxis, 0, 0, 1, 1);
-#endif
   bottomLayout->addWidget(vibratoFrame, 1, 0, 1, 1);
   bottomLayout->addLayout(bottomRightLayout, 1, 1, 1, 1);
   bottomLayout->addLayout(bottomBottomLayout, 2, 0, 1, 2);
@@ -321,11 +308,8 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
 
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoSpeedWidget, SLOT(doUpdate()));
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoCircleWidget, SLOT(doUpdate()));
-#ifdef DWS
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoPeriodWidget, SLOT(doUpdate()));
-
   connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoTimeAxis, SLOT(update()));
-
   connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoWidget, SLOT(updateGL()));
 
   // The vertical scrollbar
@@ -336,7 +320,6 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   connect(zoomWheelH, SIGNAL(valueChanged(double)), vibratoTimeAxis, SLOT(setZoomFactorX(double)));
   connect(zoomWheelV, SIGNAL(valueChanged(double)), vibratoWidget, SLOT(setZoomFactorY(double)));
 
-
   // The buttons for the period view
   connect(smoothedPeriodsButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setSmoothedPeriods(bool)));
   connect(drawSineReferenceButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setDrawSineReference(bool)));
@@ -344,14 +327,13 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   connect(drawPrevPeriodsButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setDrawPrevPeriods(bool)));
   connect(periodScalingButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setPeriodScaling(bool)));
   connect(drawComparisonButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setDrawComparison(bool)));
-#endif
+
 }
 
 VibratoView::~VibratoView()
 {
-#ifdef DWS
+
   delete vibratoWidget;
-#endif
 }
 
 /*

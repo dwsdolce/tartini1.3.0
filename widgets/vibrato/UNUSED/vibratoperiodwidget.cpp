@@ -20,7 +20,7 @@
 #include "analysisdata.h"
 
 VibratoPeriodWidget::VibratoPeriodWidget(QWidget *parent)
-  : QGLWidget(parent)
+  : QOpenGLWidget(parent)
 {
   prevLeftMinimumTime = -1;
   lastPeriodToDraw = -1;
@@ -80,8 +80,7 @@ void VibratoPeriodWidget::resizeGL(int w, int h)
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluOrtho2D(0, w, 0, h);
-  //glMatrixMode(GL_MODELVIEW);
+  // DWS gluOrtho2D(0, w, 0, h);
 
   // Calculate the horizontal reference line
   const float halfHeight = 0.5 * height();
@@ -209,7 +208,7 @@ void VibratoPeriodWidget::doUpdate()
 
       prevLeftMinimumTime = -1;
 
-      updateGL();
+      update();
 
     } else {
       // New period, calculate new polys & update
@@ -411,7 +410,7 @@ void VibratoPeriodWidget::doUpdate()
 
       prevLeftMinimumTime = leftMinimumTime;
 
-      updateGL();
+      update();
     }
   }
 }

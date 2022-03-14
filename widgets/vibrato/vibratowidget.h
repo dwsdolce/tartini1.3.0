@@ -15,18 +15,18 @@
 #ifndef VIBRATOWIDGET_H
 #define VIBRATOWIDGET_H
 
-#include <QOpenGLWidget>
+#include "drawwidget.h"
+#include <QPixmap>
+#include <QPaintEvent>
 
-class VibratoWidget : public QOpenGLWidget {
+class VibratoWidget : public DrawWidget {
   Q_OBJECT
 
   public:
     VibratoWidget(QWidget *parent, int nls);
     virtual ~VibratoWidget();
 
-    void initializeGL();
-    void resizeGL(int w, int h);
-    void paintGL();
+    void paintEvent(QPaintEvent* event);
 
     QSize sizeHint() const { return QSize(300, 100); }
 
@@ -38,20 +38,33 @@ class VibratoWidget : public QOpenGLWidget {
 
     QFont vibratoFont;
 
-    GLuint verticalPeriodBars;
-    GLuint verticalSeparatorLines;
-    GLuint referenceLines;
-    GLuint pronyWidthBand;
-    GLuint pronyAveragePitch;
-    GLuint vibratoPolyline;
-    GLuint currentWindowBand;
-    GLuint currentTimeLine;
-    GLuint maximaMinimaPoints;
+    QVector<QRectF> verticalPeriodBarsShading1;
+    QColor verticalPeriodBarsShading1Color;
+    QVector<QRectF> verticalPeriodBarsShading2;
+    QColor verticalPeriodBarsShading2Color;
+    QVector<QLineF>verticalSeparatorLines;
+    QColor verticalSeparatorLinesColor;
+    QVector<QLineF>referenceLines;
+    QColor referenceLinesColor;
+    QVector<QPolygonF> pronyWidthBand;
+    QColor pronyWidthBandColor;
+    QPolygonF pronyAveragePitch;
+    QColor pronyAveragePitchColor;
+    QPolygonF vibratoPolyline;
+    QColor vibratoPolylineColor;
+    QVector<QRectF> currentWindowBand;
+    QColor currentWindowBandColor;
+    QLineF currentTimeLine;
+    QColor currentTimeLineColor;
+    QVector<QRectF> maximaPoints;
+    QColor maximaPointsColor;
+    QVector<QRectF> minimaPoints;
+    QColor minimaPointsColor;
 
     int noteLabelCounter;
     struct noteLabelStruct {
       QString label;
-      float y;
+      qreal y;
     };
     noteLabelStruct noteLabels[100];
 

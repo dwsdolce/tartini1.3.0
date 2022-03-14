@@ -26,11 +26,6 @@ class VibratoCircleWidget : public DrawWidget {
     VibratoCircleWidget(QWidget *parent);
     virtual ~VibratoCircleWidget();
 
-#ifdef DWS
-    void initializeGL();
-    void resizeGL(int w, int h);
-    void paintGL();
-#endif
     void paintEvent(QPaintEvent* event);
     void resizeEvent(QResizeEvent* event);
 
@@ -45,8 +40,8 @@ class VibratoCircleWidget : public DrawWidget {
 
     QPolygonF patternVertices;
     QColor patternColor;
-    std::vector<QPolygonF> prevPeriods;
-    std::vector<QColor> patternColorVector;
+    QVector<QPolygonF> prevPeriods;
+    QVector<QColor> patternColorVector;
 
   public slots:
     void doUpdate();
