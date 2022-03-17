@@ -1,5 +1,5 @@
 /***************************************************************************
-						  freqwidgetGL.h  -  description
+						  freqwidget.h  -  description
 							 -------------------
 	begin                : Fri Dec 10 2004
 	copyright            : (C) 2004-2005 by Philip McLeod
@@ -13,8 +13,8 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 
-#ifndef FREQWIDGETGL_H
-#define FREQWIDGETGL_H
+#ifndef FREQWIDGET_H
+#define FREQWIDGET_H
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
@@ -39,7 +39,7 @@
 #define DRAW_VIEW_SUMMARY  1
 #define DRAW_VIEW_PRINT    2
 
-class FreqWidgetGL : public QOpenGLWidget, protected QOpenGLFunctions {
+class FreqWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
 	Q_OBJECT
 
@@ -51,8 +51,8 @@ public:
 		DragTimeBar = 3
 	};
 
-	FreqWidgetGL();
-	virtual ~FreqWidgetGL();
+	FreqWidget();
+	virtual ~FreqWidget();
 
 	void initializeGL();
 	void resizeGL(int w, int h);

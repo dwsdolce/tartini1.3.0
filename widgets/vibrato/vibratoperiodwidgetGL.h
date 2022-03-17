@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratoperiodwidget.h  -  description
+                          vibratoperiodwidgetGL.h  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,17 +12,17 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#ifndef VIBRATOPERIODWIDGET_H
-#define VIBRATOPERIODWIDGET_H
+#ifndef VIBRATOPERIODWIDGETGL_H
+#define VIBRATOPERIODWIDGETGL_H
 
 #include <QOpenGLWidget>
 
-class VibratoPeriodWidget : public QOpenGLWidget {
+class VibratoPeriodWidgetGL : public QOpenGLWidget {
   Q_OBJECT
 
   public:
-    VibratoPeriodWidget(QWidget *parent);
-    virtual ~VibratoPeriodWidget();
+    VibratoPeriodWidgetGL(QWidget *parent);
+    virtual ~VibratoPeriodWidgetGL();
 
     void initializeGL();
     void resizeGL(int w, int h);

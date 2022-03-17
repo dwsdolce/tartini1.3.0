@@ -1,5 +1,5 @@
 /***************************************************************************
-                          tunerview.h  -  description
+                          tunerviewGL.h  -  description
                              -------------------
     begin                : Mon Jan 10 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,8 +12,8 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#ifndef TUNERVIEW_H
-#define TUNERVIEW_H
+#ifndef TUNERVIEWGL_H
+#define TUNERVIEWGL_H
 
 #include <vector>
 #include <QPixmap>
@@ -24,17 +24,17 @@
 #include "tunerwidget.h"
 
 class QPixmap;
-class TunerWidget;
+class TunerWidgetGL;
 class LEDIndicator;
 class QwtSlider;
 class Channel;
 
-class TunerView : public ViewWidget {
+class TunerViewGL : public ViewWidget {
   Q_OBJECT
 
   public:
-    TunerView(int viewID_, QWidget *parent = 0);
-    virtual ~TunerView();
+    TunerViewGL(int viewID_, QWidget *parent = 0);
+    virtual ~TunerViewGL();
 
     QSize sizeHint() const { return QSize(200, 200); }
 
@@ -45,7 +45,7 @@ class TunerView : public ViewWidget {
   private:
     void resetLeds();
     
-    TunerWidget *tunerWidget;
+    TunerWidgetGL *tunerWidgetGL;
     std::vector<LEDIndicator*> leds;
     QwtSlider *slider;
 };

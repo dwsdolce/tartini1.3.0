@@ -52,8 +52,6 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
 {
   int noteLabelOffset = 28;
 
-  setWindowTitle("Vibrato View");
-
   QGridLayout *mainLayout = new QGridLayout;
 
   QSplitter *verticalSplitter = new QSplitter(Qt::Vertical);
@@ -310,7 +308,7 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoCircleWidget, SLOT(doUpdate()));
   connect(gdata, SIGNAL(onChunkUpdate()), vibratoPeriodWidget, SLOT(doUpdate()));
   connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoTimeAxis, SLOT(update()));
-  connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoWidget, SLOT(updateGL()));
+  connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoWidget, SLOT(update()));
 
   // The vertical scrollbar
   connect(scrollBarV, SIGNAL(valueChanged(int)), vibratoWidget, SLOT(setOffsetY(int)));

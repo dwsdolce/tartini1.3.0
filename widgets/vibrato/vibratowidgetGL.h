@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratowidget.h  -  description
+                          vibratowidgetGL.h  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005-2007 by Philip McLeod
@@ -12,17 +12,17 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#ifndef VIBRATOWIDGET_H
-#define VIBRATOWIDGET_H
+#ifndef VIBRATOWIDGETGL_H
+#define VIBRATOWIDGETGL_H
 
 #include <QOpenGLWidget>
 
-class VibratoWidget : public QOpenGLWidget {
+class VibratoWidgetGL : public QOpenGLWidget {
   Q_OBJECT
 
   public:
-    VibratoWidget(QWidget *parent, int nls);
-    virtual ~VibratoWidget();
+    VibratoWidgetGL(QWidget *parent, int nls);
+    virtual ~VibratoWidgetGL();
 
     void initializeGL();
     void resizeGL(int w, int h);

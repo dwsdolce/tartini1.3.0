@@ -1,5 +1,5 @@
 /***************************************************************************
-                          tunerview.cpp  -  description
+                          tunerviewGL.cpp  -  description
                              -------------------
     begin                : Mon Jan 10 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -21,15 +21,15 @@
 #include <QPaintEvent>
 #include <QFrame>
 
-#include "tunerview.h"
-#include "tunerwidget.h"
+#include "tunerviewGL.h"
+#include "tunerwidgetGL.h"
 #include "ledindicator.h"
 #include "useful.h"
 #include "gdata.h"
 #include "channel.h"
 #include "musicnotes.h"
 
-TunerView::TunerView( int viewID_, QWidget *parent )
+TunerViewGL::TunerViewGL( int viewID_, QWidget *parent )
  : ViewWidget( viewID_, parent)
 {
   QGridLayout *layout = new QGridLayout(this);
@@ -44,10 +44,10 @@ TunerView::TunerView( int viewID_, QWidget *parent )
   QFrame* tunerFrame = new QFrame;
   tunerFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout* tunerFrameLayout = new QVBoxLayout;
-  tunerWidget = new TunerWidget(0);
+  tunerWidgetGL = new TunerWidgetGL(0);
 
-  tunerWidget->setWhatsThis("Indicates pitch deviation from standard not plus the standard note that is being played.");
-  tunerFrameLayout->addWidget(tunerWidget);
+  tunerWidgetGL->setWhatsThis("Indicates pitch deviation from standard not plus the standard note that is being played.");
+  tunerFrameLayout->addWidget(tunerWidgetGL);
   tunerFrameLayout->setMargin(0);
   tunerFrameLayout->setSpacing(0);
   tunerFrame->setLayout(tunerFrameLayout);
@@ -94,37 +94,37 @@ TunerView::TunerView( int viewID_, QWidget *parent )
   layout->setRowStretch( 2, 0 ); 
     
   connect(gdata, SIGNAL(onChunkUpdate()), this, SLOT(doUpdate()));
-  connect(tunerWidget, SIGNAL(ledSet(int, bool)), this, SLOT(setLed(int, bool)));
+  connect(tunerWidgetGL, SIGNAL(ledSet(int, bool)), this, SLOT(setLed(int, bool)));
 
   QSize s = size();
 }
 
-TunerView::~TunerView()
+TunerViewGL::~TunerViewGL()
 {
   delete slider;
   for (uint i = 0; i < leds.size(); i++) {
       delete leds[i];
   }
-  delete tunerWidget;
+  delete tunerWidgetGL;
 }
 
-void TunerView::resetLeds()
+void TunerViewGL::resetLeds()
 {
  for (uint i = 0; i < leds.size(); i++) {
     leds[i]->setOn(false);
   }
 }
 
-void TunerView::setLed(int index, bool value)
+void TunerViewGL::setLed(int index, bool value)
 {
   leds[index]->setOn(value);
 }
 
-void TunerView::doUpdate()
+void TunerViewGL::doUpdate()
 {
   Channel *active = gdata->getActiveChannel();
   if (active == NULL || !active->hasAnalysisData()) {
-    tunerWidget->doUpdate(0.0);
+    tunerWidgetGL->doUpdate(0.0);
     return;
   }
   ChannelLocker channelLocker(active);
@@ -154,5 +154,5 @@ void TunerView::doUpdate()
     pitch = active->averagePitch(startChunk, stopChunk);
   }
 
-  tunerWidget->doUpdate(pitch);
+  tunerWidgetGL->doUpdate(pitch);
 }

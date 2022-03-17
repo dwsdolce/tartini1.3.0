@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratowidget.cpp  -  description
+                          vibratowidgetGL.cpp  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005-2007 by Philip McLeod
@@ -15,7 +15,7 @@
 #include <QPainter>
 #include <QOpenGLContext>
 
-#include "vibratowidget.h"
+#include "vibratowidgetGL.h"
 #include "GL/glu.h"
 #include "gdata.h"
 #include "channel.h"
@@ -23,7 +23,7 @@
 //#include "myglfonts.h"
 #include "musicnotes.h"
 
-VibratoWidget::VibratoWidget(QWidget *parent, int nls)
+VibratoWidgetGL::VibratoWidgetGL(QWidget *parent, int nls)
   : QOpenGLWidget(parent)
 {
   noteLabelOffset = nls; // The horizontal space in pixels a note label requires
@@ -39,7 +39,7 @@ VibratoWidget::VibratoWidget(QWidget *parent, int nls)
   vibratoFont.setPointSize(9);
 }
 
-VibratoWidget::~VibratoWidget()
+VibratoWidgetGL::~VibratoWidgetGL()
 {
   // Remove display lists
     QOpenGLContext* c = QOpenGLContext::currentContext();
@@ -58,7 +58,7 @@ VibratoWidget::~VibratoWidget()
   glDeleteLists(maximaMinimaPoints, 1);
 }
 
-void VibratoWidget::initializeGL()
+void VibratoWidgetGL::initializeGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor(double(bg.red()) / 255.0, double(bg.green()) / 255.0, double(bg.blue()) / 255.0, 0.0);
@@ -79,7 +79,7 @@ void VibratoWidget::initializeGL()
   maximaMinimaPoints = glGenLists(1);
 }
 
-void VibratoWidget::resizeGL(int w, int h)
+void VibratoWidgetGL::resizeGL(int w, int h)
 {
   glViewport(0, 0, (GLint)w, (GLint)h);
 
@@ -90,7 +90,7 @@ void VibratoWidget::resizeGL(int w, int h)
   update();
 }
 
-void VibratoWidget::paintGL()
+void VibratoWidgetGL::paintGL()
 {
 
   doUpdate();
@@ -158,7 +158,7 @@ void VibratoWidget::paintGL()
   }
 }
 
-void VibratoWidget::doUpdate()
+void VibratoWidgetGL::doUpdate()
 {
   noteLabelCounter = 0;
 
@@ -777,19 +777,19 @@ void VibratoWidget::doUpdate()
   }
 }
 
-void VibratoWidget::setZoomFactorX(double x)
+void VibratoWidgetGL::setZoomFactorX(double x)
 {
   zoomFactorX = 2*pow10(log2(x/25));
   update();
 }
 
-void VibratoWidget::setZoomFactorY(double y)
+void VibratoWidgetGL::setZoomFactorY(double y)
 {
   zoomFactorY = y;
   update();
 }
 
-void VibratoWidget::setOffsetY(int value)
+void VibratoWidgetGL::setOffsetY(int value)
 {
   offsetY = value;
   update();

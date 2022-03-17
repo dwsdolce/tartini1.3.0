@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratoview.cpp  -  description
+                          vibratoviewGL.cpp  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005-2007 by Philip McLeod
@@ -25,12 +25,13 @@
     9. Done. Just rebuild the project (regenerating the Makefile)
 */
 
-#include "vibratoview.h"
-#include "vibratospeedwidget.h"
-#include "vibratocirclewidget.h"
-#include "vibratoperiodwidget.h"
+#include "vibratoviewGL.h"
+
+#include "vibratospeedwidgetGL.h"
+#include "vibratocirclewidgetGL.h"
+#include "vibratoperiodwidgetGL.h"
 #include "vibratotimeaxis.h"
-#include "vibratowidget.h"
+#include "vibratowidgetGL.h"
 #include "ledindicator.h"
 #include "timeaxis.h"
 #include "gdata.h"
@@ -46,12 +47,10 @@
 #include <qwt_wheel.h>
 
 
-VibratoView::VibratoView( int viewID_, QWidget *parent )
+VibratoViewGL::VibratoViewGL( int viewID_, QWidget *parent )
  : ViewWidget( viewID_, parent)
 {
   int noteLabelOffset = 28;
-
-  setWindowTitle("Vibrato View");
 
   QGridLayout *mainLayout = new QGridLayout;
 
@@ -72,9 +71,10 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   QFrame *speedFrame = new QFrame;
   speedFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout *speedFrameLayout = new QVBoxLayout;
-  vibratoSpeedWidget = new VibratoSpeedWidget(0);
-  vibratoSpeedWidget->setWhatsThis("Indicates the instantaneous speed and peek-to-peek amplitude of the vibrato. Note: 100 cents = 1 semi-tone (even tempered).");
-  speedFrameLayout->addWidget(vibratoSpeedWidget);
+
+  vibratoSpeedWidgetGL = new VibratoSpeedWidgetGL(0);
+  vibratoSpeedWidgetGL->setWhatsThis("Indicates the instantaneous speed and peek-to-peek amplitude of the vibrato. Note: 100 cents = 1 semi-tone (even tempered).");
+  speedFrameLayout->addWidget(vibratoSpeedWidgetGL);
   speedFrameLayout->setMargin(0);
   speedFrameLayout->setSpacing(0);
   speedFrame->setLayout(speedFrameLayout);
@@ -103,10 +103,10 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   QFrame *circleFrame = new QFrame;
   circleFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout *circleFrameLayout = new QVBoxLayout;
-  vibratoCircleWidget = new VibratoCircleWidget(0);
-  vibratoCircleWidget->setWhatsThis("Each cycle of your vibrato is represented by a 2D shape. A current cycle produces a circle if it has a perfect sine wave shape. "
+  vibratoCircleWidgetGL = new VibratoCircleWidgetGL(0);
+  vibratoCircleWidgetGL->setWhatsThis("Each cycle of your vibrato is represented by a 2D shape. A current cycle produces a circle if it has a perfect sine wave shape. "
     "Going outside the line indicates your phase is ahead of a sine-wave, and inside the line slower. Note: The shape of one cycle is blended into the next.");
-  circleFrameLayout->addWidget(vibratoCircleWidget);
+  circleFrameLayout->addWidget(vibratoCircleWidgetGL);
   circleFrameLayout->setMargin(0);
   circleFrameLayout->setSpacing(0);
   circleFrame->setLayout(circleFrameLayout);
@@ -135,9 +135,9 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   QFrame *periodFrame = new QFrame;
   periodFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout *periodFrameLayout = new QVBoxLayout;
-  vibratoPeriodWidget = new VibratoPeriodWidget(0);
-  vibratoPeriodWidget->setWhatsThis("A detailed view of the current vibrato period. You can turn on and off some different options with the buttons. ");
-  periodFrameLayout->addWidget(vibratoPeriodWidget);
+  vibratoPeriodWidgetGL = new VibratoPeriodWidgetGL(0);
+  vibratoPeriodWidgetGL->setWhatsThis("A detailed view of the current vibrato period. You can turn on and off some different options with the buttons. ");
+  periodFrameLayout->addWidget(vibratoPeriodWidgetGL);
   periodFrameLayout->setMargin(0);
   periodFrameLayout->setSpacing(0);
   periodFrame->setLayout(periodFrameLayout);
@@ -223,12 +223,12 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   QFrame *vibratoFrame = new QFrame;
   vibratoFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
   QVBoxLayout *vibratoFrameLayout = new QVBoxLayout;
-  vibratoWidget = new VibratoWidget(0, noteLabelOffset);
-  vibratoWidget->setWhatsThis("Shows the vibrato of the current note. "
+  vibratoWidgetGL = new VibratoWidgetGL(0, noteLabelOffset);
+  vibratoWidgetGL->setWhatsThis("Shows the vibrato of the current note. "
     "Grey shading indicates the vibrato envelope. The black line indicates the center pitch. "
     "Other shading indicates half period times. "
     "If there is no vibrato (i.e. no wobbling frequency) it will probably just look a mess. ");
-  vibratoFrameLayout->addWidget(vibratoWidget);
+  vibratoFrameLayout->addWidget(vibratoWidgetGL);
   vibratoFrameLayout->setMargin(0);
   vibratoFrameLayout->setSpacing(0);
   vibratoFrame->setLayout(vibratoFrameLayout);
@@ -285,7 +285,6 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
 
   bottomBottomLayout->setMargin(1);
   bottomBottomLayout->setSpacing(1);
-
   bottomLayout->addWidget(vibratoTimeAxis, 0, 0, 1, 1);
   bottomLayout->addWidget(vibratoFrame, 1, 0, 1, 1);
   bottomLayout->addLayout(bottomRightLayout, 1, 1, 1, 1);
@@ -305,41 +304,38 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
 
   // Make signal/slot connections
 
-  connect(gdata, SIGNAL(onChunkUpdate()), vibratoSpeedWidget, SLOT(doUpdate()));
-
-  connect(gdata, SIGNAL(onChunkUpdate()), vibratoCircleWidget, SLOT(doUpdate()));
-
-  connect(gdata, SIGNAL(onChunkUpdate()), vibratoPeriodWidget, SLOT(doUpdate()));
-
+  connect(gdata, SIGNAL(onChunkUpdate()), vibratoSpeedWidgetGL, SLOT(doUpdate()));
+  connect(gdata, SIGNAL(onChunkUpdate()), vibratoCircleWidgetGL, SLOT(doUpdate()));
+  connect(gdata, SIGNAL(onChunkUpdate()), vibratoPeriodWidgetGL, SLOT(doUpdate()));
   connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoTimeAxis, SLOT(update()));
-
-  connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoWidget, SLOT(updateGL()));
+  connect(gdata->view, SIGNAL(onFastUpdate(double)), vibratoWidgetGL, SLOT(update()));
 
   // The vertical scrollbar
-  connect(scrollBarV, SIGNAL(valueChanged(int)), vibratoWidget, SLOT(setOffsetY(int)));
+  connect(scrollBarV, SIGNAL(valueChanged(int)), vibratoWidgetGL, SLOT(setOffsetY(int)));
 
   // The zoomwheels
-  connect(zoomWheelH, SIGNAL(valueChanged(double)), vibratoWidget, SLOT(setZoomFactorX(double)));
+  connect(zoomWheelH, SIGNAL(valueChanged(double)), vibratoWidgetGL, SLOT(setZoomFactorX(double)));
   connect(zoomWheelH, SIGNAL(valueChanged(double)), vibratoTimeAxis, SLOT(setZoomFactorX(double)));
-  connect(zoomWheelV, SIGNAL(valueChanged(double)), vibratoWidget, SLOT(setZoomFactorY(double)));
+  connect(zoomWheelV, SIGNAL(valueChanged(double)), vibratoWidgetGL, SLOT(setZoomFactorY(double)));
 
   // The buttons for the period view
-  connect(smoothedPeriodsButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setSmoothedPeriods(bool)));
-  connect(drawSineReferenceButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setDrawSineReference(bool)));
-  connect(sineStyleButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setSineStyle(bool)));
-  connect(drawPrevPeriodsButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setDrawPrevPeriods(bool)));
-  connect(periodScalingButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setPeriodScaling(bool)));
-  connect(drawComparisonButton, SIGNAL(toggled(bool)), vibratoPeriodWidget, SLOT(setDrawComparison(bool)));
+  connect(smoothedPeriodsButton, SIGNAL(toggled(bool)), vibratoPeriodWidgetGL, SLOT(setSmoothedPeriods(bool)));
+  connect(drawSineReferenceButton, SIGNAL(toggled(bool)), vibratoPeriodWidgetGL, SLOT(setDrawSineReference(bool)));
+  connect(sineStyleButton, SIGNAL(toggled(bool)), vibratoPeriodWidgetGL, SLOT(setSineStyle(bool)));
+  connect(drawPrevPeriodsButton, SIGNAL(toggled(bool)), vibratoPeriodWidgetGL, SLOT(setDrawPrevPeriods(bool)));
+  connect(periodScalingButton, SIGNAL(toggled(bool)), vibratoPeriodWidgetGL, SLOT(setPeriodScaling(bool)));
+  connect(drawComparisonButton, SIGNAL(toggled(bool)), vibratoPeriodWidgetGL, SLOT(setDrawComparison(bool)));
 
 }
 
-VibratoView::~VibratoView()
+VibratoViewGL::~VibratoViewGL()
 {
-  delete vibratoWidget;
+
+  delete vibratoWidgetGL;
 }
 
 /*
-void VibratoView::setLed(int index, bool value)
+void VibratoViewGL::setLed(int index, bool value)
 {
   leds[index]->setOn(value);
 }

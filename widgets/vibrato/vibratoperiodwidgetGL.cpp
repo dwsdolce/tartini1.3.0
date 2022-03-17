@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratoperiodwidget.cpp  -  description
+                          vibratoperiodwidgetGL.cpp  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,14 +12,14 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#include "vibratoperiodwidget.h"
+#include "vibratoperiodwidgetGL.h"
 #include <QOpenGLContext>
 #include "GL/glu.h"
 #include "gdata.h"
 #include "channel.h"
 #include "analysisdata.h"
 
-VibratoPeriodWidget::VibratoPeriodWidget(QWidget *parent)
+VibratoPeriodWidgetGL::VibratoPeriodWidgetGL(QWidget *parent)
   : QOpenGLWidget(parent)
 {
   prevLeftMinimumTime = -1;
@@ -33,7 +33,7 @@ VibratoPeriodWidget::VibratoPeriodWidget(QWidget *parent)
   drawComparison = false;
 }
 
-VibratoPeriodWidget::~VibratoPeriodWidget()
+VibratoPeriodWidgetGL::~VibratoPeriodWidgetGL()
 {
   // Remove display lists
     QOpenGLContext* c = QOpenGLContext::currentContext();
@@ -50,7 +50,7 @@ VibratoPeriodWidget::~VibratoPeriodWidget()
   glDeleteLists(comparisonReference, 1);
 }
 
-void VibratoPeriodWidget::initializeGL()
+void VibratoPeriodWidgetGL::initializeGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
@@ -74,7 +74,7 @@ void VibratoPeriodWidget::initializeGL()
   comparisonReference = glGenLists(1);
 }
 
-void VibratoPeriodWidget::resizeGL(int w, int h)
+void VibratoPeriodWidgetGL::resizeGL(int w, int h)
 {
   glViewport(0, 0, (GLint)w, (GLint)h);
 
@@ -98,7 +98,7 @@ void VibratoPeriodWidget::resizeGL(int w, int h)
   doUpdate();
 }
 
-void VibratoPeriodWidget::paintGL()
+void VibratoPeriodWidgetGL::paintGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
@@ -127,7 +127,7 @@ void VibratoPeriodWidget::paintGL()
 
 }
 
-void VibratoPeriodWidget::doUpdate()
+void VibratoPeriodWidgetGL::doUpdate()
 {
   Channel *active = gdata->getActiveChannel();
 
@@ -415,42 +415,42 @@ void VibratoPeriodWidget::doUpdate()
   }
 }
 
-void VibratoPeriodWidget::setSmoothedPeriods(bool value)
+void VibratoPeriodWidgetGL::setSmoothedPeriods(bool value)
 {
   smoothedPeriods = value;
   prevLeftMinimumTime = -1;
   doUpdate();
 }
 
-void VibratoPeriodWidget::setDrawSineReference(bool value)
+void VibratoPeriodWidgetGL::setDrawSineReference(bool value)
 {
   drawSineReference = value;
   prevLeftMinimumTime = -1;
   doUpdate();
 }
 
-void VibratoPeriodWidget::setSineStyle(bool value)
+void VibratoPeriodWidgetGL::setSineStyle(bool value)
 {
   sineStyle = value;
   prevLeftMinimumTime = -1;
   doUpdate();
 }
 
-void VibratoPeriodWidget::setDrawPrevPeriods(bool value)
+void VibratoPeriodWidgetGL::setDrawPrevPeriods(bool value)
 {
   drawPrevPeriods = value;
   prevLeftMinimumTime = -1;
   doUpdate();
 }
 
-void VibratoPeriodWidget::setPeriodScaling(bool value)
+void VibratoPeriodWidgetGL::setPeriodScaling(bool value)
 {
   periodScaling = value;
   prevLeftMinimumTime = -1;
   doUpdate();
 }
 
-void VibratoPeriodWidget::setDrawComparison(bool value)
+void VibratoPeriodWidgetGL::setDrawComparison(bool value)
 {
   drawComparison = value;
   prevLeftMinimumTime = -1;

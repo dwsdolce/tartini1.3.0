@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratocirclewidget.h  -  description
+                          vibratospeedwidgetGL.h  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,39 +12,56 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#ifndef VIBRATOCIRCLEWIDGET_H
-#define VIBRATOCIRCLEWIDGET_H
+#ifndef VIBRATOSPEEDWIDGETGL_H
+#define VIBRATOSPEEDWIDGETGL_H
 
 #include <QOpenGLWidget>
 
-class VibratoCircleWidget : public QOpenGLWidget {
+class VibratoSpeedWidgetGL : public QOpenGLWidget {
   Q_OBJECT
 
   public:
-    VibratoCircleWidget(QWidget *parent);
-    virtual ~VibratoCircleWidget();
+    VibratoSpeedWidgetGL(QWidget *parent);
+    virtual ~VibratoSpeedWidgetGL();
 
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
 
     QSize minimumSizeHint() const { return QSize(100, 75); }
-    int getType() { return type; }
 
   private:
-    float accuracy;
-    int type;
-    int lastPeriodToDraw;
+    //data goes here
+    float speedValueToDraw, widthValueToDraw;
+    float prevVibratoSpeed, prevVibratoWidth;
 
-    GLuint referenceCircle;
-    GLuint currentPeriod;
-    GLuint prevPeriods[6];
+    QFont speedWidthFont;
+
+    int widthLimit;
+    int prevNoteNumber;
+
+    float hzLabelX, hzLabelY;
+    float centsLabelX, centsLabelY;
+
+    struct labelStruct {
+      QString label;
+      float x;
+      float y;
+    };
+
+    int speedLabelCounter;
+    labelStruct speedLabels[100];
+
+    int widthLabelCounter;
+    labelStruct widthLabels[100];
+
+    GLuint speedDial;
+    GLuint speedNeedle;
+    GLuint widthDial;
+    GLuint widthNeedle;
 
   public slots:
     void doUpdate();
-    void setAccuracy(int value);
-    void setType(int value);
-
 };
 
 #endif

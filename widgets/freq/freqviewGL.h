@@ -1,5 +1,5 @@
 /***************************************************************************
-                          freqview.h  -  description
+                          freqviewGL.h  -  description
                              -------------------
     begin                : Fri Dec 10 2004
     copyright            : (C) 2004-2005 by Philip McLeod
@@ -13,23 +13,23 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 
-#ifndef FREQVIEW_H
-#define FREQVIEW_H
+#ifndef FREQVIEWGL_H
+#define FREQVIEWGL_H
 
 #include "viewwidget.h"
 
-class FreqWidget;
-class AmplitudeWidget;
+class FreqWidgetGL;
+class AmplitudeWidgetGL;
 class MyScrollBar;
 class TimeAxis;
 class QwtWheel;
 
-class FreqView: public ViewWidget {
+class FreqViewGL: public ViewWidget {
   Q_OBJECT
 
   public:
-    FreqView(int viewID_, QWidget *parent = 0);
-    virtual ~FreqView();
+    FreqViewGL(int viewID_, QWidget *parent = 0);
+    virtual ~FreqViewGL();
 
     QSize sizeHint() const { return QSize(600, 560); }
 
@@ -39,8 +39,8 @@ class FreqView: public ViewWidget {
     void setAmplitudeZoom(double);
   
   private:
-    FreqWidget *freqWidget;
-    AmplitudeWidget *amplitudeWidget;
+    FreqWidgetGL *freqWidgetGL;
+    AmplitudeWidgetGL *amplitudeWidgetGL;
     MyScrollBar *freqScrollBar;
     MyScrollBar *amplitudeScrollBar;
     QwtWheel *freqWheelY;

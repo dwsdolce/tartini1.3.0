@@ -61,10 +61,12 @@
 
 // Views
 #include "openfiles.h"
+#include "freqviewGL.h"
 #include "freqview.h"
 #include "summaryview.h"
 #include "pitchcompassview.h"
 #include "volumemeterview.h"
+#include "tunerviewGL.h"
 #include "tunerview.h"
 #include "hblockview.h"
 #include "hstackview.h"
@@ -78,6 +80,7 @@
 #include "cepstrumview.h"
 #include "debugview.h"
 #include "scoreview.h"
+#include "vibratoviewGL.h"
 #include "vibratoview.h"
 #include "musicnotes.h"
 
@@ -136,12 +139,12 @@ MainWindow *mainWindow;
 ViewData viewData[NUM_VIEWS] = {
                                /*ViewData(title,               menuName,              className,           menu type);*/
                                  ViewData("File List",         "&File List",          "OpenFiles",         0),
+                                 ViewData("Pitch Contour GL",  "Pitch Contour GL",    "FreqViewGL",        0),
                                  ViewData("Pitch Contour",     "&Pitch Contour",      "FreqView",          0),
-#ifdef DWS_UNUSED
-                                 ViewData("Chromatic Tuner UNUSED",   "&Chromatic Tuner_UNUSED",    "TunerView",         0),
-#endif
-                                 ViewData("Chromatic Tuner",    "&Chromatic Tuner",  "TunerView_ nonOpenGL",         0),
+                                 ViewData("Chromatic Tuner GL", "Chromatic Tuner GL", "TunerViewGL",       0),
+                                 ViewData("Chromatic Tuner",    "&Chromatic Tuner",  "TunerView",          0),
                                  //DWS ViewData("Harmonic Track",    "3D Harmonic &Track",  "HTrackView",        0),
+                                 ViewData("Vibrato View GL",   "Vibrato View GL",     "VibratoViewGL",     0),
                                  ViewData("Vibrato View",      "V&ibrato View",       "VibratoView",       0),
                                  ViewData("Musical Score",     "&Musical Score",      "ScoreView",         0),
                                  ViewData("Oscilloscope",      "&Oscilloscope",       "WaveView",          1),
@@ -850,6 +853,14 @@ QWidget *MainWindow::openView(int viewID)
     case VIEW_OPEN_FILES:
       w = new OpenFiles(viewID, parent);
     break;
+    case VIEW_FREQ_GL:
+    {
+      FreqViewGL* freqViewGL = new FreqViewGL(viewID, parent);
+      connect(this, SIGNAL(zoomInPressed()), freqViewGL, SLOT(zoomIn()));
+      connect(this, SIGNAL(zoomOutPressed()), freqViewGL, SLOT(zoomOut()));
+      w = freqViewGL;
+    }
+    break;
     case VIEW_FREQ:
 	  {
         FreqView *freqView = new FreqView(viewID, parent);
@@ -867,6 +878,9 @@ QWidget *MainWindow::openView(int viewID)
    case VIEW_VOLUME_METER:
       w = new VolumeMeterView(viewID, parent);
       break;
+   case VIEW_TUNER_GL:
+     w = new TunerViewGL(viewID, parent);
+     break;
    case VIEW_TUNER:
        w = new TunerView(viewID, parent);
        break;
@@ -909,6 +923,9 @@ QWidget *MainWindow::openView(int viewID)
    case VIEW_SCORE:
       w = new ScoreView(viewID, parent);
       break;
+   case VIEW_VIBRATO_GL:
+     w = new VibratoViewGL(viewID, parent);
+     break;
    case VIEW_VIBRATO:
       w = new VibratoView(viewID, parent);
       break;
@@ -927,31 +944,31 @@ void MainWindow::newViewUpdate()
 {
   newViewMenu->clear();
 
-  QMenu *technicalMenu = new QMenu("Technical");
-  QMenu *experimentalMenu = new QMenu("Experimental");
-  QMenu *otherMenu = new QMenu("Other");
+  QMenu* technicalMenu = new QMenu("Technical");
+  QMenu* experimentalMenu = new QMenu("Experimental");
+  QMenu* otherMenu = new QMenu("Other");
 
   QList<QMdiSubWindow*> opened = mdiArea->subWindowList();
 
-  for(int j=0; j < NUM_VIEWS; j++) {
-    QAction *action;
-	if(viewData[j].menuType == 0) action = newViewMenu->addAction(viewData[j].menuName);
-	else if(viewData[j].menuType == 1) action = technicalMenu->addAction(viewData[j].menuName);
-	else if(viewData[j].menuType == 2) action = experimentalMenu->addAction(viewData[j].menuName);
-    else if(viewData[j].menuType == 3) action = otherMenu->addAction(viewData[j].menuName);
-	else continue;
+  for (int j = 0; j < NUM_VIEWS; j++) {
+    QAction* action;
+    if (viewData[j].menuType == 0) action = newViewMenu->addAction(viewData[j].menuName);
+    else if (viewData[j].menuType == 1) action = technicalMenu->addAction(viewData[j].menuName);
+    else if (viewData[j].menuType == 2) action = experimentalMenu->addAction(viewData[j].menuName);
+    else if (viewData[j].menuType == 3) action = otherMenu->addAction(viewData[j].menuName);
+    else continue;
 
-	connect(action, SIGNAL(triggered()), createSignalMapper, SLOT(map()));
-	createSignalMapper->setMapping(action, j);
+    connect(action, SIGNAL(triggered()), createSignalMapper, SLOT(map()));
+    createSignalMapper->setMapping(action, j);
     QList<QMdiSubWindow*>::ConstIterator it = opened.begin();
-	for(; it != opened.end(); it++) {
-        QString cn = QString((*it)->widget()->metaObject()->className());
-        QString vdcn = viewData[j].className;
-	  if(QString((*it)->widget()->metaObject()->className()) == viewData[j].className) {
-		action->setEnabled(false);
-		break;
-	  }
-	}
+    for (; it != opened.end(); it++) {
+      QString cn = QString((*it)->widget()->metaObject()->className());
+      QString vdcn = viewData[j].className;
+      if (QString((*it)->widget()->metaObject()->className()) == viewData[j].className) {
+        action->setEnabled(false);
+        break;
+      }
+    }
   }
   newViewMenu->addSeparator();
   newViewMenu->addMenu(technicalMenu);
@@ -1311,9 +1328,6 @@ bool MainWindow::loadViewGeometry()
   if(counter == 0) {
     openView(VIEW_OPEN_FILES);
     openView(VIEW_FREQ);
-#ifdef DWS_UNUSED
-    openView(VIEW_TUNER);
-#endif
     openView(VIEW_TUNER);
     openView(VIEW_VIBRATO);
     return false;

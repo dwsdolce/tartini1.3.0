@@ -17,9 +17,7 @@
 #define FREQVIEW_H
 
 #include "viewwidget.h"
-//#include "freqdrawwidget.h"
 
-class FreqDrawWidget;
 class FreqWidgetGL;
 class AmplitudeWidget;
 class MyScrollBar;
@@ -41,8 +39,6 @@ class FreqView: public ViewWidget {
     void setAmplitudeZoom(double);
   
   private:
-    //FreqDrawWidget *freqDrawWidget;
-    //FreqDrawWidget *freqWidgetGL;
     FreqWidgetGL *freqWidgetGL;
     AmplitudeWidget *amplitudeWidget;
     MyScrollBar *freqScrollBar;

@@ -1,5 +1,5 @@
 /***************************************************************************
-						  freqwidgetGL.cpp  -  description
+						  freqwidget.cpp  -  description
 							 -------------------
 	begin                : Fri Dec 10 2004
 	copyright            : (C) 2004-2005 by Philip McLeod
@@ -33,7 +33,7 @@
 #include "pics/zoomxout.xpm"
 #include "pics/zoomyout.xpm"
 
-#include "freqwidgetGL.h"
+#include "freqwidget.h"
 #include "mygl.h"
 #include "gdata.h"
 #include "channel.h"
@@ -46,7 +46,7 @@
 #define WHEEL_DELTA 120
 #endif
 
-FreqWidgetGL::FreqWidgetGL()
+FreqWidget::FreqWidget()
 {
 	setMouseTracking(true);
 
@@ -61,7 +61,7 @@ FreqWidgetGL::FreqWidgetGL()
 	gdata->view->setPixelHeight(height());
 }
 
-FreqWidgetGL::~FreqWidgetGL()
+FreqWidget::~FreqWidget()
 {
 	QOpenGLContext* c = QOpenGLContext::currentContext();
 	if (c) {
@@ -104,7 +104,7 @@ FreqWidgetGL::~FreqWidgetGL()
 	doneCurrent();
 }
 
-void FreqWidgetGL::initializeGL()
+void FreqWidget::initializeGL()
 {
 	initializeOpenGLFunctions();
 
@@ -161,7 +161,7 @@ void FreqWidgetGL::initializeGL()
 	m_vbo_time_line.create();
 }
 
-void FreqWidgetGL::resizeEvent(QResizeEvent* q)
+void FreqWidget::resizeEvent(QResizeEvent* q)
 {
 	QOpenGLWidget::resizeEvent(q);
 
@@ -183,7 +183,7 @@ void FreqWidgetGL::resizeEvent(QResizeEvent* q)
 	v->setViewBottom(newYBottom);
 }
 
-void FreqWidgetGL::resizeGL(int width, int height)
+void FreqWidget::resizeGL(int width, int height)
 {
 	glViewport(0, 0, width, height);
 
@@ -217,7 +217,7 @@ void FreqWidgetGL::resizeGL(int width, int height)
 	m_program_line_color.release();
 }
 
-void FreqWidgetGL::drawChannelFilledGL(Channel* ch, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType)
+void FreqWidget::drawChannelFilledGL(Channel* ch, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType)
 {
 	viewBottom += gdata->semitoneOffset();
 	ZoomLookup* z;
@@ -490,7 +490,7 @@ void FreqWidgetGL::drawChannelFilledGL(Channel* ch, double leftTime, double curr
 	}
 }
 
-void FreqWidgetGL::drawReferenceLinesGL(QPainter &p, double viewBottom, double zoomY, int /*viewType*/)
+void FreqWidget::drawReferenceLinesGL(QPainter &p, double viewBottom, double zoomY, int /*viewType*/)
 {
   // Draw the lines and notes
 	QFontMetrics fm = fontMetrics();
@@ -635,7 +635,7 @@ void FreqWidgetGL::drawReferenceLinesGL(QPainter &p, double viewBottom, double z
 	MyGL::DrawShape(m_program, m_vao_ref_lines[RefVertLight], m_vbo_ref_lines[RefVertLight], refVertLight.count(), GL_LINES, QColor(25, 125, 170, 128));
 }
 
-void FreqWidgetGL::drawChannelGL(Channel* ch, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType)
+void FreqWidget::drawChannelGL(Channel* ch, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY, int viewType)
 {
 	viewBottom += gdata->semitoneOffset();
 	float lineWidth = 3.0f;
@@ -788,7 +788,7 @@ void FreqWidgetGL::drawChannelGL(Channel* ch, double leftTime, double currentTim
 	}
 }
 
-void FreqWidgetGL::paintGL()
+void FreqWidget::paintGL()
 {
 	QPainter p;
 	p.begin(this);
@@ -873,7 +873,7 @@ void FreqWidgetGL::paintGL()
 	p.end();
 }
 
-Channel* FreqWidgetGL::channelAtPixel(int x, int y)
+Channel* FreqWidget::channelAtPixel(int x, int y)
 {
 	double time = mouseTime(x);
 	float pitch = mousePitch(y);
@@ -897,7 +897,7 @@ Channel* FreqWidgetGL::channelAtPixel(int x, int y)
  *
  * @param e the QMouseEvent to respond to.
  */
-void FreqWidgetGL::mousePressEvent(QMouseEvent* e)
+void FreqWidget::mousePressEvent(QMouseEvent* e)
 {
 	View* view = gdata->view;
 	int timeX = toInt(view->viewOffset() / view->zoomX());
@@ -947,7 +947,7 @@ void FreqWidgetGL::mousePressEvent(QMouseEvent* e)
 	}
 }
 
-void FreqWidgetGL::mouseMoveEvent(QMouseEvent* e)
+void FreqWidget::mouseMoveEvent(QMouseEvent* e)
 {
 	View* view = gdata->view;
 	int pixelAtCurrentTimeX = toInt(view->viewOffset() / view->zoomX());
@@ -977,7 +977,7 @@ void FreqWidgetGL::mouseMoveEvent(QMouseEvent* e)
 	}
 }
 
-void FreqWidgetGL::mouseReleaseEvent(QMouseEvent*)
+void FreqWidget::mouseReleaseEvent(QMouseEvent*)
 {
 	dragMode = DragNone;
 }
@@ -987,7 +987,7 @@ void FreqWidgetGL::mouseReleaseEvent(QMouseEvent*)
  @param x the mouse's x co-ordinate
  @return the time the mouse is positioned at.
  */
-double FreqWidgetGL::mouseTime(int x)
+double FreqWidget::mouseTime(int x)
 {
 	return gdata->view->viewLeft() + gdata->view->zoomX() * x;
 
@@ -998,12 +998,12 @@ double FreqWidgetGL::mouseTime(int x)
  @param x the mouse's y co-ordinate
  @return the pitch the mouse is positioned at.
  */
-double FreqWidgetGL::mousePitch(int y)
+double FreqWidget::mousePitch(int y)
 {
 	return gdata->view->viewBottom() + gdata->view->zoomY() * (height() - y);
 }
 
-void FreqWidgetGL::wheelEvent(QWheelEvent* e)
+void FreqWidget::wheelEvent(QWheelEvent* e)
 {
 	View* view = gdata->view;
 	double amount = double(e->delta()) / WHEEL_DELTA * 0.15;
@@ -1044,7 +1044,7 @@ void FreqWidgetGL::wheelEvent(QWheelEvent* e)
  *
  * @param k the QKeyEvent to respond to.
  */
-void FreqWidgetGL::keyPressEvent(QKeyEvent* k)
+void FreqWidget::keyPressEvent(QKeyEvent* k)
 {
 	switch (k->key()) {
 		case Qt::Key_Control:
@@ -1074,7 +1074,7 @@ void FreqWidgetGL::keyPressEvent(QKeyEvent* k)
  *
  * @param k the QKeyEvent to respond to.
  */
-void FreqWidgetGL::keyReleaseEvent(QKeyEvent* k)
+void FreqWidget::keyReleaseEvent(QKeyEvent* k)
 {
 	switch (k->key()) {
 		case Qt::Key_Control: // Unset the cursor if the control or alt keys were released, ignore otherwise
@@ -1096,7 +1096,7 @@ void FreqWidgetGL::keyReleaseEvent(QKeyEvent* k)
 	}
 }
 
-void FreqWidgetGL::leaveEvent(QEvent* e)
+void FreqWidget::leaveEvent(QEvent* e)
 {
 	unsetCursor();
 	QWidget::leaveEvent(e);
@@ -1108,7 +1108,7 @@ void FreqWidgetGL::leaveEvent(QEvent* e)
   @param baseX  The number of chunks each pixel represents (can include a fraction part)
   @return false if a zoomElement can't be calculated, else true
 */
-bool FreqWidgetGL::calcZoomElement(Channel* ch, ZoomElement& ze, int baseElement, double baseX)
+bool FreqWidget::calcZoomElement(Channel* ch, ZoomElement& ze, int baseElement, double baseX)
 {
 	int startChunk = toInt(double(baseElement) * baseX);
 	int finishChunk = toInt(double(baseElement + 1) * baseX) + 1;
@@ -1140,7 +1140,7 @@ bool FreqWidgetGL::calcZoomElement(Channel* ch, ZoomElement& ze, int baseElement
 	return true;
 }
 
-void FreqWidgetGL::setChannelVerticalView(Channel* ch, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY)
+void FreqWidget::setChannelVerticalView(Channel* ch, double leftTime, double currentTime, double zoomX, double viewBottom, double zoomY)
 {
 	ZoomLookup* z = &ch->normalZoomLookup;
 

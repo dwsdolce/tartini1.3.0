@@ -88,13 +88,17 @@ HEADERS += main.h \
   widgets/mainwindow/mainwindow.h \
   widgets/openfiles/openfiles.h \
   widgets/freq/freqwidgetGL.h \
+  widgets/freq/freqwidget.h \
+  widgets/freq/freqviewGL.h \
   widgets/freq/freqview.h \
   widgets/pitchcompass/pitchcompassview.h \
   widgets/pitchcompass/pitchcompassdrawwidget.h \
   widgets/summary/summarydrawwidget.h \
   widgets/summary/summaryview.h \
   widgets/tuner/tunerview.h \
+  widgets/tuner/tunerviewGL.h \
   widgets/tuner/tunerwidget.h \
+  widgets/tuner/tunerwidgetGL.h \
   widgets/hblock/hblockview.h \
   widgets/hblock/hblockwidget.h \
   widgets/hstack/hstackview.h \
@@ -128,6 +132,7 @@ HEADERS += main.h \
   dialogs/opendialog.h \
   general/equalloudness.h \
   widgets/piano/pianowidget.h \
+  widgets/freq/amplitudewidgetGL.h \
   widgets/freq/amplitudewidget.h \
   widgets/piano/pianoview.h \
   widgets/htrack/htrackview.h \
@@ -152,11 +157,16 @@ HEADERS += main.h \
   widgets/score/scoresegmentiterator.h \
   dialogs/tartinisettingsdialog.h \
   widgets/vibrato/vibratowidget.h \
+  widgets/vibrato/vibratowidgetGL.h \
   widgets/vibrato/vibratoview.h \
+  widgets/vibrato/vibratoviewGL.h \
   widgets/vibrato/vibratotimeaxis.h \
   widgets/vibrato/vibratospeedwidget.h \
+  widgets/vibrato/vibratospeedwidgetGL.h \
   widgets/vibrato/vibratoperiodwidget.h \
+  widgets/vibrato/vibratoperiodwidgetGL.h \
   widgets/vibrato/vibratocirclewidget.h \
+  widgets/vibrato/vibratocirclewidgetGL.h \
   include/safe_bool.h \
   include/SmartPtr.h \
   general/prony.h \
@@ -188,13 +198,17 @@ SOURCES += main.cpp \
   widgets/mainwindow/mainwindow.cpp \
   widgets/openfiles/openfiles.cpp \
   widgets/freq/freqwidgetGL.cpp \
+  widgets/freq/freqwidget.cpp \
+  widgets/freq/freqviewGL.cpp \
   widgets/freq/freqview.cpp \
   widgets/pitchcompass/pitchcompassview.cpp \
   widgets/pitchcompass/pitchcompassdrawwidget.cpp \
   widgets/summary/summarydrawwidget.cpp \
   widgets/summary/summaryview.cpp \
   widgets/tuner/tunerview.cpp \
+  widgets/tuner/tunerviewGL.cpp \
   widgets/tuner/tunerwidget.cpp \
+  widgets/tuner/tunerwidgetGL.cpp \
   widgets/hblock/hblockview.cpp \
   widgets/hblock/hblockwidget.cpp \
   widgets/hstack/hstackview.cpp \
@@ -219,6 +233,7 @@ SOURCES += main.cpp \
   dialogs/opendialog.cpp \
   general/equalloudness.cpp \
   widgets/piano/pianowidget.cpp \
+  widgets/freq/amplitudewidgetGL.cpp \
   widgets/freq/amplitudewidget.cpp \
   widgets/piano/pianoview.cpp \
   widgets/htrack/htrackview.cpp \
@@ -242,11 +257,16 @@ SOURCES += main.cpp \
   widgets/score/scoresegmentiterator.cpp \
   dialogs/tartinisettingsdialog.cpp \
   widgets/vibrato/vibratowidget.cpp \
+  widgets/vibrato/vibratowidgetGL.cpp \
   widgets/vibrato/vibratoview.cpp \
+  widgets/vibrato/vibratoviewGL.cpp \
   widgets/vibrato/vibratotimeaxis.cpp \
   widgets/vibrato/vibratospeedwidget.cpp \
+  widgets/vibrato/vibratospeedwidgetGL.cpp \
   widgets/vibrato/vibratoperiodwidget.cpp \
+  widgets/vibrato/vibratoperiodwidgetGL.cpp \
   widgets/vibrato/vibratocirclewidget.cpp \
+  widgets/vibrato/vibratocirclewidgetGL.cpp \
   general/prony.cpp \
   general/mymatrix.cpp \
   general/myglfonts.cpp \

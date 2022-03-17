@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratospeedwidget.cpp  -  description
+                          vibratospeedwidgetGL.cpp  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,21 +12,21 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#include "vibratospeedwidget.h"
+#include "vibratospeedwidgetGL.h"
 #include <QOpenGLContext>
+#include <QPainter>
 #include "GL/glu.h"
 #include "gdata.h"
 #include "channel.h"
 #include "analysisdata.h"
 
-VibratoSpeedWidget::VibratoSpeedWidget(QWidget *parent)
-  : QGLWidget(parent)
+VibratoSpeedWidgetGL::VibratoSpeedWidgetGL(QWidget *parent)
+  : QOpenGLWidget(parent)
 {
   speedValueToDraw = 0;
   widthValueToDraw = 0;
   prevVibratoSpeed = 0;
   prevVibratoWidth = 0;
-  useProny = true;
   widthLimit = 50;
   prevNoteNumber = -1;
   speedLabelCounter = 0;
@@ -43,7 +43,7 @@ VibratoSpeedWidget::VibratoSpeedWidget(QWidget *parent)
   speedWidthFont.setPointSize(9);
 }
 
-VibratoSpeedWidget::~VibratoSpeedWidget()
+VibratoSpeedWidgetGL::~VibratoSpeedWidgetGL()
 {
   // Remove display lists
     QOpenGLContext* c = QOpenGLContext::currentContext();
@@ -58,7 +58,7 @@ VibratoSpeedWidget::~VibratoSpeedWidget()
 
 }
 
-void VibratoSpeedWidget::initializeGL()
+void VibratoSpeedWidgetGL::initializeGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
@@ -80,14 +80,13 @@ void VibratoSpeedWidget::initializeGL()
   widthNeedle = glGenLists(1);
 }
 
-void VibratoSpeedWidget::resizeGL(int w, int h)
+void VibratoSpeedWidgetGL::resizeGL(int w, int h)
 {
   glViewport(0, 0, (GLint)w, (GLint)h);
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluOrtho2D(0, w, 0, h);
-  //glMatrixMode(GL_MODELVIEW);
+  // DWS gluOrtho2D(0, w, 0, h);
 
   const float halfWidth = 0.5 * width();
   const float halfHeight = 0.5 * height();
@@ -328,13 +327,16 @@ void VibratoSpeedWidget::resizeGL(int w, int h)
   doUpdate();
 }
 
-void VibratoSpeedWidget::paintGL()
+void VibratoSpeedWidgetGL::paintGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
   glClear(GL_COLOR_BUFFER_BIT);
 
-  QFontMetrics fm = QFontMetrics(speedWidthFont);
+  QPainter p;
+  p.begin(this);
+
+  p.beginNativePainting();
 
   // Draw the speed dial
   glLineWidth(1.5);
@@ -342,10 +344,19 @@ void VibratoSpeedWidget::paintGL()
 
   // Draw the labels for the speed dial
   glColor3ub(0,0,0);
-  renderText(hzLabelX - (0.5 * fm.width("Hz")), hzLabelY, 0, "Hz", speedWidthFont);
+
+  p.endNativePainting();
+
+  // Draw the labels
+  QFontMetrics fm = QFontMetrics(speedWidthFont);
+  setFont(speedWidthFont);
+  // Take into account that QPainter origin is upper left while OpenGL is lower left.
+  p.drawText(hzLabelX - (0.5 * fm.width("Hz")), height() - hzLabelY, "Hz");
   for (int i = 0; i < speedLabelCounter; i++) {
-    renderText(speedLabels[i].x - (0.5 * fm.width(speedLabels[i].label)), speedLabels[i].y - 8, 0, speedLabels[i].label, speedWidthFont);
+      p.drawText(speedLabels[i].x - (0.5 * fm.width(speedLabels[i].label)), height() - speedLabels[i].y + 8, speedLabels[i].label);
   }
+
+  p.beginNativePainting();
 
   // Draw the speed needle
   glLineWidth(1.0);
@@ -355,11 +366,12 @@ void VibratoSpeedWidget::paintGL()
   glLineWidth(1.5);
   glCallList(widthDial);
 
+  p.endNativePainting();
   // Draw the labels for the width dial
   glColor3ub(0,0,0);
-  renderText(centsLabelX - (0.5 * fm.width("Cents")), centsLabelY, 0, "Cents", speedWidthFont);
+  p.drawText(centsLabelX - (0.5 * fm.width("Cents")), height() - centsLabelY, "Cents");
   for (int i = 0; i < widthLabelCounter; i++) {
-    renderText(widthLabels[i].x - (0.5 * fm.width(widthLabels[i].label)), widthLabels[i].y - 8, 0, widthLabels[i].label, speedWidthFont);
+      p.drawText(widthLabels[i].x - (0.5 * fm.width(widthLabels[i].label)), height() - widthLabels[i].y + 8, widthLabels[i].label);
   }
 
   // Draw the width needle
@@ -367,7 +379,7 @@ void VibratoSpeedWidget::paintGL()
   glCallList(widthNeedle);
 }
 
-void VibratoSpeedWidget::doUpdate()
+void VibratoSpeedWidgetGL::doUpdate()
 {
   Channel *active = gdata->getActiveChannel();
 
@@ -385,10 +397,7 @@ void VibratoSpeedWidget::doUpdate()
       note = &(active->noteData[data->noteIndex]);
 
       currentNoteNumber = data->noteIndex;
-      if (useProny) {
-        vibratoSpeed = data->vibratoSpeed;
-        vibratoWidth = 200 * data->vibratoWidth;
-      } else if((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
+      if ((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
         large_vector<float> pitchLookupUsed = active->pitchLookupSmoothed;
         int smoothDelay = int(active->pitchBigSmoothingFilter->delay());
 
@@ -452,7 +461,7 @@ void VibratoSpeedWidget::doUpdate()
       widthValueToDraw = 0;
       prevNoteNumber = -1;
 
-      updateGL();
+      update();
 
     } else {
       // Needle values, draw the needles this update
@@ -565,15 +574,7 @@ void VibratoSpeedWidget::doUpdate()
         glEndList();
 
       }
-      updateGL();
+      update();
     }
   }
-}
-
-void VibratoSpeedWidget::setUseProny(bool value)
-{
-  useProny = value;
-  prevVibratoSpeed = -999;
-  prevVibratoWidth = -999;
-  doUpdate();
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
-                          tunerwidget.h  -  description
+                          tunerwidgetGL.h  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,8 +12,8 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#ifndef TUNERWIDGET_H
-#define TUNERWIDGET_H
+#ifndef TUNERWIDGETGL_H
+#define TUNERWIDGETGL_H
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
@@ -21,13 +21,13 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 
-class TunerWidget : public QOpenGLWidget, protected QOpenGLFunctions {
+class TunerWidgetGL : public QOpenGLWidget, protected QOpenGLFunctions {
   Q_OBJECT
 
   public:
     using QOpenGLWidget::QOpenGLWidget;
-    TunerWidget(QWidget *parent);
-    virtual ~TunerWidget();
+    TunerWidgetGL(QWidget *parent);
+    virtual ~TunerWidgetGL();
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;

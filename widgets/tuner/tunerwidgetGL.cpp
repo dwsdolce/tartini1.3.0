@@ -1,5 +1,5 @@
 /***************************************************************************
-						  tunerwidget.cpp  -  description
+						  tunerwidgetGL.cpp  -  description
 							 -------------------
 	begin                : May 18 2005
 	copyright            : (C) 2005 by Philip McLeod
@@ -12,7 +12,7 @@
 
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#include "tunerwidget.h"
+#include "tunerwidgetGL.h"
 #include <QOpenGLContext>
 #include <QCoreApplication>
 #include <QDebug>
@@ -24,7 +24,7 @@
 #include "musicnotes.h"
 #include <QPainter>
 
-TunerWidget::TunerWidget(QWidget* parent)
+TunerWidgetGL::TunerWidgetGL(QWidget* parent)
 	: QOpenGLWidget(parent)
 {
 	needleValueToDraw = -999;
@@ -41,7 +41,7 @@ TunerWidget::TunerWidget(QWidget* parent)
 	tunerFont.setPointSize(9);
 }
 
-TunerWidget::~TunerWidget()
+TunerWidgetGL::~TunerWidgetGL()
 {
   // Remove display lists
 	QOpenGLContext* c = QOpenGLContext::currentContext();
@@ -62,7 +62,7 @@ TunerWidget::~TunerWidget()
 	doneCurrent();
 }
 
-void TunerWidget::initializeGL()
+void TunerWidgetGL::initializeGL()
 {
 	initializeOpenGLFunctions();
 
@@ -95,7 +95,7 @@ void TunerWidget::initializeGL()
 //		dial_arc (VBO_ARC)			- line
 //		label_markers (VBO_MARKERS)	- line
 // We need a separate vao/vbo for each of these (3 in total).
-void TunerWidget::resizeGL(int w, int h)
+void TunerWidgetGL::resizeGL(int w, int h)
 {
 	glViewport(0, 0, (GLint)w, (GLint)h);
 
@@ -219,7 +219,7 @@ void TunerWidget::resizeGL(int w, int h)
 	doUpdate(curPitch);
 }
 
-void TunerWidget::paintGL()
+void TunerWidgetGL::paintGL()
 {
 	QColor bg = gdata->backgroundColor();
 	glClearColor(double(bg.red()) / 255.0, double(bg.green()) / 255.0, double(bg.blue()) / 255.0, 0.0);
@@ -277,7 +277,7 @@ void TunerWidget::paintGL()
 	p.end();
 }
 
-void TunerWidget::doUpdate(double thePitch)
+void TunerWidgetGL::doUpdate(double thePitch)
 {
 	curPitch = thePitch;
 
@@ -379,7 +379,7 @@ void TunerWidget::doUpdate(double thePitch)
 	update();
 }
 
-void TunerWidget::resetLeds()
+void TunerWidgetGL::resetLeds()
 {
 	for (int i = 0; i < 8; i++) {
 		emit(ledSet(i, false));

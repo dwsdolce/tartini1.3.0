@@ -75,6 +75,9 @@
     <ClCompile Include="widgets\freq\amplitudewidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="widgets\freq\amplitudewidgetGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="sound\analysisdata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -130,6 +133,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="widgets\freq\freqview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\freq\freqviewGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\freq\freqwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="widgets\freq\freqwidgetGL.cpp">
@@ -270,7 +279,13 @@
     <ClCompile Include="widgets\tuner\tunerview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="widgets\tuner\tunerviewGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="widgets\tuner\tunerwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\tuner\tunerwidgetGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="general\useful.cpp">
@@ -279,10 +294,19 @@
     <ClCompile Include="widgets\vibrato\vibratocirclewidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="widgets\vibrato\vibratocirclewidgetGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="widgets\vibrato\vibratoperiodwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="widgets\vibrato\vibratoperiodwidgetGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="widgets\vibrato\vibratospeedwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\vibrato\vibratospeedwidgetGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="widgets\vibrato\vibratotimeaxis.cpp">
@@ -291,7 +315,13 @@
     <ClCompile Include="widgets\vibrato\vibratoview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="widgets\vibrato\vibratoviewGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="widgets\vibrato\vibratowidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widgets\vibrato\vibratowidgetGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="global\view.cpp">
@@ -348,6 +378,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <QtMoc Include="widgets\freq\amplitudewidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="widgets\freq\amplitudewidgetGL.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <ClInclude Include="sound\analysisdata.h">
@@ -411,6 +444,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <QtMoc Include="widgets\freq\freqview.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="widgets\freq\freqviewGL.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="widgets\freq\freqwidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="widgets\freq\freqwidgetGL.h">
@@ -569,7 +608,13 @@
     <QtMoc Include="widgets\tuner\tunerview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="widgets\tuner\tunerviewGL.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="widgets\tuner\tunerwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="widgets\tuner\tunerwidgetGL.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <ClInclude Include="general\useful.h">
@@ -578,10 +623,19 @@
     <QtMoc Include="widgets\vibrato\vibratocirclewidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratocirclewidgetGL.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoperiodwidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratoperiodwidgetGL.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratospeedwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratospeedwidgetGL.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratotimeaxis.h">
@@ -590,7 +644,13 @@
     <QtMoc Include="widgets\vibrato\vibratoview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratoviewGL.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratowidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratowidgetGL.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="global\view.h">
@@ -619,115 +679,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="dialogs\settingsdialog.ui">
@@ -768,6 +725,7 @@
     <None Include="pics\tartinilogo.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="INSTALL.txt">
@@ -865,6 +823,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="D:\Users\dws\src\Tartini\tartini1.2.0\tartini_resource.rc" />
+    <ResourceCompile Include=".\tartini_resource.rc" />
   </ItemGroup>
 </Project>

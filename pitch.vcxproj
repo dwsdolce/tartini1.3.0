@@ -209,6 +209,7 @@
     <ClCompile Include="sound\filters\IIR_Filter.cpp" />
     <ClCompile Include="rtAudio\RtAudio.cpp" />
     <ClCompile Include="widgets\freq\amplitudewidget.cpp" />
+    <ClCompile Include="widgets\freq\amplitudewidgetGL.cpp" />
     <ClCompile Include="sound\analysisdata.cpp" />
     <ClCompile Include="rtAudio\audio_stream.cpp" />
     <ClCompile Include="sound\audio_thread.cpp" />
@@ -228,6 +229,8 @@
     <ClCompile Include="widgets\fft\fftview.cpp" />
     <ClCompile Include="widgets\fft\fftwidget.cpp" />
     <ClCompile Include="widgets\freq\freqview.cpp" />
+    <ClCompile Include="widgets\freq\freqviewGL.cpp" />
+    <ClCompile Include="widgets\freq\freqwidget.cpp" />
     <ClCompile Include="widgets\freq\freqwidgetGL.cpp" />
     <ClCompile Include="global\gdata.cpp" />
     <ClCompile Include="widgets\hblock\hblockview.cpp" />
@@ -274,14 +277,21 @@
     <ClCompile Include="dialogs\tartinisettingsdialog.cpp" />
     <ClCompile Include="widgets\timeaxis.cpp" />
     <ClCompile Include="widgets\tuner\tunerview.cpp" />
+    <ClCompile Include="widgets\tuner\tunerviewGL.cpp" />
     <ClCompile Include="widgets\tuner\tunerwidget.cpp" />
+    <ClCompile Include="widgets\tuner\tunerwidgetGL.cpp" />
     <ClCompile Include="general\useful.cpp" />
     <ClCompile Include="widgets\vibrato\vibratocirclewidget.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratocirclewidgetGL.cpp" />
     <ClCompile Include="widgets\vibrato\vibratoperiodwidget.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratoperiodwidgetGL.cpp" />
     <ClCompile Include="widgets\vibrato\vibratospeedwidget.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratospeedwidgetGL.cpp" />
     <ClCompile Include="widgets\vibrato\vibratotimeaxis.cpp" />
     <ClCompile Include="widgets\vibrato\vibratoview.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratoviewGL.cpp" />
     <ClCompile Include="widgets\vibrato\vibratowidget.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratowidgetGL.cpp" />
     <ClCompile Include="global\view.cpp" />
     <ClCompile Include="widgets\viewwidget.cpp" />
     <ClCompile Include="widgets\volumemeter\volumemeterview.cpp" />
@@ -302,6 +312,8 @@
     <ClInclude Include="rtAudio\RtError.h" />
     <ClInclude Include="include\SmartPtr.h" />
     <QtMoc Include="widgets\freq\amplitudewidget.h">
+    </QtMoc>
+    <QtMoc Include="widgets\freq\amplitudewidgetGL.h">
     </QtMoc>
     <ClInclude Include="sound\analysisdata.h" />
     <ClInclude Include="include\array1d.h" />
@@ -333,6 +345,10 @@
     </QtMoc>
     <ClInclude Include="include\freqpair.h" />
     <QtMoc Include="widgets\freq\freqview.h">
+    </QtMoc>
+    <QtMoc Include="widgets\freq\freqviewGL.h">
+    </QtMoc>
+    <QtMoc Include="widgets\freq\freqwidget.h">
     </QtMoc>
     <QtMoc Include="widgets\freq\freqwidgetGL.h">
     </QtMoc>
@@ -412,20 +428,34 @@
     </QtMoc>
     <QtMoc Include="widgets\tuner\tunerview.h">
     </QtMoc>
+    <QtMoc Include="widgets\tuner\tunerviewGL.h">
+    </QtMoc>
     <QtMoc Include="widgets\tuner\tunerwidget.h">
+    </QtMoc>
+    <QtMoc Include="widgets\tuner\tunerwidgetGL.h">
     </QtMoc>
     <ClInclude Include="general\useful.h" />
     <QtMoc Include="widgets\vibrato\vibratocirclewidget.h">
     </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratocirclewidgetGL.h">
+    </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoperiodwidget.h">
     </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratoperiodwidgetGL.h">
+    </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratospeedwidget.h">
+    </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratospeedwidgetGL.h">
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratotimeaxis.h">
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoview.h">
     </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratoviewGL.h">
+    </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratowidget.h">
+    </QtMoc>
+    <QtMoc Include="widgets\vibrato\vibratowidgetGL.h">
     </QtMoc>
     <QtMoc Include="global\view.h">
     </QtMoc>

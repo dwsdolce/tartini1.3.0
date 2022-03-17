@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratoview.h  -  description
+                          vibratoviewGL.h  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005-2007 by Philip McLeod
@@ -12,35 +12,35 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#ifndef VIBRATOVIEW_H
-#define VIBRATOVIEW_H
+#ifndef VIBRATOVIEWGL_H
+#define VIBRATOVIEWGL_H
 
 #include "viewwidget.h"
 
-class VibratoSpeedWidget;
-class VibratoPeriodWidget;
-class VibratoCircleWidget;
+class VibratoSpeedWidgetGL;
+class VibratoCircleWidgetGL;
+class VibratoPeriodWidgetGL;
 class VibratoTimeAxis;
-class VibratoWidget;
+class VibratoWidgetGL;
 class LEDIndicator;
 
-class VibratoView : public ViewWidget {
+class VibratoViewGL : public ViewWidget {
   Q_OBJECT
 
   public:
-    VibratoView(int viewID_, QWidget *parent = 0);
-    virtual ~VibratoView();
+    VibratoViewGL(int viewID_, QWidget *parent = 0);
+    virtual ~VibratoViewGL();
 
     QSize sizeHint() const { return QSize(500, 300); }
 
-    std::vector<LEDIndicator*> leds;
+    QVector<LEDIndicator*> leds;
 
   private:
-    VibratoSpeedWidget *vibratoSpeedWidget;
-    VibratoPeriodWidget *vibratoPeriodWidget;
-    VibratoCircleWidget *vibratoCircleWidget;
-    VibratoTimeAxis *vibratoTimeAxis;
-    VibratoWidget *vibratoWidget;
+    VibratoSpeedWidgetGL *vibratoSpeedWidgetGL;
+    VibratoCircleWidgetGL* vibratoCircleWidgetGL;
+    VibratoPeriodWidgetGL* vibratoPeriodWidgetGL;
+    VibratoTimeAxis* vibratoTimeAxis;
+    VibratoWidgetGL *vibratoWidgetGL;
 };
 
 

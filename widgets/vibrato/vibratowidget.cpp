@@ -67,10 +67,6 @@ VibratoWidget::~VibratoWidget()
   currentWindowBand.clear();
   maximaPoints.clear();
   minimaPoints.clear();
-  
-#ifdef DWS
-  glDeleteLists(maximaMinimaPoints, 1);
-#endif
 }
 
 void VibratoWidget::paintEvent(QPaintEvent*)

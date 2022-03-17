@@ -13,14 +13,19 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 #include "amplitudewidget.h"
+#ifdef DWS
 #include <QOpenGLContext>
+#endif
 #include <QCoreApplication>
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QVector3D>
+#ifdef DWS
 #include "shader.h"
 #include "mygl.h"
+#endif
 
 #include "gdata.h"
 #include "channel.h"
@@ -30,13 +35,11 @@
 #include "analysisdata.h"
 #include "conversions.h"
 
-#include <qpixmap.h>
-
 #ifndef WHEEL_DELTA
 #define WHEEL_DELTA 120
 #endif
 
-AmplitudeWidget::AmplitudeWidget(QWidget* /*parent*/, const char* /*name*/)
+AmplitudeWidget::AmplitudeWidget(QWidget* parent) : DrawWidget(parent)
 {
 	setMouseTracking(true);
 
@@ -49,6 +52,7 @@ AmplitudeWidget::AmplitudeWidget(QWidget* /*parent*/, const char* /*name*/)
 
 AmplitudeWidget::~AmplitudeWidget()
 {
+#ifdef DWS
 	QOpenGLContext* c = QOpenGLContext::currentContext();
 	if (c) {
 		makeCurrent();
@@ -70,9 +74,12 @@ AmplitudeWidget::~AmplitudeWidget()
 
 	m_program.deleteLater();
 	m_program_line.deleteLater();
+
 	doneCurrent();
+#endif
 }
 
+#ifdef DWS
 void AmplitudeWidget::initializeGL()
 {
 	initializeOpenGLFunctions();
@@ -104,10 +111,16 @@ void AmplitudeWidget::initializeGL()
 	m_vbo_blk_ref.create();
 	m_vbo_red_ref.create();
 }
+#endif
 
+#ifdef DWS
 void AmplitudeWidget::resizeGL(int w, int h)
+#endif
+void AmplitudeWidget::resizeEvent(QResizeEvent* event)
 {
+#ifdef DWS
 	glViewport(0, 0, (GLint)w, (GLint)h);
+#endif
 
 	// Create model transformation matrix to go from:
 	//		x: 0 to width
@@ -115,6 +128,9 @@ void AmplitudeWidget::resizeGL(int w, int h)
 	//	to:
 	//		x: -1.0f to 1.0f
 	//		y: -1.0f to 1.0f
+	p.translate(QPointF(-1.0f, -1.0f));
+	p.scale(2.0 / width(), 2.0 / height());
+#ifdef DWS
 	QMatrix4x4 model;
 	model.setToIdentity();
 	model.translate(QVector3D(-1.0f, -1.0f, 0.0f));
@@ -128,7 +144,7 @@ void AmplitudeWidget::resizeGL(int w, int h)
 	m_program_line.setUniformValue("model", model);
 	m_program_line.setUniformValue("screen_size", QVector2D(w, h));
 	m_program_line.release();
-
+#endif
 }
 
 void AmplitudeWidget::setRange(double newRange)
@@ -159,7 +175,7 @@ void AmplitudeWidget::setOffset(double newOffset)
 	emit offsetInvChanged(offsetInv());
 }
 
-void AmplitudeWidget::drawChannelAmplitudeFilledGL(Channel* ch)
+void AmplitudeWidget::drawChannelAmplitudeFilled(Channel* ch)
 {
 	View* view = gdata->view;
 
@@ -193,8 +209,10 @@ void AmplitudeWidget::drawChannelAmplitudeFilledGL(Channel* ch)
 			}
 
 			int y = 1 + toInt((ze.high() - offsetInv()) * heightRatio);
+#ifdef DWS
 			vertexArray << QVector3D((float)n, 0.0f, 0.0f);
 			vertexArray << QVector3D((float)n, (float)y, 0.0f);
+#endif
 		}
 	} else { //baseX <= 1
 		float val = 0.0;
@@ -216,11 +234,13 @@ void AmplitudeWidget::drawChannelAmplitudeFilledGL(Channel* ch)
 
 			if (!data) continue;
 			val = calculateElement(data);
-
+#ifdef DWS
 			vertexArray << QVector3D((float)dn, 0.0f, 0.0f);
 			vertexArray << QVector3D((float)dn, (float)(1 + ((val - offsetInv()) * heightRatio)), 0.0f);
+#endif
 		}
 	}
+#ifdef DWS
 	m_vao_ch_amp.bind();
 	m_vbo_ch_amp.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ch_amp.bind();
@@ -229,6 +249,7 @@ void AmplitudeWidget::drawChannelAmplitudeFilledGL(Channel* ch)
 	MyGL::DrawShape(m_program, m_vao_ch_amp, m_vbo_ch_amp, vertexArray.count(), GL_TRIANGLE_STRIP, gdata->shading2Color());
 	m_vao_ch_amp.release();
 	m_vbo_ch_amp.release();
+#endif
 }
 
 void AmplitudeWidget::drawVerticalRefLines()
@@ -258,32 +279,40 @@ void AmplitudeWidget::drawVerticalRefLines()
 		x = toInt((timePos - lTime) * ratio);
 		if (++largeCounter == largeFreq) {
 			largeCounter = 0;
+#ifdef DWS
 			refLinesDark << QVector3D(x, 0.0f, 0.0f);
 			refLinesDark << QVector3D(x, (float)(height() - 1.0f), 0.0f);
+#endif
 		} else {
+#ifdef DWS
 			refLinesLight << QVector3D(x, 0.0f, 0.0f);
 			refLinesLight << QVector3D(x, (float)(height() - 1.0f), 0.0f);
+#endif
 		}
 	}
 
 	// Draw the dark lines 
+#ifdef DWS
 	m_vao_ref_dark.bind();
 	m_vbo_ref_dark.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ref_dark.bind();
 	m_vbo_ref_dark.allocate(refLinesDark.constData(), refLinesDark.count() * 3 * sizeof(float));
 
 	MyGL::DrawShape(m_program, m_vao_ref_dark, m_vbo_ref_dark, refLinesDark.count(), GL_LINES, QColor(25, 125, 170, 128));
+#endif
 
 	// Draw the light lines
+#ifdef DWS
 	m_vao_ref_light.bind();
 	m_vbo_ref_light.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ref_light.bind();
 	m_vbo_ref_light.allocate(refLinesLight.constData(), refLinesLight.count() * 3 * sizeof(float));
 
 	MyGL::DrawShape(m_program, m_vao_ref_light, m_vbo_ref_light, refLinesLight.count(), GL_LINES, QColor(25, 125, 170, 64));
+#endif
 }
 
-void AmplitudeWidget::drawChannelAmplitudeGL(Channel* ch)
+void AmplitudeWidget::drawChannelAmplitude(Channel* ch)
 {
 	View* view = gdata->view;
 	QVector<QVector3D> amp;
@@ -322,17 +351,20 @@ void AmplitudeWidget::drawChannelAmplitudeGL(Channel* ch)
 			if (!ze.isValid()) {
 				if (!calcZoomElement(ze, ch, baseElement, baseX)) continue;
 			}
+#ifdef DWS
 			vertexArray << QVector3D((float)n, (float)(1 + ((ze.high() - offsetInv()) * heightRatio)) + halfLineWidth, 0.0f);
 			vertexArray << QVector3D((float)n, (float)(1 + ((ze.low() - offsetInv()) * heightRatio)) - halfLineWidth, 0.0f);
+#endif
 		}
 		myassert(vertexArray.count() <= width() * 2);
-
+#ifdef DWS
 		m_vao_time_line.bind();
 		m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_time_line.bind();
 		m_vbo_time_line.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
 
 		MyGL::DrawShape(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINES, chColor);
+#endif
 	} else { //baseX <= 1
 		float val = 0.0;
 		int intChunk = (int)floor(leftFrameTime); // Integer version of frame time
@@ -351,22 +383,30 @@ void AmplitudeWidget::drawChannelAmplitudeGL(Channel* ch)
 
 			if (!data) continue;
 			val = calculateElement(data);
-
+#ifdef DWS
 			vertexArray << QVector3D((float)dn, (float)(1 + ((val - offsetInv()) * heightRatio)), 0.0f);
+#endif
 		}
 		myassert(vertexArray.count() <= width() * 2);
 
+#ifdef DWS
 		m_vao_time_line.bind();
 		m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_time_line.bind();
 		m_vbo_time_line.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
 
 		MyGL::DrawLine(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINE_STRIP, lineWidth, chColor);
+#endif
 	}
 }
 
+
+#ifdef DWS
 void AmplitudeWidget::paintGL()
+#endif
+void AmplitudeWidget::paintEvent(QPaintEvent*)
 {
+#ifdef DWS
 	QPainter p;
 	p.begin(this);
 	p.beginNativePainting();
@@ -382,29 +422,34 @@ void AmplitudeWidget::paintGL()
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH);
 	glEnableClientState(GL_VERTEX_ARRAY);
+#endif
 
 	View* view = gdata->view;
 
 	//draw the red/blue background color shading if needed
 	if (view->backgroundShading() && gdata->getActiveChannel()) {
-		drawChannelAmplitudeFilledGL(gdata->getActiveChannel());
+		drawChannelAmplitudeFilled(gdata->getActiveChannel());
 	}
-
+#ifdef DWS
 	glDisable(GL_LINE_SMOOTH);
-
+#endif
 	drawVerticalRefLines();
 
+#ifdef DWS
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH);
+#endif
 
 	//draw all the visible channels
 	for (uint i = 0; i < gdata->channels.size(); i++) {
 		Channel* ch = gdata->channels.at(i);
 		if (!ch->isVisible()) continue;
-		drawChannelAmplitudeGL(ch);
+		drawChannelAmplitude(ch);
 	}
+#ifdef DWS
 	glDisable(GL_LINE_SMOOTH);
 	glDisable(GL_POLYGON_SMOOTH);
+#endif
 
 	// Draw the current time line
 	double curScreenTime = (view->currentTime() - view->viewLeft()) / view->zoomX();
@@ -413,13 +458,14 @@ void AmplitudeWidget::paintGL()
 	timeLine << QVector3D((float)curScreenTime, 0.0f, 0.0f);
 	timeLine << QVector3D((float)curScreenTime, height() - 1, 0.0f);
 
+#ifdef DWS
 	m_vao_time_line.bind();
 	m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_time_line.bind();
 	m_vbo_time_line.allocate(timeLine.constData(), timeLine.count() * 3 * sizeof(float));
 
 	MyGL::DrawShape(m_program, m_vao_time_line, m_vbo_time_line, timeLine.count(), GL_LINES, palette().color(QPalette::Foreground));
-
+#endif
 	// Draw a horizontal line at the current threshold.
 	float y;
 	double heightRatio = double(height()) / range();
@@ -430,12 +476,14 @@ void AmplitudeWidget::paintGL()
 	blkRef << QVector3D(0.0f, y, 0.0f);
 	blkRef << QVector3D((float)width(), y, 0.0f);
 
+#ifdef DWS
 	m_vao_blk_ref.bind();
 	m_vbo_blk_ref.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_blk_ref.bind();
 	m_vbo_blk_ref.allocate(blkRef.constData(), blkRef.count() * 3 * sizeof(float));
 
 	MyGL::DrawShape(m_program, m_vao_blk_ref, m_vbo_blk_ref, blkRef.count(), GL_LINES, QColor(Qt::black));
+#endif
 
 	// Draw the horizontal Red line
 	QVector<QVector3D> redRef;
@@ -443,14 +491,16 @@ void AmplitudeWidget::paintGL()
 	redRef << QVector3D(0.0f, y, 0.0f);
 	redRef << QVector3D((float)width(), y, 0.0f);
 
+#ifdef DWS
 	m_vao_red_ref.bind();
 	m_vbo_red_ref.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_red_ref.bind();
 	m_vbo_red_ref.allocate(redRef.constData(), redRef.count() * 3 * sizeof(float));
 
 	MyGL::DrawShape(m_program, m_vao_red_ref, m_vbo_red_ref, redRef.count(), GL_LINES, QColor(Qt::red));
-
+	#
 	p.endNativePainting();
+#endif
 
 	p.setPen(Qt::black);
 	p.drawText(2, height() - 3, getCurrentThresholdString());

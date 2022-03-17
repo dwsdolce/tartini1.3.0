@@ -1,5 +1,5 @@
 /***************************************************************************
-						  amplitudewidget.cpp  -  description
+						  amplitudewidgetGL.cpp  -  description
 							 -------------------
 	begin                : 19 Mar 2005
 	copyright            : (C) 2005 by Philip McLeod
@@ -12,7 +12,7 @@
 
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#include "amplitudewidget.h"
+#include "amplitudewidgetGL.h"
 #include <QOpenGLContext>
 #include <QCoreApplication>
 #include <QMouseEvent>
@@ -36,7 +36,7 @@
 #define WHEEL_DELTA 120
 #endif
 
-AmplitudeWidget::AmplitudeWidget(QWidget* /*parent*/, const char* /*name*/)
+AmplitudeWidgetGL::AmplitudeWidgetGL(QWidget* /*parent*/, const char* /*name*/)
 {
 	setMouseTracking(true);
 
@@ -47,7 +47,7 @@ AmplitudeWidget::AmplitudeWidget(QWidget* /*parent*/, const char* /*name*/)
 	setAttribute(Qt::WA_OpaquePaintEvent);
 }
 
-AmplitudeWidget::~AmplitudeWidget()
+AmplitudeWidgetGL::~AmplitudeWidgetGL()
 {
 	QOpenGLContext* c = QOpenGLContext::currentContext();
 	if (c) {
@@ -73,7 +73,7 @@ AmplitudeWidget::~AmplitudeWidget()
 	doneCurrent();
 }
 
-void AmplitudeWidget::initializeGL()
+void AmplitudeWidgetGL::initializeGL()
 {
 	initializeOpenGLFunctions();
 
@@ -105,7 +105,7 @@ void AmplitudeWidget::initializeGL()
 	m_vbo_red_ref.create();
 }
 
-void AmplitudeWidget::resizeGL(int w, int h)
+void AmplitudeWidgetGL::resizeGL(int w, int h)
 {
 	glViewport(0, 0, (GLint)w, (GLint)h);
 
@@ -131,7 +131,7 @@ void AmplitudeWidget::resizeGL(int w, int h)
 
 }
 
-void AmplitudeWidget::setRange(double newRange)
+void AmplitudeWidgetGL::setRange(double newRange)
 {
 	if (_range != newRange) {
 		_range = bound(newRange, 0.0, 1.0);
@@ -142,7 +142,7 @@ void AmplitudeWidget::setRange(double newRange)
 
 // This is required since setRange is called when a QWTWheel is changed and rangeChanged sets the valye of the QWTWheel which breaks the
 // Mouse Motion.
-void AmplitudeWidget::setRangeQWTWheel(double newRange)
+void AmplitudeWidgetGL::setRangeQWTWheel(double newRange)
 {
 	if (_range != newRange) {
 		_range = bound(newRange, 0.0, 1.0);
@@ -150,7 +150,7 @@ void AmplitudeWidget::setRangeQWTWheel(double newRange)
 	}
 }
 
-void AmplitudeWidget::setOffset(double newOffset)
+void AmplitudeWidgetGL::setOffset(double newOffset)
 {
 	newOffset = bound(newOffset, 0.0, maxOffset());
 	_offset = newOffset;
@@ -159,7 +159,7 @@ void AmplitudeWidget::setOffset(double newOffset)
 	emit offsetInvChanged(offsetInv());
 }
 
-void AmplitudeWidget::drawChannelAmplitudeFilledGL(Channel* ch)
+void AmplitudeWidgetGL::drawChannelAmplitudeFilledGL(Channel* ch)
 {
 	View* view = gdata->view;
 
@@ -231,7 +231,7 @@ void AmplitudeWidget::drawChannelAmplitudeFilledGL(Channel* ch)
 	m_vbo_ch_amp.release();
 }
 
-void AmplitudeWidget::drawVerticalRefLines()
+void AmplitudeWidgetGL::drawVerticalRefLines()
 {
 	//Draw the vertical reference lines
 	double timeStep = timeWidth() / double(width()) * 150.0; //time per 150 pixels
@@ -283,7 +283,7 @@ void AmplitudeWidget::drawVerticalRefLines()
 	MyGL::DrawShape(m_program, m_vao_ref_light, m_vbo_ref_light, refLinesLight.count(), GL_LINES, QColor(25, 125, 170, 64));
 }
 
-void AmplitudeWidget::drawChannelAmplitudeGL(Channel* ch)
+void AmplitudeWidgetGL::drawChannelAmplitudeGL(Channel* ch)
 {
 	View* view = gdata->view;
 	QVector<QVector3D> amp;
@@ -365,7 +365,7 @@ void AmplitudeWidget::drawChannelAmplitudeGL(Channel* ch)
 	}
 }
 
-void AmplitudeWidget::paintGL()
+void AmplitudeWidgetGL::paintGL()
 {
 	QPainter p;
 	p.begin(this);
@@ -459,7 +459,7 @@ void AmplitudeWidget::paintGL()
 
 /** This function has the side effect of changing ze
 */
-bool AmplitudeWidget::calcZoomElement(ZoomElement& ze, Channel* ch, int baseElement, double baseX)
+bool AmplitudeWidgetGL::calcZoomElement(ZoomElement& ze, Channel* ch, int baseElement, double baseX)
 {
 	int startChunk = int(floor(double(baseElement) * baseX));
 	myassert(startChunk <= ch->totalChunks());
@@ -480,18 +480,18 @@ bool AmplitudeWidget::calcZoomElement(ZoomElement& ze, Channel* ch, int baseElem
 	return true;
 }
 
-double AmplitudeWidget::calculateElement(AnalysisData* data)
+double AmplitudeWidgetGL::calculateElement(AnalysisData* data)
 {
 	double val = (*amp_mode_func[gdata->amplitudeMode()])(data->values[gdata->amplitudeMode()]);
 	return val;
 }
 
-double AmplitudeWidget::getCurrentThreshold(int index)
+double AmplitudeWidgetGL::getCurrentThreshold(int index)
 {
 	return (*amp_mode_func[gdata->amplitudeMode()])(gdata->ampThreshold(gdata->amplitudeMode(), index));
 }
 
-void AmplitudeWidget::setCurrentThreshold(double newThreshold, int index)
+void AmplitudeWidgetGL::setCurrentThreshold(double newThreshold, int index)
 {
 	newThreshold = bound(newThreshold, 0.0, 1.0);
 	if (newThreshold < offsetInv()) setOffset(maxOffset() - newThreshold);
@@ -500,14 +500,14 @@ void AmplitudeWidget::setCurrentThreshold(double newThreshold, int index)
 	gdata->setAmpThreshold(gdata->amplitudeMode(), index, (*amp_mode_inv_func[gdata->amplitudeMode()])(newThreshold));
 }
 
-QString AmplitudeWidget::getCurrentThresholdString()
+QString AmplitudeWidgetGL::getCurrentThresholdString()
 {
 	QString thresholdStr;
 	thresholdStr.sprintf(amp_display_string[gdata->amplitudeMode()], gdata->ampThreshold(gdata->amplitudeMode(), 0), gdata->ampThreshold(gdata->amplitudeMode(), 1));
 	return thresholdStr;
 }
 
-void AmplitudeWidget::mousePressEvent(QMouseEvent* e)
+void AmplitudeWidgetGL::mousePressEvent(QMouseEvent* e)
 {
 	View* view = gdata->view;
 	int timeX = toInt(view->viewOffset() / view->zoomX());
@@ -540,7 +540,7 @@ void AmplitudeWidget::mousePressEvent(QMouseEvent* e)
 	}
 }
 
-void AmplitudeWidget::mouseMoveEvent(QMouseEvent* e)
+void AmplitudeWidgetGL::mouseMoveEvent(QMouseEvent* e)
 {
 	View* view = gdata->view;
 	int pixelAtCurrentTimeX = toInt(view->viewOffset() / view->zoomX());
@@ -583,12 +583,12 @@ void AmplitudeWidget::mouseMoveEvent(QMouseEvent* e)
 	}
 }
 
-void AmplitudeWidget::mouseReleaseEvent(QMouseEvent*)
+void AmplitudeWidgetGL::mouseReleaseEvent(QMouseEvent*)
 {
 	dragMode = DragNone;
 }
 
-void AmplitudeWidget::wheelEvent(QWheelEvent* e)
+void AmplitudeWidgetGL::wheelEvent(QWheelEvent* e)
 {
 	View* view = gdata->view;
 	if (!(e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier))) {

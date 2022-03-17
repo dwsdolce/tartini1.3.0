@@ -1,5 +1,5 @@
 /***************************************************************************
-                          vibratocirclewidget.cpp  -  description
+                          vibratocirclewidgetGL.cpp  -  description
                              -------------------
     begin                : May 18 2005
     copyright            : (C) 2005 by Philip McLeod
@@ -12,14 +12,14 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-#include "vibratocirclewidget.h"
+#include "vibratocirclewidgetGL.h"
 #include <QOpenGLContext>
 #include "GL/glu.h"
 #include "gdata.h"
 #include "channel.h"
 #include "analysisdata.h"
 
-VibratoCircleWidget::VibratoCircleWidget(QWidget *parent)
+VibratoCircleWidgetGL::VibratoCircleWidgetGL(QWidget *parent)
   : QOpenGLWidget(parent)
 {
   accuracy = 1.0;
@@ -27,7 +27,7 @@ VibratoCircleWidget::VibratoCircleWidget(QWidget *parent)
   lastPeriodToDraw = -1;
 }
 
-VibratoCircleWidget::~VibratoCircleWidget()
+VibratoCircleWidgetGL::~VibratoCircleWidgetGL()
 {
   // Remove display lists
     QOpenGLContext* c = QOpenGLContext::currentContext();
@@ -42,7 +42,7 @@ VibratoCircleWidget::~VibratoCircleWidget()
   }
 }
 
-void VibratoCircleWidget::initializeGL()
+void VibratoCircleWidgetGL::initializeGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
@@ -66,7 +66,7 @@ void VibratoCircleWidget::initializeGL()
   }
 }
 
-void VibratoCircleWidget::resizeGL(int w, int h)
+void VibratoCircleWidgetGL::resizeGL(int w, int h)
 {
   glViewport(0, 0, (GLint)w, (GLint)h);
 
@@ -112,7 +112,7 @@ void VibratoCircleWidget::resizeGL(int w, int h)
   doUpdate();
 }
 
-void VibratoCircleWidget::paintGL()
+void VibratoCircleWidgetGL::paintGL()
 {
   QColor bg = gdata->backgroundColor();
   glClearColor( double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0 );
@@ -136,7 +136,7 @@ void VibratoCircleWidget::paintGL()
   }
 }
 
-void VibratoCircleWidget::doUpdate()
+void VibratoCircleWidgetGL::doUpdate()
 {
   makeCurrent();
 
@@ -559,13 +559,13 @@ void VibratoCircleWidget::doUpdate()
   update();
 }
 
-void VibratoCircleWidget::setAccuracy(int value)
+void VibratoCircleWidgetGL::setAccuracy(int value)
 {
   accuracy = value / 10.0;
   doUpdate();
 }
 
-void VibratoCircleWidget::setType(int value)
+void VibratoCircleWidgetGL::setType(int value)
 {
   type = value;
   doUpdate();

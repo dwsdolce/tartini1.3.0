@@ -1,7 +1,7 @@
 /***************************************************************************
 
 
-						  widget.h  -  description
+						  amplitudewidgetGL.h  -  description
 							 -------------------
 	begin                : 19 Mar 2005
 	copyright            : (C) 2005 by Philip McLeod
@@ -15,34 +15,25 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 
-#ifndef AMPLITUDEWIDGET_H
-#define AMPLITUDEWIDGET_H
+#ifndef AMPLITUDEWIDGETGL_H
+#define AMPLITUDEWIDGETGL_H
 
-#ifdef DWS
 #include <QCoreApplication>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
-#endif
-#include "drawwidget.h"
-#include <QPixmap>
 
 #include <QMouseEvent>
 #include <QPixmap>
 #include <QWheelEvent>
 #include <QPaintEvent>
-
 #include "channel.h"
 
 class AnalysisData;
 
-#ifdef DWS
-class AmplitudeWidget : public QOpenGLWidget, protected QOpenGLFunctions {
-#endif
-class AmplitudeWidget : public DrawWidget
-	{
+class AmplitudeWidgetGL : public QOpenGLWidget, protected QOpenGLFunctions {
 
 	Q_OBJECT
 
@@ -55,16 +46,12 @@ public:
 		DragNoiseThreshold = 4
 	};
 
-	AmplitudeWidget(QWidget* parent);
-	virtual ~AmplitudeWidget();
+	AmplitudeWidgetGL(QWidget* parent, const char* name = 0);
+	virtual ~AmplitudeWidgetGL();
 
-#ifdef DWS
 	void initializeGL() override;
 	void resizeGL(int w, int h) override;
 	void paintGL() override;
-#endif
-	void paintEvent(QPaintEvent* event);
-	void resizeEvent(QResizeEvent* event);
 
 	void drawVerticalRefLines();
 	bool calcZoomElement(ZoomElement& ze, Channel* ch, int baseElement, double baseX);
@@ -72,8 +59,8 @@ public:
 	double getCurrentThreshold(int index);
 	void setCurrentThreshold(double newThreshold, int index);
 	QString getCurrentThresholdString();
-	void drawChannelAmplitude(Channel* ch);
-	void drawChannelAmplitudeFilled(Channel* ch);
+	void drawChannelAmplitudeGL(Channel* ch);
+	void drawChannelAmplitudeFilledGL(Channel* ch);
 	QSize sizeHint() const {
 		return QSize(400, 100);
 	}
@@ -128,7 +115,6 @@ private:
 	float lineWidth;
 	float halfLineWidth;
 
-#ifdef DWS
 	QOpenGLShaderProgram m_program;
 	QOpenGLShaderProgram m_program_line;
 
@@ -149,7 +135,6 @@ private:
 
 	QOpenGLVertexArrayObject m_vao_red_ref;
 	QOpenGLBuffer m_vbo_red_ref;
-#endif
 };
 
 #endif
