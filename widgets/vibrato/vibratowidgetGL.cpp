@@ -16,11 +16,15 @@
 #include <QOpenGLContext>
 
 #include "vibratowidgetGL.h"
-#include "GL/glu.h"
+#include <QOpenGLContext>
+#include <QCoreApplication>
+#include <QDebug>
+#include <QPainter>
+#include "shader.h"
+#include "mygl.h"
 #include "gdata.h"
 #include "channel.h"
 #include "analysisdata.h"
-//#include "myglfonts.h"
 #include "musicnotes.h"
 
 VibratoWidgetGL::VibratoWidgetGL(QWidget *parent, int nls)
@@ -37,6 +41,18 @@ VibratoWidgetGL::VibratoWidgetGL(QWidget *parent, int nls)
   }
   vibratoFont = QFont();
   vibratoFont.setPointSize(9);
+
+  // Set the colors for all of the items with static color
+  m_verticalSeparatorLinesColor = QColor(131, 144, 159);
+  m_referenceLinesColor = QColor(144, 156, 170);
+  m_pronyWidthBandColor = QColor(0, 0, 0, 64);
+  m_pronyAveragePitchColor = QColor(0,0,0,127);
+  m_vibratoPolylineColor = QColor(127, 0, 0);
+  m_currentWindowBandColor = QColor(palette().color(QPalette::Foreground).red(), palette().color(QPalette::Foreground).green(), palette().color(QPalette::Foreground).blue(), 64);
+
+  m_currentTimeLineColor = QColor(Qt::black);
+  m_maximaPointsColor = QColor(255, 255, 0);
+  m_minimaPointsColor = QColor(0, 255, 0);
 }
 
 VibratoWidgetGL::~VibratoWidgetGL()
@@ -47,56 +63,128 @@ VibratoWidgetGL::~VibratoWidgetGL()
         makeCurrent();
     }
 
-  glDeleteLists(verticalPeriodBars, 1);
-  glDeleteLists(verticalSeparatorLines, 1);
-  glDeleteLists(referenceLines, 1);
-  glDeleteLists(pronyWidthBand, 1);
-  glDeleteLists(pronyAveragePitch, 1);
-  glDeleteLists(vibratoPolyline, 1);
-  glDeleteLists(currentWindowBand, 1);
-  glDeleteLists(currentTimeLine, 1);
-  glDeleteLists(maximaMinimaPoints, 1);
+    m_vao_verticalPeriodBarsShading1.destroy();
+    m_vbo_verticalPeriodBarsShading1.destroy();
+
+    m_vao_verticalPeriodBarsShading2.destroy();
+    m_vbo_verticalPeriodBarsShading2.destroy();
+
+    m_vao_verticalSeparatorLines.destroy();
+    m_vbo_verticalSeparatorLines.destroy();
+
+    m_referenceLines.clear();
+
+    m_vao_pronyWidthBand.destroy();
+    m_vbo_pronyWidthBand.destroy();
+
+    m_vao_pronyAveragePitch.destroy();
+    m_vbo_pronyAveragePitch.destroy();
+
+    m_vao_vibratoPolyline.destroy();
+    m_vbo_vibratoPolyline.destroy();
+
+    m_vao_currentWindowBand.destroy();
+    m_vbo_currentWindowBand.destroy();
+
+    m_vao_currentTimeLine.destroy();
+    m_vbo_currentTimeLine.destroy();
+
+    m_vao_maximaPoints.destroy();
+    m_vbo_maximaPoints.destroy();
+
+    m_vao_minimaPoints.destroy();
+    m_vbo_minimaPoints.destroy();
 }
 
 void VibratoWidgetGL::initializeGL()
 {
-  QColor bg = gdata->backgroundColor();
-  glClearColor(double(bg.red()) / 255.0, double(bg.green()) / 255.0, double(bg.blue()) / 255.0, 0.0);
-  
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  initializeOpenGLFunctions();
 
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // build and compile our shader program
+  // ------------------------------------
+  try {
+    Shader ourShader(&m_program, ":/shader.vs.glsl", ":/shader.fs.glsl");
+  } catch (...) {
+    close();
+  }
 
-  verticalPeriodBars = glGenLists(1);
-  verticalSeparatorLines = glGenLists(1);
-  referenceLines = glGenLists(1);
-  pronyWidthBand = glGenLists(1);
-  pronyAveragePitch = glGenLists(1);
-  vibratoPolyline = glGenLists(1);
-  currentWindowBand = glGenLists(1);
-  currentTimeLine = glGenLists(1);
-  maximaMinimaPoints = glGenLists(1);
+  try {
+    Shader ourShader(&m_program_line, ":/shader.vs.glsl", ":/shader.fs.glsl", ":/shader.gs.glsl");
+  } catch (...) {
+    close();
+  }
+
+  m_vao_verticalPeriodBarsShading1.create();
+  m_vbo_verticalPeriodBarsShading1.create();
+
+  m_vao_verticalPeriodBarsShading2.create();
+  m_vbo_verticalPeriodBarsShading2.create();
+
+  m_vao_verticalSeparatorLines.create();
+  m_vbo_verticalSeparatorLines.create();
+
+  m_vao_pronyWidthBand.create();
+  m_vbo_pronyWidthBand.create();
+
+  m_vao_pronyAveragePitch.create();
+  m_vbo_pronyAveragePitch.create();
+
+  m_vao_vibratoPolyline.create();
+  m_vbo_vibratoPolyline.create();
+
+  m_vao_currentWindowBand.create();
+  m_vbo_currentWindowBand.create();
+
+  m_vao_currentTimeLine.create();
+  m_vbo_currentTimeLine.create();
+
+  m_vao_maximaPoints.create();
+  m_vbo_maximaPoints.create();
+
+  m_vao_minimaPoints.create();
+  m_vbo_minimaPoints.create();
 }
 
 void VibratoWidgetGL::resizeGL(int w, int h)
 {
   glViewport(0, 0, (GLint)w, (GLint)h);
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  // dws gluOrtho2D(0, w, 0, h);
+  // Create model transformation matrix to go from:
+  //		x: 0 to width
+  //		y: 0 to height
+  //	to:
+  //		x: -1.0f to 1.0f
+  //		y: -1.0f to 1.0f
+  QMatrix4x4 model;
+  model.setToIdentity();
+  model.translate(QVector3D(-1.0f, -1.0f, 0.0f));
+  model.scale(2.0f / width(), 2.0f / height(), 1.0f);
+
+  m_program.bind();
+  m_program.setUniformValue("model", model);
+  m_program.release();
+
+  m_program_line.bind();
+  m_program_line.setUniformValue("model", model);
+  m_program_line.setUniformValue("screen_size", QVector2D(w, h));
+  m_program_line.release();
 
   update();
 }
 
 void VibratoWidgetGL::paintGL()
 {
-
-  doUpdate();
+    doUpdate();
 
   // Clear background
+  QColor bg = gdata->backgroundColor();
+  glClearColor(double(bg.red()) / 256.0, double(bg.green()) / 256.0, double(bg.blue()) / 256.0, 0.0);
   glClear(GL_COLOR_BUFFER_BIT);
+
+  glEnable(GL_LINE_SMOOTH);
+  glEnable(GL_POLYGON_SMOOTH);
+  glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   QPainter p;
   p.begin(this);
@@ -104,46 +192,51 @@ void VibratoWidgetGL::paintGL()
   p.beginNativePainting();
 
   // Draw the vertical bars that indicate the vibrato periods
-  glCallList(verticalPeriodBars);
+  MyGL::DrawShape(m_program, m_vao_verticalPeriodBarsShading1, m_vbo_verticalPeriodBarsShading1, m_verticalPeriodBarsShading1Count, GL_TRIANGLES, m_verticalPeriodBarsShading1Color);
+  MyGL::DrawShape(m_program, m_vao_verticalPeriodBarsShading2, m_vbo_verticalPeriodBarsShading2, m_verticalPeriodBarsShading2Count, GL_TRIANGLES, m_verticalPeriodBarsShading2Color);
 
   // Draw the vertical separator lines through the extrema
-  glDisable(GL_LINE_SMOOTH);
-  glLineWidth(1.0);
-  glCallList(verticalSeparatorLines);
+    MyGL::DrawLine(m_program_line, m_vao_verticalSeparatorLines, m_vbo_verticalSeparatorLines, m_verticalSeparatorLinesCount, GL_LINES, 1.0, m_verticalSeparatorLinesColor);
+
+  p.endNativePainting();
 
   // Draw the horizontal reference lines
-  glDisable(GL_LINE_SMOOTH);
-  glEnable(GL_LINE_STIPPLE);
-  glLineWidth(1.0);
-  glLineStipple(1, 64716);  // bitpattern 64716 = 1111110011001100
-  glCallList(referenceLines);
-  glDisable(GL_LINE_STIPPLE);
+  QPen stipplePen(m_referenceLinesColor);
+  stipplePen.setStyle(Qt::DashDotDotLine);
+  p.setPen(stipplePen);
+  p.drawLines(m_referenceLines);
+
+  p.beginNativePainting();
+
+  glEnable(GL_LINE_SMOOTH);
+  glEnable(GL_POLYGON_SMOOTH);
+  glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   // Draw the light grey band indicating the vibratowidth according to the Prony-algorithm
-  glCallList(pronyWidthBand);
+  MyGL::DrawShape(m_program, m_vao_pronyWidthBand, m_vbo_pronyWidthBand, m_pronyWidthBandCount, GL_TRIANGLES, m_pronyWidthBandColor);
 
   // Draw the average pitch according to the Prony-algorithm
-  glEnable(GL_LINE_SMOOTH);
-  glLineWidth(1.0);
-  glCallList(pronyAveragePitch);
+  MyGL::DrawLine(m_program_line, m_vao_pronyAveragePitch, m_vbo_pronyAveragePitch, m_pronyAveragePitchCount, GL_LINE_STRIP, 1.0, m_pronyAveragePitchColor);
 
   // Draw the vibrato-polyline
-  glEnable(GL_LINE_SMOOTH);
-  glLineWidth(2.0);
-  glCallList(vibratoPolyline);
+  MyGL::DrawLine(m_program_line, m_vao_vibratoPolyline, m_vbo_vibratoPolyline, m_vibratoPolylineCount, GL_LINE_STRIP, 2.0, m_vibratoPolylineColor);
 
   // Draw the light grey band indicating which time is being used in the current window
-  glCallList(currentWindowBand);
+  MyGL::DrawShape(m_program, m_vao_currentWindowBand, m_vbo_currentWindowBand, m_currentWindowBandCount, GL_TRIANGLES, m_currentWindowBandColor);
 
   // Draw the current timeline
   glDisable(GL_LINE_SMOOTH);
-  glLineWidth(1.0);
-  glCallList(currentTimeLine);
+  MyGL::DrawLine(m_program_line, m_vao_currentTimeLine, m_vbo_currentTimeLine, m_currentTimeLineCount, GL_LINE_STRIP, 1.0, m_currentTimeLineColor);
 
   // Draw the maxima & minima
   glEnable(GL_POINT_SMOOTH);
   glPointSize(3.0);
-  glCallList(maximaMinimaPoints);
+  MyGL::DrawShape(m_program, m_vao_maximaPoints, m_vbo_maximaPoints, m_maximaPointsCount, GL_POINTS, m_maximaPointsColor);
+  MyGL::DrawShape(m_program, m_vao_minimaPoints, m_vbo_minimaPoints, m_minimaPointsCount, GL_POINTS, m_minimaPointsColor);
 
   p.endNativePainting();
 
@@ -163,33 +256,6 @@ void VibratoWidgetGL::doUpdate()
   noteLabelCounter = 0;
 
   makeCurrent();
-
-  glNewList(verticalPeriodBars, GL_COMPILE);
-  glEndList();
-
-  glNewList(verticalSeparatorLines, GL_COMPILE);
-  glEndList();
-
-  glNewList(referenceLines, GL_COMPILE);
-  glEndList();
-
-  glNewList(pronyWidthBand, GL_COMPILE);
-  glEndList();
-
-  glNewList(pronyAveragePitch, GL_COMPILE);
-  glEndList();
-
-  glNewList(vibratoPolyline, GL_COMPILE);
-  glEndList();
-
-  glNewList(currentWindowBand, GL_COMPILE);
-  glEndList();
-
-  glNewList(currentTimeLine, GL_COMPILE);
-  glEndList();
-
-  glNewList(maximaMinimaPoints, GL_COMPILE);
-  glEndList();
 
   Channel *active = gdata->getActiveChannel();
 
@@ -214,6 +280,8 @@ void VibratoWidgetGL::doUpdate()
       large_vector<float> pitchLookupUsed = active->pitchLookupSmoothed;
       int smoothDelay = int(active->pitchBigSmoothingFilter->delay());
 
+      QVector<QVector3D> vertices;
+
       if ((myEndChunk - myStartChunk) * zoomFactorX > width() - 2 * noteLabelOffset) {
         // The vibrato-polyline doesn't fit in the window
         if ((myCurrentChunk - myStartChunk) * zoomFactorX < (width() - 2 * noteLabelOffset)/2) {
@@ -228,13 +296,6 @@ void VibratoWidgetGL::doUpdate()
       } else {  // The vibrato-polyline does fit in the window
         windowOffset = 0 - noteLabelOffset;
       }
-
-      GLfloat *vertices;
-      GLubyte *colors;
-      uint verticesCounter, colorsCounter;
-
-      glEnableClientState(GL_VERTEX_ARRAY);
-      glEnableClientState(GL_COLOR_ARRAY);
 
       // Calculate the alternating vertical bars that indicate the vibrato periods
       if ((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
@@ -263,16 +324,7 @@ void VibratoWidgetGL::doUpdate()
         float x1, x2;
 
         // Calculate the bars with the left side at a maximum
-        vertices = new GLfloat[(color1Bars + color2Bars) * 8];
-        colors = new GLubyte[(color1Bars + color2Bars) * 12];
-
-        const char color1Red = gdata->shading1Color().red();
-        const char color1Green = gdata->shading1Color().green();
-        const char color1Blue = gdata->shading1Color().blue();
-
-        verticesCounter = 0;
-        colorsCounter = 0;
-
+        vertices.clear();
         for (int i = 0; i < color1Bars; i++) {
           x1 = ((((float)note->maxima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           if (x1 < noteLabelOffset) { x1 = noteLabelOffset; }
@@ -285,27 +337,25 @@ void VibratoWidgetGL::doUpdate()
           if (x2 < noteLabelOffset) { continue; }
           if (x2 > width() - noteLabelOffset) { x2 = width() - noteLabelOffset; }
 
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x2;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x2;
-          vertices[verticesCounter++] = height();
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = height();
-
-          for (int j=1; j <= 4; j++) {
-            colors[colorsCounter++] = color1Red;
-            colors[colorsCounter++] = color1Green;
-            colors[colorsCounter++] = color1Blue;
-          }
+          vertices << QVector3D(x1, 0, 0.0f);
+          vertices << QVector3D(x2, 0, 0.0f);
+          vertices << QVector3D(x1, height(), 0.0f);
+          vertices << QVector3D(x1, height(), 0.0f);
+          vertices << QVector3D(x2, height(), 0.0f);
+          vertices << QVector3D(x2, 0, 0.0f);
         }
+        m_verticalPeriodBarsShading1Color = gdata->shading1Color();
+
+        m_vao_verticalPeriodBarsShading1.bind();
+        m_vbo_verticalPeriodBarsShading1.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+        m_vbo_verticalPeriodBarsShading1.bind();
+        m_vbo_verticalPeriodBarsShading1.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+        m_vao_verticalPeriodBarsShading1.release();
+        m_vbo_verticalPeriodBarsShading1.release();
+        m_verticalPeriodBarsShading1Count = vertices.count();
 
         // Calculate the bars with the left side at a minimum
-        const char color2Red = gdata->shading2Color().red();
-        const char color2Green = gdata->shading2Color().green();
-        const char color2Blue = gdata->shading2Color().blue();
-
+        vertices.clear();
         for (int i = 0; i < color2Bars; i++) {
           x1 = ((((float)note->minima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           if (x1 < noteLabelOffset) { x1 = noteLabelOffset; }
@@ -318,55 +368,31 @@ void VibratoWidgetGL::doUpdate()
           if (x2 < noteLabelOffset) { continue; }
           if (x2 > width() - noteLabelOffset) { x2 = width() - noteLabelOffset; }
 
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x2;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x2;
-          vertices[verticesCounter++] = height();
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = height();
-
-          for (int j=1; j <= 4; j++) {
-            colors[colorsCounter++] = color2Red;
-            colors[colorsCounter++] = color2Green;
-            colors[colorsCounter++] = color2Blue;
-          }
+          vertices << QVector3D(x1, 0, 0.0f);
+          vertices << QVector3D(x2, 0, 0.0f);
+          vertices << QVector3D(x1, height(), 0.0f);
+          vertices << QVector3D(x1, height(), 0.0f);
+          vertices << QVector3D(x2, height(), 0.0f);
+          vertices << QVector3D(x2, 0, 0.0f);
         }
+        m_verticalPeriodBarsShading2Color = gdata->shading2Color();
 
-        glVertexPointer(2, GL_FLOAT, 0, vertices);
-        glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-        glNewList(verticalPeriodBars, GL_COMPILE);
-        glDrawArrays(GL_QUADS, 0, verticesCounter/2);
-        glEndList();
-
-        delete[] vertices;
-        delete[] colors;
-
+        m_vao_verticalPeriodBarsShading2.bind();
+        m_vbo_verticalPeriodBarsShading2.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+        m_vbo_verticalPeriodBarsShading2.bind();
+        m_vbo_verticalPeriodBarsShading2.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+        m_vao_verticalPeriodBarsShading2.release();
+        m_vbo_verticalPeriodBarsShading2.release();
+        m_verticalPeriodBarsShading2Count = vertices.count();
 
         // Calculate the vertical separator lines through the maxima
-        vertices = new GLfloat[(maximaSize + minimaSize) * 4];
-        colors = new GLubyte[(maximaSize + minimaSize) * 6];
-
-        verticesCounter = 0;
-        colorsCounter = 0;
-
+        vertices.clear();
         for (int i = 0; i < maximaSize; i++) {
           x1 = ((((float)note->maxima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           if (x1 < noteLabelOffset) { continue; }
           if (x1 > width() - noteLabelOffset) { break; }
-
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = height();
-
-          colors[colorsCounter++] = 131;
-          colors[colorsCounter++] = 144;
-          colors[colorsCounter++] = 159;
-          colors[colorsCounter++] = 131;
-          colors[colorsCounter++] = 144;
-          colors[colorsCounter++] = 159;
+          vertices << QVector3D(x1, 0, 0.0f);
+          vertices << QVector3D(x1, height(), 0.0f);
         }
 
         // Calculate the vertical separator lines through the minima
@@ -374,58 +400,30 @@ void VibratoWidgetGL::doUpdate()
           x1 = ((((float)note->minima->at(i) - smoothDelay) / framesPerChunk) - myStartChunk) * zoomFactorX - windowOffset;
           if (x1 < noteLabelOffset) { continue; }
           if (x1 > width() - noteLabelOffset) { break; }
-
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = 0;
-          vertices[verticesCounter++] = x1;
-          vertices[verticesCounter++] = height();
-
-          colors[colorsCounter++] = 131;
-          colors[colorsCounter++] = 144;
-          colors[colorsCounter++] = 159;
-          colors[colorsCounter++] = 131;
-          colors[colorsCounter++] = 144;
-          colors[colorsCounter++] = 159;
+          vertices << QVector3D(x1, 0, 0.0f);
+          vertices << QVector3D(x1, height(), 0.0f);
         }
 
-        glVertexPointer(2, GL_FLOAT, 0, vertices);
-        glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-        glNewList(verticalSeparatorLines, GL_COMPILE);
-        glDrawArrays(GL_LINES, 0, verticesCounter/2);
-        glEndList();
-
-        delete[] vertices;
-        delete[] colors;
+        m_vao_verticalSeparatorLines.bind();
+        m_vbo_verticalSeparatorLines.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+        m_vbo_verticalSeparatorLines.bind();
+        m_vbo_verticalSeparatorLines.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+        m_vao_verticalSeparatorLines.release();
+        m_vbo_verticalSeparatorLines.release();
+        m_verticalSeparatorLinesCount = vertices.count();
       }
 
-
       // Calculate the horizontal reference lines + note labels
-      vertices = new GLfloat[100 * 4];
-      colors = new GLubyte[100 * 6];
-
-      verticesCounter = 0;
-      colorsCounter = 0;
-
+      m_referenceLines.clear();
       const int nearestNote = toInt(avgPitch);
       QString noteLabel;
-      const float referenceLineX1 = noteLabelOffset;
-      const float referenceLineX2 = width() - noteLabelOffset;
-      float referenceLineY;
+      const qreal referenceLineX1 = noteLabelOffset;
+      const qreal referenceLineX2 = width() - noteLabelOffset;
+      qreal referenceLineY;
 
       // Calculate the nearest reference line + note label
       referenceLineY = halfHeight + ((nearestNote - avgPitch) * zoomFactorYx100) + offsetY;
-
-      vertices[verticesCounter++] = referenceLineX1;
-      vertices[verticesCounter++] = referenceLineY;
-      vertices[verticesCounter++] = referenceLineX2;
-      vertices[verticesCounter++] = referenceLineY;
-
-      colors[colorsCounter++] = 144;
-      colors[colorsCounter++] = 156;
-      colors[colorsCounter++] = 170;
-      colors[colorsCounter++] = 144;
-      colors[colorsCounter++] = 156;
-      colors[colorsCounter++] = 170;
+      m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
       if ((noteOctave(nearestNote) >= 0) && (noteOctave(nearestNote) <= 9)) {
         noteLabel.sprintf("%s%d", noteName(nearestNote), noteOctave(nearestNote));
@@ -440,18 +438,7 @@ void VibratoWidgetGL::doUpdate()
       for (int i = 1; ; i++) {
         referenceLineY = halfHeight + ((nearestNote + i - avgPitch) * zoomFactorYx100) + offsetY;
         if (referenceLineY > height()) { break; }
-
-        vertices[verticesCounter++] = referenceLineX1;
-        vertices[verticesCounter++] = referenceLineY;
-        vertices[verticesCounter++] = referenceLineX2;
-        vertices[verticesCounter++] = referenceLineY;
-
-        colors[colorsCounter++] = 144;
-        colors[colorsCounter++] = 156;
-        colors[colorsCounter++] = 170;
-        colors[colorsCounter++] = 144;
-        colors[colorsCounter++] = 156;
-        colors[colorsCounter++] = 170;
+        m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
         if ((noteOctave(nearestNote + i) >= 0) && (noteOctave(nearestNote + i) <= 9)) {
           noteLabel.sprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
@@ -467,18 +454,7 @@ void VibratoWidgetGL::doUpdate()
       for (int i = -1; ; i--) {
         referenceLineY = halfHeight + ((nearestNote + i - avgPitch) * zoomFactorYx100) + offsetY;
         if (referenceLineY < 0) { break; }
-
-        vertices[verticesCounter++] = referenceLineX1;
-        vertices[verticesCounter++] = referenceLineY;
-        vertices[verticesCounter++] = referenceLineX2;
-        vertices[verticesCounter++] = referenceLineY;
-
-        colors[colorsCounter++] = 144;
-        colors[colorsCounter++] = 156;
-        colors[colorsCounter++] = 170;
-        colors[colorsCounter++] = 144;
-        colors[colorsCounter++] = 156;
-        colors[colorsCounter++] = 170;
+        m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
         if ((noteOctave(nearestNote + i) >= 0) && (noteOctave(nearestNote + i) <= 9)) {
           noteLabel.sprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
@@ -490,23 +466,8 @@ void VibratoWidgetGL::doUpdate()
         noteLabelCounter++;
       }
 
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(referenceLines, GL_COMPILE);
-      glDrawArrays(GL_LINES, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
-
       // Calculate the light grey band indicating the vibratowidth according to the Prony-algorithm
-      verticesCounter = 0;
-      colorsCounter = 0;
-
-      vertices = new GLfloat[(myEndChunk - myStartChunk) * 8];
-      colors = new GLubyte[(myEndChunk - myStartChunk) * 16];
-
+      vertices.clear();
       for (int chunk = myStartChunk; chunk < myEndChunk - 1; chunk++) {
         float x1 = (chunk - myStartChunk) * zoomFactorX - windowOffset;
         if (x1 < noteLabelOffset) { x1 = noteLabelOffset; }
@@ -519,79 +480,48 @@ void VibratoWidgetGL::doUpdate()
         float vibratoWidth1 = active->dataAtChunk(chunk)->vibratoWidth;
         float vibratoPitch2 = active->dataAtChunk(chunk + 1)->vibratoPitch;
         float vibratoWidth2 = active->dataAtChunk(chunk + 1)->vibratoWidth;
+
         float y1 = halfHeight + ((vibratoPitch1 + vibratoWidth1 - avgPitch) * zoomFactorYx100) + offsetY;
         float y2 = halfHeight + ((vibratoPitch1 - vibratoWidth1 - avgPitch) * zoomFactorYx100) + offsetY;
         float y3 = halfHeight + ((vibratoPitch2 - vibratoWidth2 - avgPitch) * zoomFactorYx100) + offsetY;
         float y4 = halfHeight + ((vibratoPitch2 + vibratoWidth2 - avgPitch) * zoomFactorYx100) + offsetY;
 
-        vertices[verticesCounter++] = x1;
-        vertices[verticesCounter++] = y1;
-        vertices[verticesCounter++] = x1;
-        vertices[verticesCounter++] = y2;
-        vertices[verticesCounter++] = x2;
-        vertices[verticesCounter++] = y3;
-        vertices[verticesCounter++] = x2;
-        vertices[verticesCounter++] = y4;
-
-        for (int j=1; j <= 4; j++) {
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 64;
-        }
+        vertices << QVector3D(x1, y1, 0.0f);
+        vertices << QVector3D(x2, y4, 0.0f);
+        vertices << QVector3D(x1, y2, 0.0f);
+        vertices << QVector3D(x1, y2, 0.0f);
+        vertices << QVector3D(x2, y3, 0.0f);
+        vertices << QVector3D(x2, y4, 0.0f);
       }
-
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(pronyWidthBand, GL_COMPILE);
-      glDrawArrays(GL_QUADS, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
+      m_vao_pronyWidthBand.bind();
+      m_vbo_pronyWidthBand.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+      m_vbo_pronyWidthBand.bind();
+      m_vbo_pronyWidthBand.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vao_pronyWidthBand.release();
+      m_vbo_pronyWidthBand.release();
+      m_pronyWidthBandCount = vertices.count();
 
       // Calculate the average pitch according to the Prony-algorithm
-      verticesCounter = 0;
-      colorsCounter = 0;
-
-      vertices = new GLfloat[(myEndChunk - myStartChunk) * 2];
-      colors = new GLubyte[(myEndChunk - myStartChunk) * 4];
-
+      vertices.clear();
       for (int chunk = myStartChunk; chunk < myEndChunk; chunk++) {
         float x = (chunk - myStartChunk) * zoomFactorX - windowOffset;
         if (x < noteLabelOffset) { continue; }
         if (x > width() - noteLabelOffset) { break; }
         float y = halfHeight + ((active->dataAtChunk(chunk)->vibratoPitch - avgPitch) * zoomFactorYx100) + offsetY;
-
-        vertices[verticesCounter++] = x;
-        vertices[verticesCounter++] = y;
-
-        colors[colorsCounter++] = 0;
-        colors[colorsCounter++] = 0;
-        colors[colorsCounter++] = 0;
-        colors[colorsCounter++] = 127;
+        vertices << QVector3D(x, y, 0.0f);
       }
-
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(pronyAveragePitch, GL_COMPILE);
-      glDrawArrays(GL_LINE_STRIP, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
+      m_vao_pronyAveragePitch.bind();
+      m_vbo_pronyAveragePitch.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+      m_vbo_pronyAveragePitch.bind();
+      m_vbo_pronyAveragePitch.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vao_pronyAveragePitch.release();
+      m_vbo_pronyAveragePitch.release();
+      m_pronyAveragePitchCount = vertices.count();
 
       // Calculate the vibrato-polyline
-      verticesCounter = 0;
-      colorsCounter = 0;
-
+      vertices.clear();
       if ((active->doingDetailedPitch()) && (pitchLookupUsed.size() > 0)) {
         // Detailed pitch information available, calculate polyline using this info
-        vertices = new GLfloat[(width() + 1) * 2];
-        colors = new GLubyte[(width() + 1) * 3];
-
         const int pitchLookupUsedSizeLimit = int(pitchLookupUsed.size() - 1);
         const int beginningOfNote = myStartChunk * framesPerChunk;
         const int endOfNote = myEndChunk * framesPerChunk - 1;
@@ -613,123 +543,70 @@ void VibratoWidgetGL::doUpdate()
                 float pitchAt2SmoothDelay = pitchLookupUsed.at(smoothDelayPos3);
                 y = halfHeight + (pitchAtZero + scaleX * (pitchAt2SmoothDelay - pitchAtZero) - avgPitch) * zoomFactorYx100;
               } else { y = 0; }
-            //} else if (offset > endOfNote) {
-            //  y = halfHeight + (pitchLookupUsed.at(endOfNote) - avgPitch) * zoomFactorYx100;
             } else {
               offset = std::min(offset, pitchLookupUsedSizeLimit);
               y = halfHeight + (pitchLookupUsed.at(offset) - avgPitch) * zoomFactorYx100;
             }
 
             y += offsetY;  // Vertical scrollbar offset
-
-            vertices[verticesCounter++] = x;
-            vertices[verticesCounter++] = y;
-
-            colors[colorsCounter++] = 127;
-            colors[colorsCounter++] = 0;
-            colors[colorsCounter++] = 0;
+            vertices << QVector3D(x, y, 0.0f);
           }
         }
       } else {  // No detailed pitch information available, calculate polyline using the chunkdata
-        vertices = new GLfloat[(myEndChunk - myStartChunk) * 2];
-        colors = new GLubyte[(myEndChunk - myStartChunk) * 3];
-
         float x, y;
         for (int chunk = myStartChunk; chunk < myEndChunk; chunk++) {
           x = (chunk - myStartChunk) * zoomFactorX - windowOffset;
           if (x < noteLabelOffset) { continue; }
           if (x > width() - noteLabelOffset) { break; }
           y = halfHeight + ((active->dataAtChunk(chunk)->pitch - avgPitch) * zoomFactorYx100) + offsetY;
-
-          vertices[verticesCounter++] = x;
-          vertices[verticesCounter++] = y;
-
-          colors[colorsCounter++] = 127;
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 0;
+          vertices << QVector3D(x, y, 0.0f);
         }
       }
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(vibratoPolyline, GL_COMPILE);
-      glDrawArrays(GL_LINE_STRIP, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
+      m_vao_vibratoPolyline.bind();
+      m_vbo_vibratoPolyline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+      m_vbo_vibratoPolyline.bind();
+      m_vbo_vibratoPolyline.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vao_vibratoPolyline.release();
+      m_vbo_vibratoPolyline.release();
+      m_vibratoPolylineCount = vertices.count();
 
       // Calculate a light grey band indicating which time is being used in the current window
-      vertices = new GLfloat[8];
-      colors = new GLubyte[16];
-
-      verticesCounter = 0;
-      colorsCounter = 0;
-
+      vertices.clear();
       const double halfWindowTime = (double)active->size() / (double)(active->rate() * 2);
       int pixelLeft = toInt((active->chunkAtTime(gdata->view->currentTime() - halfWindowTime) - myStartChunk) * zoomFactorX - windowOffset);
       int pixelRight = toInt((active->chunkAtTime(gdata->view->currentTime() + halfWindowTime) - myStartChunk) * zoomFactorX - windowOffset);
 
-      vertices[verticesCounter++] = pixelLeft;
-      vertices[verticesCounter++] = 0;
-      vertices[verticesCounter++] = pixelRight;
-      vertices[verticesCounter++] = 0;
-      vertices[verticesCounter++] = pixelRight;
-      vertices[verticesCounter++] = height();
-      vertices[verticesCounter++] = pixelLeft;
-      vertices[verticesCounter++] = height();
+      vertices << QVector3D(pixelLeft, 0, 0.0f);
+      vertices << QVector3D(pixelRight, 0, 0.0f);
+      vertices << QVector3D(pixelLeft, height(), 0.0f);
+      vertices << QVector3D(pixelLeft, height(), 0.0f);
+      vertices << QVector3D(pixelRight, height(), 0.0f);
+      vertices << QVector3D(pixelRight, 0, 0.0f);
 
-      for (int j=1; j <= 4; j++) {
-        colors[colorsCounter++] = palette().color(QPalette::Foreground).red();
-        colors[colorsCounter++] = palette().color(QPalette::Foreground).green();
-        colors[colorsCounter++] = palette().color(QPalette::Foreground).blue();
-        colors[colorsCounter++] = 64;
-      }
-
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(currentWindowBand, GL_COMPILE);
-      glDrawArrays(GL_QUADS, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
+      m_vao_currentWindowBand.bind();
+      m_vbo_currentWindowBand.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+      m_vbo_currentWindowBand.bind();
+      m_vbo_currentWindowBand.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vao_currentWindowBand.release();
+      m_vbo_currentWindowBand.release();
+      m_currentWindowBandCount = vertices.count();
 
       // Calculate the current timeline
-      vertices = new GLfloat[4];
-      colors = new GLubyte[6];
-
-      verticesCounter = 0;
-
+      vertices.clear();
       const float timeLineX = toInt((myCurrentChunk - myStartChunk) * zoomFactorX - windowOffset);
+      vertices << QVector3D(timeLineX, 0, 0.0f);
+      vertices << QVector3D(timeLineX, height(), 0.0f);
 
-      vertices[verticesCounter++] = timeLineX;
-      vertices[verticesCounter++] = 0;
-      vertices[verticesCounter++] = timeLineX;
-      vertices[verticesCounter++] = height();
-
-      for (colorsCounter = 0; colorsCounter < 6; colorsCounter++) {
-        colors[colorsCounter] = 0;
-      }
-
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(currentTimeLine, GL_COMPILE);
-      glDrawArrays(GL_LINES, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
-
+      m_vao_currentTimeLine.bind();
+      m_vbo_currentTimeLine.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+      m_vbo_currentTimeLine.bind();
+      m_vbo_currentTimeLine.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vao_currentTimeLine.release();
+      m_vbo_currentTimeLine.release();
+      m_currentTimeLineCount = vertices.count();
 
       // Calculate the points of maxima and minima
-      vertices = new GLfloat[(maximaSize + minimaSize) * 2];
-      colors = new GLubyte[(maximaSize + minimaSize) * 3];
-
-      verticesCounter = 0;
-      colorsCounter = 0;
-
+      vertices.clear();
       // Calculate the maxima
       if ((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
         float x, y;
@@ -738,16 +615,19 @@ void VibratoWidgetGL::doUpdate()
           if (x < noteLabelOffset) { continue; }
           if (x > width() - noteLabelOffset) { break; }
           y = halfHeight + ((pitchLookupUsed.at(note->maxima->at(i)) - avgPitch) * zoomFactorYx100) + offsetY;
-
-          vertices[verticesCounter++] = x;
-          vertices[verticesCounter++] = y;
-
-          colors[colorsCounter++] = 255;
-          colors[colorsCounter++] = 255;
-          colors[colorsCounter++] = 0;
+          vertices << QVector3D(x, y, 0.0f);
         }
       }
+      m_vao_maximaPoints.bind();
+      m_vbo_maximaPoints.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+      m_vbo_maximaPoints.bind();
+      m_vbo_maximaPoints.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vao_maximaPoints.release();
+      m_vbo_maximaPoints.release();
+      m_maximaPointsCount = vertices.count();
+
       // Calculate the minima
+      vertices.clear();
       if ((active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
         float x, y;
         for (int i = 0; i < minimaSize; i++) {
@@ -755,24 +635,16 @@ void VibratoWidgetGL::doUpdate()
           if (x < noteLabelOffset) { continue; }
           if (x > width() - noteLabelOffset) { break; }
           y = halfHeight + ((pitchLookupUsed.at(note->minima->at(i)) - avgPitch) * zoomFactorYx100) + offsetY;
-
-          vertices[verticesCounter++] = x;
-          vertices[verticesCounter++] = y;
-
-          colors[colorsCounter++] = 0;
-          colors[colorsCounter++] = 255;
-          colors[colorsCounter++] = 0;
+          vertices << QVector3D(x, y, 0.0f);
         }
       }
-
-      glVertexPointer(2, GL_FLOAT, 0, vertices);
-      glColorPointer(3, GL_UNSIGNED_BYTE, 0, colors);
-      glNewList(maximaMinimaPoints, GL_COMPILE);
-      glDrawArrays(GL_POINTS, 0, verticesCounter/2);
-      glEndList();
-
-      delete[] vertices;
-      delete[] colors;
+      m_vao_minimaPoints.bind();
+      m_vbo_minimaPoints.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+      m_vbo_minimaPoints.bind();
+      m_vbo_minimaPoints.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vao_minimaPoints.release();
+      m_vbo_minimaPoints.release();
+      m_minimaPointsCount = vertices.count();
     }
   }
 }

@@ -837,19 +837,7 @@ void FreqWidget::paintGL()
 		double halfWindowTime = (double)ch->size() / (double)(ch->rate() * 2);
 		int pixelLeft = view->screenPixelX(view->currentTime() - halfWindowTime);
 		int pixelRight = view->screenPixelX(view->currentTime() + halfWindowTime);
-#ifdef DWS
-		QVector<QVector3D> rect;
-		rect << QVector3D(pixelLeft, 0.0f, 0.0f);
-		rect << QVector3D(pixelLeft, height() - 1, 0.0f);
-		rect << QVector3D(pixelRight, 0.0f, 0.0f);
-		rect << QVector3D(pixelRight, height() - 1, 0.0f);
 
-		m_vao_active_band.bind();
-		m_vbo_active_band.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-		m_vbo_active_band.bind();
-		m_vbo_active_band.allocate(rect.constData(), rect.count() * 3 * sizeof(float));
-		MyGL::DrawShape(m_program, m_vao_active_band, m_vbo_active_band, rect.count(), GL_TRIANGLE_STRIP, lineColor);
-#endif
 		p.setBrush(lineColor);
 		p.drawRect(pixelLeft, 0, pixelRight - pixelLeft, height());
 		p.beginNativePainting();

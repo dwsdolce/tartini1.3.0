@@ -16,8 +16,13 @@
 #define VIBRATOSPEEDWIDGETGL_H
 
 #include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 
-class VibratoSpeedWidgetGL : public QOpenGLWidget {
+class VibratoSpeedWidgetGL : public QOpenGLWidget, protected QOpenGLFunctions
+{
   Q_OBJECT
 
   public:
@@ -38,6 +43,7 @@ class VibratoSpeedWidgetGL : public QOpenGLWidget {
     QFont speedWidthFont;
 
     int widthLimit;
+    int currentNoteNumber;
     int prevNoteNumber;
 
     float hzLabelX, hzLabelY;
@@ -55,10 +61,33 @@ class VibratoSpeedWidgetGL : public QOpenGLWidget {
     int widthLabelCounter;
     labelStruct widthLabels[100];
 
-    GLuint speedDial;
-    GLuint speedNeedle;
-    GLuint widthDial;
-    GLuint widthNeedle;
+    QOpenGLShaderProgram m_program;
+    QOpenGLShaderProgram m_program_line;
+
+    // Different parts of the dial.
+    const int VBO_DIAL = 0;
+    const int VBO_ARC = 1;
+    const int VBO_MARKERS = 2;
+
+    QOpenGLBuffer m_vbo_dial_speed[3];
+    int m_dial_count_speed[3];
+    QOpenGLBuffer m_vbo_needle_speed;
+    int m_needle_count_speed;
+    bool m_draw_needle_speed = false;
+
+    QOpenGLVertexArrayObject m_vao_dial_speed[3];
+    QOpenGLVertexArrayObject m_vao_needle_speed;
+
+    QOpenGLBuffer m_vbo_dial_width[3];
+    int m_dial_count_width[3];
+    QOpenGLBuffer m_vbo_needle_width;
+    int m_needle_count_width;
+    bool m_draw_needle_width = false;
+
+    QOpenGLVertexArrayObject m_vao_dial_width[3];
+    QOpenGLVertexArrayObject m_vao_needle_width;
+
+    int msgCount;
 
   public slots:
     void doUpdate();

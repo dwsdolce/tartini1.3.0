@@ -16,8 +16,13 @@
 #define VIBRATOPERIODWIDGETGL_H
 
 #include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 
-class VibratoPeriodWidgetGL : public QOpenGLWidget {
+class VibratoPeriodWidgetGL : public QOpenGLWidget, protected QOpenGLFunctions
+{
   Q_OBJECT
 
   public:
@@ -39,11 +44,29 @@ class VibratoPeriodWidgetGL : public QOpenGLWidget {
     bool periodScaling;
     bool drawComparison;
 
-    GLuint sineReference;
-    GLuint previousPoly[5];
-    GLuint currentPeriod;
-    GLuint comparisonPoly;
-    GLuint comparisonReference;
+    QOpenGLShaderProgram m_program;
+    QOpenGLShaderProgram m_program_line;
+
+    QOpenGLBuffer m_vbo_sineReference;
+    int m_sineReferenceCount;
+    QOpenGLVertexArrayObject m_vao_sineReference;
+
+    QOpenGLBuffer m_vbo_previousPoly[5];
+    int m_previousPolyCount[5];
+    QOpenGLVertexArrayObject m_vao_previousPoly[5];
+    int m_previousPolyAlpha[5];
+
+    QOpenGLBuffer m_vbo_currentPeriod;
+    int m_currentPeriodCount;
+    QOpenGLVertexArrayObject m_vao_currentPeriod;
+
+    QOpenGLBuffer m_vbo_comparisonPoly;
+    int m_comparisonPolyCount;
+    QOpenGLVertexArrayObject m_vao_comparisonPoly;
+
+    QOpenGLBuffer m_vbo_comparisonReference;
+    int m_comparisonReferenceCount;
+    QOpenGLVertexArrayObject m_vao_comparisonReference;
 
     int lastPeriodToDraw;
 

@@ -30,7 +30,7 @@ VibratoPeriodWidget::VibratoPeriodWidget(QWidget *parent)
   lastPeriodToDraw = -1;
 
   previousPoly.resize(6);
-  previousPolyColor.resize(6);
+  previousPolyAlpha.resize(6);
 
   smoothedPeriods = true;
   drawSineReference = false;
@@ -67,31 +67,31 @@ void VibratoPeriodWidget::paintEvent(QPaintEvent*)
 
   // Draw the horizontal reference line
   const qreal halfHeight = 0.5 * height();
-  QPen comparisonReferencePen = QPen(Qt::black, 1.5);
+  QPen comparisonReferencePen = QPen(QColor(0, 0, 0, 64), 1.5);
   p.setPen(comparisonReferencePen);
   p.drawLine(QPointF(0, halfHeight), QPointF(width(), halfHeight));
     
   // Draw the sinewave
-  QPen sineReferencePen = QPen(sineReferenceColor, 2.0);
+  QPen sineReferencePen = QPen(QColor(255, 255, 0, 255), 2.0);
   p.setPen(sineReferencePen);
   p.drawPolyline(sineReference);
 
   // Draw the comparison
-  QPen comparisonPolyPen = QPen(comparisonPolyColor, 2.0);
+  QPen comparisonPolyPen = QPen(QColor(0, 255, 0, 255), 2.0);
   p.setPen(comparisonPolyPen);
   p.drawPolyline(comparisonPoly);
 
   // Draw the previous periods
   for (int i = 4; i >= 0; i--) {
     if (lastPeriodToDraw >= i) {
-      QPen previousPolyPen = QPen(previousPolyColor[i], 2.0);
+      QPen previousPolyPen = QPen(QColor(127, 0, 0, previousPolyAlpha[i]), 2.0);
       p.setPen(previousPolyPen);
       p.drawPolyline(previousPoly[i]);
     }
   }
 
   // Draw the current period
-  QPen currentPeriodPen = QPen(currentPeriodColor, 2.0);
+  QPen currentPeriodPen = QPen(QColor(127, 0, 0, 255), 2.0);
   p.setPen(currentPeriodPen);
   p.drawPolyline(currentPeriod);
 
@@ -216,18 +216,26 @@ void VibratoPeriodWidget::doUpdate()
         theSineDelay = toInt((rightMinimumTime - leftMinimumTime) * 0.25);
       }
 
-      // Calculate the sinewave
-      if (drawSineReference && (width() > 0) && (height() > 0)) {
-        if (sineStyle) {
-          for (float xx = 0; xx < width(); xx++) {
-            sineReference << QPointF(0.05 * width() + 0.9 * xx, halfHeight - halfHeight * 0.9 * sin((xx/width()) * 2 * PI));
+      // Calculate the sinewave, currentValue, and comparison
+      if ((width() > 0) && (height() > 0)) {
+        double xValue;
+        double ySineValue, yCurrentValue;
+        for (float xx = 0; xx < width(); xx++) {
+          xValue = 0.05 * width() + 0.9 * xx;
+          if (drawSineReference) {
+            if (sineStyle) {
+              ySineValue = halfHeight - halfHeight * 0.9 * sin((xx / width()) * 2 * PI);
+            } else {
+              ySineValue = halfHeight - halfHeight * -0.9 * cos((xx / width()) * 2 * PI);
+            }
+            sineReference << QPointF(xValue, ySineValue);
           }
-        } else {
-          for (float xx = 0; xx < width(); xx++) {
-            sineReference << QPointF(0.05 * width() + 0.9 * xx, halfHeight - halfHeight * -0.9 * cos((xx/width()) * 2 * PI));
+          yCurrentValue = 0.95 * height() - 0.9 * ((thePitchLookup.at(toInt((xx / width()) * periodDuration + theLeftMinimumTime + theSineDelay)) - minimumPitch) / periodWidth) * height();
+          currentPeriod << QPointF(xValue, yCurrentValue);
+          if (drawComparison && drawSineReference) {
+            comparisonPoly << QPointF(xValue, halfHeight - (ySineValue - yCurrentValue));
           }
         }
-        sineReferenceColor = QColor(255, 255, 0, 255);
       }
 
       // Calculate the previous period(s)
@@ -271,28 +279,9 @@ void VibratoPeriodWidget::doUpdate()
                                          0.95 * height() - 0.9 * ((thePitchLookup.at(offset) - minimumPitch) / periodWidth) * height());
             }
           }
-          previousPolyColor[i] = QColor(127, 0, 0, toInt(float(1 / pow(2, i + 1)) * 255));
+          previousPolyAlpha[i] = toInt(float(1 / pow(2, i + 1)) * 255);
           lastPeriodToDraw = i;
         }
-      }
-
-
-      // Calculate the current period
-      if ((width() > 0) && (height() > 0)) {
-        for (float xx = 0; xx < width(); xx++) {
-          currentPeriod << QPointF(0.05 * width() + 0.9 * xx,
-                                   0.95 * height() - 0.9 * ((thePitchLookup.at(toInt((xx / width()) * periodDuration + theLeftMinimumTime + theSineDelay)) - minimumPitch) / periodWidth) * height());
-        }
-        currentPeriodColor = QColor(127, 0, 0, 255);
-      }
-
-
-      // Calculate the comparison
-      if (drawComparison && drawSineReference && (width() > 0) && (height() > 0)) {
-        for (int xx = 0; xx < width(); xx++) {
-          comparisonPoly << QPointF(0.05 * width() + 0.9 * xx, halfHeight - (sineReference[xx].y() - currentPeriod[xx].y()));
-        }
-        comparisonPolyColor = QColor(0, 255, 0, 255);
       }
 
       prevLeftMinimumTime = leftMinimumTime;

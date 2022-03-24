@@ -238,6 +238,14 @@ void TunerWidgetGL::paintGL()
 
 	p.beginNativePainting();
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POLYGON_SMOOTH);
+	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	// Draw each of the dial VBOs.
 	// Dial Face
 	MyGL::DrawShape(m_program, m_vao_dial[VBO_DIAL], m_vbo_dial[VBO_DIAL], m_dial_count[VBO_DIAL], GL_TRIANGLE_FAN, QColor(Qt::white));
@@ -265,7 +273,10 @@ void TunerWidgetGL::paintGL()
 	}
 
 	p.beginNativePainting();
-
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POLYGON_SMOOTH);
+	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if (m_draw_needle) {
 		// Draw the needle inside
 		MyGL::DrawShape(m_program, m_vao_needle, m_vbo_needle, m_needle_count, GL_TRIANGLES, QColor(Qt::red));
@@ -281,22 +292,8 @@ void TunerWidgetGL::doUpdate(double thePitch)
 {
 	curPitch = thePitch;
 
-#ifdef DWS_UNUSED
-	Channel* active = gdata->getActiveChannel();
-#endif
-
 	float needleValue = 0;
 	int closePitch = 0;
-
-#ifdef DWS_UNUSED
-	if (active) {
-		AnalysisData* data = active->dataAtCurrentChunk();
-		if (data && active->isVisibleNote(data->noteIndex) && active->isLabelNote(data->noteIndex)) {
-			NoteData* note = new NoteData();
-			note = &(active->noteData[data->noteIndex]);
-		}
-	}
-#endif
 
 	closePitch = toInt(thePitch);
 	needleValue = 100 * (thePitch - float(closePitch));
@@ -345,10 +342,6 @@ void TunerWidgetGL::doUpdate(double thePitch)
 				float centAngle = (2 * theta) / 120;
 				float note = rho + (fabs(needleValueToDraw - 60) * centAngle);
 				int halfKnobWidth = MAX(toInt(radius * 0.02), 1);
-				qDebug() << "DEBUG: pitch: " << thePitch;
-				qDebug() << "DEBUG: needleValueToDraw: " << needleValueToDraw;
-				qDebug() << "DEBUG: note: " << note;
-				qDebug() << "DEBUG: centAngle: " << centAngle;
 
 				float noteX = centerX + radius * cos(note);
 				float noteY = centerY + radius * sin(note);

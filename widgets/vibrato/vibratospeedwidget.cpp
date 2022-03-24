@@ -65,6 +65,12 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
   QPen pen(palette().color(QPalette::Foreground), 2);
   p.setPen(pen);  // Border
 
+  QFontMetrics fm = QFontMetrics(speedWidthFont);
+  setFont(speedWidthFont);
+  int halfFontHeight = fm.height() / 2;
+  char widthLabel[5];
+  int halfFontWidth;
+
   const double halfWidth = double(width()) / 2.0;
   const double halfHeight = double(height()) / 2.0;
   const double radius = 1.8 * MAX(halfHeight, halfWidth);
@@ -93,10 +99,6 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
     double speedStep = (2 * theta) / 14.0;
     speedLabelCounter = 0;
     const char* speedLabelLookup[13] = { "12   ", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0" };
-
-    QFontMetrics fm = p.fontMetrics();
-    int halfFontHeight = fm.height() / 2;
-    int halfFontWidth;
 
     for (int j = 0; j < 13; j++) {
       double i = rho + speedStep * (j + 1);
@@ -205,11 +207,6 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
 
     double widthStep = (2 * theta) / 12.0;
     widthLabelCounter = 0;
-    char widthLabel[5];
-
-    QFontMetrics fm = p.fontMetrics();
-    int halfFontHeight = fm.height() / 2;
-    int halfFontWidth;
 
     for (int j = 0; j < 11; j++) {
       double i = rho + widthStep * (j + 1);
@@ -224,7 +221,7 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
 
           QPointF pt = start + 0.08 * (widthCenter - start);
           sprintf(widthLabel, "%d", widthLimit - ((widthLimit / 10) * j));
-          halfFontWidth = fm.width(widthLabel[j]) / 2;
+          halfFontWidth = fm.width(widthLabel) / 2;
           p.setPen(palette().color(QPalette::Foreground));
           p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, widthLabel);
         } else { // Smaller marking, no text label
@@ -236,7 +233,7 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
 
         QPointF pt = start + 0.08 * (widthCenter - start);
         sprintf(widthLabel, "%d", widthLimit - ((widthLimit / 10) * j));
-        halfFontWidth = fm.width(widthLabel[j]) / 2;
+        halfFontWidth = fm.width(widthLabel) / 2;
         p.setPen(palette().color(QPalette::Foreground));
         p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, widthLabel);
       }

@@ -42,13 +42,11 @@ class VibratoPeriodWidget : public DrawWidget {
     bool doPaint;
 
     QPolygonF sineReference;
-    QColor sineReferenceColor;
     QVector<QPolygonF> previousPoly;
     QVector<QColor> previousPolyColor;
+    QVector<int> previousPolyAlpha;
     QPolygonF currentPeriod;
-    QColor currentPeriodColor;
     QPolygonF comparisonPoly;
-    QColor comparisonPolyColor;
 
     int lastPeriodToDraw;
 

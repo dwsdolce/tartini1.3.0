@@ -16,8 +16,13 @@
 #define VIBRATOCIRCLEWIDGETGL_H
 
 #include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 
-class VibratoCircleWidgetGL : public QOpenGLWidget {
+class VibratoCircleWidgetGL : public QOpenGLWidget, protected QOpenGLFunctions
+{
   Q_OBJECT
 
   public:
@@ -36,9 +41,25 @@ class VibratoCircleWidgetGL : public QOpenGLWidget {
     int type;
     int lastPeriodToDraw;
 
-    GLuint referenceCircle;
-    GLuint currentPeriod;
-    GLuint prevPeriods[6];
+    QOpenGLShaderProgram m_program;
+    QOpenGLShaderProgram m_program_line;
+
+    // Different parts of the referenceCircle.
+    const int VBO_CIRCLE = 0;
+    const int VBO_LINES = 1;
+    QOpenGLBuffer m_vbo_referenceCircle[2];
+    int m_referenceCircleCount[2];
+    QOpenGLVertexArrayObject m_vao_referenceCircle[2];
+
+    QOpenGLBuffer m_vbo_currentPeriod;
+    int m_currentPeriodCount;
+    QOpenGLVertexArrayObject m_vao_currentPeriod;
+    int m_CurrentPeriodAlpha;
+
+    QOpenGLBuffer m_vbo_prevPeriods[6];
+    int m_prevPeriodsCount[6];
+    QOpenGLVertexArrayObject m_vao_prevPeriods[6];
+    int m_prevPeriodsAlpha[6];
 
   public slots:
     void doUpdate();
