@@ -13,19 +13,12 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 #include "amplitudewidget.h"
-#ifdef DWS
-#include <QOpenGLContext>
-#endif
 #include <QCoreApplication>
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QVector3D>
-#ifdef DWS
-#include "shader.h"
-#include "mygl.h"
-#endif
 
 #include "gdata.h"
 #include "channel.h"
@@ -52,100 +45,252 @@ AmplitudeWidget::AmplitudeWidget(QWidget* parent) : DrawWidget(parent)
 
 AmplitudeWidget::~AmplitudeWidget()
 {
-#ifdef DWS
-	QOpenGLContext* c = QOpenGLContext::currentContext();
-	if (c) {
-		makeCurrent();
+}
+
+void AmplitudeWidget::drawChannelAmplitudeFilled(Channel* ch)
+{
+	View* view = gdata->view;
+
+	ChannelLocker channelLocker(ch);
+	ZoomLookup* z = &ch->amplitudeZoomLookup;
+
+	// baseX is the no. of chunks a pixel must represent.
+	double baseX = view->zoomX() / ch->timePerChunk();
+
+	z->setZoomLevel(baseX);
+
+	double currentChunk = ch->chunkFractionAtTime(view->currentTime());
+	double leftFrameTime = currentChunk - ((view->currentTime() - view->viewLeft()) / ch->timePerChunk());
+	int n = 0, lastn = 0;
+	int baseElement = int(floor(leftFrameTime / baseX));
+	if (baseElement < 0) {
+		n -= baseElement; baseElement = 0;
+	}
+	int lastBaseElement = int(floor(double(ch->totalChunks()) / baseX));
+	double heightRatio = double(height()) / range();
+
+	QPolygonF ch_amp;
+	ch_amp << QPointF(n, height());
+	if (baseX > 1) { // More samples than pixels
+		int theWidth = width();
+		if (lastBaseElement > z->size()) z->setSize(lastBaseElement);
+		for (; n < theWidth && baseElement < lastBaseElement; n++, baseElement++) {
+			myassert(baseElement >= 0);
+			ZoomElement& ze = z->at(baseElement);
+			if (!ze.isValid()) {
+				if (!calcZoomElement(ze, ch, baseElement, baseX)) continue;
+			}
+
+			double y = height() - (1 + (ze.high() - offsetInv()) * heightRatio);
+			ch_amp << QPointF(n, y);
+			lastn = n;
+		}
+		ch_amp << QPointF(lastn, height());
+	} else { //baseX <= 1
+		float val = 0.0;
+		int intChunk = (int)floor(leftFrameTime); // Integer version of frame time
+		double stepSize = 1.0 / baseX; // So we skip some pixels
+
+		double start = (double(intChunk) - leftFrameTime) * stepSize;
+		double stop = width() + (2 * stepSize);
+
+		double dn = start, lastdn = start;
+		int totalChunks = ch->totalChunks();
+		if (intChunk < 0) {
+			dn += stepSize * -intChunk; intChunk = 0;
+		}
+
+		for (; dn < stop && intChunk < totalChunks; dn += stepSize, intChunk++) {
+			AnalysisData* data = ch->dataAtChunk(intChunk);
+			myassert(data);
+
+			if (!data) continue;
+			
+			val = calculateElement(data);
+
+			ch_amp << QPointF(dn, height() - (1 + ((val - offsetInv()) * heightRatio)));
+			lastdn = dn;
+		}
+		ch_amp << QPointF(lastdn, height());
 	}
 
-	m_vao_ch_amp.destroy();
-	m_vao_ref_dark.destroy();
-	m_vao_ref_light.destroy();
-	m_vao_time_line.destroy();
-	m_vao_blk_ref.destroy();
-	m_vao_red_ref.destroy();
+	p.setPen(gdata->shading2Color());
+	p.setBrush(gdata->shading2Color());
+	p.drawPolygon(ch_amp);
+}
+
+void AmplitudeWidget::drawVerticalRefLines()
+{
+	//Draw the vertical reference lines
+	double timeStep = timeWidth() / double(width()) * 150.0; //time per 150 pixels
+	double timeScaleBase = pow10(floor(log10(timeStep))); //round down to the nearest power of 10
+
+	//choose a timeScaleStep which is a multiple of 1, 2 or 5 of timeScaleBase
+	int largeFreq;
+	if (timeScaleBase * 5.0 < timeStep) {
+		largeFreq = 5;
+	} else if (timeScaleBase * 2.0 < timeStep) {
+		largeFreq = 2;
+	} else {
+		largeFreq = 2; timeScaleBase /= 2;
+	}
+
+	double timePos = floor(leftTime() / (timeScaleBase * largeFreq)) * (timeScaleBase * largeFreq); //calc the first one just off the left of the screen
+	int x, largeCounter = -1;
+	double ratio = double(width()) / timeWidth();
+	double lTime = leftTime();
+
+	QVector<QLineF> refLinesDark;
+	QVector<QLineF> refLinesLight;
+
+	for (; timePos <= rightTime(); timePos += timeScaleBase) {
+		x = toInt((timePos - lTime) * ratio);
+		if (++largeCounter == largeFreq) {
+			largeCounter = 0;
+			refLinesDark << QLineF(QPointF(x, 0.0), QPointF(x, height() - 1.0));
+		} else {
+			refLinesLight << QLineF(QPointF(x, 0.0), QPointF(x, height() - 1.0));
+		}
+	}
+
+	// Draw the dark lines
+	p.setPen(QColor(25, 125, 170, 128));
+	p.drawLines(refLinesDark);
+
+	// Draw the light lines
+	p.setPen(QColor(25, 125, 170, 64));
+	p.drawLines(refLinesLight);
+}
+
+void AmplitudeWidget::drawChannelAmplitude(Channel* ch)
+{
+	View* view = gdata->view;
+	QVector<QVector3D> amp;
+
+	ChannelLocker channelLocker(ch);
+	ZoomLookup* z = &ch->amplitudeZoomLookup;
+
+	// baseX is the no. of chunks a pixel must represent.
+	double baseX = view->zoomX() / ch->timePerChunk();
+
+	z->setZoomLevel(baseX);
+
+	double currentChunk = ch->chunkFractionAtTime(view->currentTime());
+	double leftFrameTime = currentChunk - ((view->currentTime() - view->viewLeft()) / ch->timePerChunk());
+	int n = 0;
+	int baseElement = int(floor(leftFrameTime / baseX));
+	if (baseElement < 0) {
+		n -= baseElement; baseElement = 0;
+	}
+	int lastBaseElement = int(floor(double(ch->totalChunks()) / baseX));
+	double heightRatio = double(height()) / range();
+
+	// Half the linewidth for lines.
+	double lineWidth = 2.0f;
+	double halfLineWidth = lineWidth/2.0f;
+
+	QPen chPen(ch->color);
+	chPen.setWidth(lineWidth);
+
+	if (baseX > 1) { // More samples than pixels
+		QVector<QLineF> ch_amp;
+
+		int theWidth = width();
+		if (lastBaseElement > z->size()) z->setSize(lastBaseElement);
+		for (; n < theWidth && baseElement < lastBaseElement; n++, baseElement++) {
+			myassert(baseElement >= 0);
+			ZoomElement& ze = z->at(baseElement);
+			if (!ze.isValid()) {
+				if (!calcZoomElement(ze, ch, baseElement, baseX)) continue;
+			}
+			ch_amp << QLineF(QPointF(n, height() - (1 + ((ze.high() - offsetInv()) * heightRatio) + halfLineWidth)),
+				               QPointF(n, height() - (1 + ((ze.low() - offsetInv()) * heightRatio) - halfLineWidth)));
+		}
+		p.setPen(chPen);
+		p.drawLines(ch_amp);
+	} else { //baseX <= 1
+		QPolygonF ch_amp;
+
+		float val = 0.0;
+		int intChunk = (int)floor(leftFrameTime); // Integer version of frame time
+		double stepSize = 1.0 / baseX; // So we skip some pixels
+
+		double start = (double(intChunk) - leftFrameTime) * stepSize;
+		double stop = width() + (2 * stepSize);
+		double dn = start;
+		int totalChunks = ch->totalChunks();
+		if (intChunk < 0) {
+			dn += stepSize * -intChunk; intChunk = 0;
+		}
+		for (; dn < stop && intChunk < totalChunks; dn += stepSize, intChunk++) {
+			AnalysisData* data = ch->dataAtChunk(intChunk);
+			myassert(data);
+
+			if (!data) continue;
+			val = calculateElement(data);
+			ch_amp << QPointF(dn, height() - (1 + ((val - offsetInv()) * heightRatio)));
+		}
+		p.setPen(chPen);
+		p.drawPolyline(ch_amp);
+	}
+}
+
+void AmplitudeWidget::paintEvent(QPaintEvent*)
+{
+	beginDrawing();
+
+	View* view = gdata->view;
+
+	//draw the red/blue background color shading if needed
+	if (view->backgroundShading() && gdata->getActiveChannel()) {
+		drawChannelAmplitudeFilled(gdata->getActiveChannel());
+	}
+	drawVerticalRefLines();
+
+	//draw all the visible channels
+	for (uint i = 0; i < gdata->channels.size(); i++) {
+		Channel* ch = gdata->channels.at(i);
+		if (!ch->isVisible()) continue;
+		drawChannelAmplitude(ch);
+	}
+
+	// Draw the current time line
+	double curScreenTime = (view->currentTime() - view->viewLeft()) / view->zoomX();
+
+	QLineF timeLine = QLineF(QPointF(curScreenTime, 0.0), QPointF(curScreenTime, height() - 1.0));
 	
-	m_vbo_ch_amp.destroy();
-	m_vbo_ref_dark.destroy();
-	m_vbo_ref_light.destroy();
-	m_vbo_time_line.destroy();
-	m_vbo_blk_ref.destroy();
-	m_vbo_red_ref.destroy();
+	p.setPen(palette().color(QPalette::Foreground));
+	p.drawLine(timeLine);
 
-	m_program.deleteLater();
-	m_program_line.deleteLater();
+	// Draw a horizontal line at the current threshold.
+	double y;
+	double heightRatio = double(height()) / range();
 
-	doneCurrent();
-#endif
+	// Draw the horizontal Black line
+	QLineF blkRef;
+
+	y = height() - (1 + toInt((getCurrentThreshold(0) - offsetInv()) * heightRatio));
+	blkRef = QLineF(QPointF(0.0, y), QPointF(width(), y));
+
+	p.setPen(Qt::black);
+	p.drawLine(blkRef);
+
+	// Draw the horizontal Red line
+	QLineF redRef;
+
+	y = height() - (1 + toInt((getCurrentThreshold(1) - offsetInv()) * heightRatio));
+	redRef = QLineF(QPointF(0.0, y), QPointF(width(), y));
+
+	p.setPen(Qt::red);
+	p.drawLine(redRef);
+
+	p.setPen(Qt::black);
+	p.drawText(2, height() - 3, getCurrentThresholdString());
+	p.end();
+
+	endDrawing();
 }
 
-#ifdef DWS
-void AmplitudeWidget::initializeGL()
-{
-	initializeOpenGLFunctions();
-
-	// build and compile our shader program
-	// ------------------------------------
-	try {
-		Shader ourShader(&m_program, ":/shader.vs.glsl", ":/shader.fs.glsl");
-	} catch (...) {
-		close();
-	}
-	try {
-		Shader ourShader(&m_program_line, ":/shader.vs.glsl", ":/shader.fs.glsl", ":/shader.gs.glsl");
-	} catch (...) {
-		close();
-	}
-
-	m_vao_ch_amp.create();
-	m_vao_ref_dark.create();
-	m_vao_ref_light.create();
-	m_vao_time_line.create();
-	m_vao_blk_ref.create();
-	m_vao_red_ref.create();
-
-	m_vbo_ch_amp.create();
-	m_vbo_ref_dark.create();
-	m_vbo_ref_light.create();
-	m_vbo_time_line.create();
-	m_vbo_blk_ref.create();
-	m_vbo_red_ref.create();
-}
-#endif
-
-#ifdef DWS
-void AmplitudeWidget::resizeGL(int w, int h)
-#endif
-void AmplitudeWidget::resizeEvent(QResizeEvent* event)
-{
-#ifdef DWS
-	glViewport(0, 0, (GLint)w, (GLint)h);
-#endif
-
-	// Create model transformation matrix to go from:
-	//		x: 0 to width
-	//		y: 0 to height
-	//	to:
-	//		x: -1.0f to 1.0f
-	//		y: -1.0f to 1.0f
-	p.translate(QPointF(-1.0f, -1.0f));
-	p.scale(2.0 / width(), 2.0 / height());
-#ifdef DWS
-	QMatrix4x4 model;
-	model.setToIdentity();
-	model.translate(QVector3D(-1.0f, -1.0f, 0.0f));
-	model.scale(2.0f / width(), 2.0f / height(), 1.0f);
-
-	m_program.bind();
-	m_program.setUniformValue("model", model);
-	m_program.release();
-
-	m_program_line.bind();
-	m_program_line.setUniformValue("model", model);
-	m_program_line.setUniformValue("screen_size", QVector2D(w, h));
-	m_program_line.release();
-#endif
-}
 
 void AmplitudeWidget::setRange(double newRange)
 {
@@ -175,337 +320,6 @@ void AmplitudeWidget::setOffset(double newOffset)
 	emit offsetInvChanged(offsetInv());
 }
 
-void AmplitudeWidget::drawChannelAmplitudeFilled(Channel* ch)
-{
-	View* view = gdata->view;
-
-	ChannelLocker channelLocker(ch);
-	ZoomLookup* z = &ch->amplitudeZoomLookup;
-
-	// baseX is the no. of chunks a pixel must represent.
-	double baseX = view->zoomX() / ch->timePerChunk();
-
-	z->setZoomLevel(baseX);
-
-	double currentChunk = ch->chunkFractionAtTime(view->currentTime());
-	double leftFrameTime = currentChunk - ((view->currentTime() - view->viewLeft()) / ch->timePerChunk());
-	int n = 0;
-	int baseElement = int(floor(leftFrameTime / baseX));
-	if (baseElement < 0) {
-		n -= baseElement; baseElement = 0;
-	}
-	int lastBaseElement = int(floor(double(ch->totalChunks()) / baseX));
-	double heightRatio = double(height()) / range();
-
-	QVector<QVector3D> vertexArray;
-	if (baseX > 1) { // More samples than pixels
-		int theWidth = width();
-		if (lastBaseElement > z->size()) z->setSize(lastBaseElement);
-		for (; n < theWidth && baseElement < lastBaseElement; n++, baseElement++) {
-			myassert(baseElement >= 0);
-			ZoomElement& ze = z->at(baseElement);
-			if (!ze.isValid()) {
-				if (!calcZoomElement(ze, ch, baseElement, baseX)) continue;
-			}
-
-			int y = 1 + toInt((ze.high() - offsetInv()) * heightRatio);
-#ifdef DWS
-			vertexArray << QVector3D((float)n, 0.0f, 0.0f);
-			vertexArray << QVector3D((float)n, (float)y, 0.0f);
-#endif
-		}
-	} else { //baseX <= 1
-		float val = 0.0;
-		int intChunk = (int)floor(leftFrameTime); // Integer version of frame time
-		double stepSize = 1.0 / baseX; // So we skip some pixels
-
-		double start = (double(intChunk) - leftFrameTime) * stepSize;
-		double stop = width() + (2 * stepSize);
-
-		double dn = start;
-		int totalChunks = ch->totalChunks();
-		if (intChunk < 0) {
-			dn += stepSize * -intChunk; intChunk = 0;
-		}
-
-		for (; dn < stop && intChunk < totalChunks; dn += stepSize, intChunk++) {
-			AnalysisData* data = ch->dataAtChunk(intChunk);
-			myassert(data);
-
-			if (!data) continue;
-			val = calculateElement(data);
-#ifdef DWS
-			vertexArray << QVector3D((float)dn, 0.0f, 0.0f);
-			vertexArray << QVector3D((float)dn, (float)(1 + ((val - offsetInv()) * heightRatio)), 0.0f);
-#endif
-		}
-	}
-#ifdef DWS
-	m_vao_ch_amp.bind();
-	m_vbo_ch_amp.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-	m_vbo_ch_amp.bind();
-	m_vbo_ch_amp.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
-
-	MyGL::DrawShape(m_program, m_vao_ch_amp, m_vbo_ch_amp, vertexArray.count(), GL_TRIANGLE_STRIP, gdata->shading2Color());
-	m_vao_ch_amp.release();
-	m_vbo_ch_amp.release();
-#endif
-}
-
-void AmplitudeWidget::drawVerticalRefLines()
-{
-	//Draw the vertical reference lines
-	double timeStep = timeWidth() / double(width()) * 150.0; //time per 150 pixels
-	double timeScaleBase = pow10(floor(log10(timeStep))); //round down to the nearest power of 10
-
-	//choose a timeScaleStep which is a multiple of 1, 2 or 5 of timeScaleBase
-	int largeFreq;
-	if (timeScaleBase * 5.0 < timeStep) {
-		largeFreq = 5;
-	} else if (timeScaleBase * 2.0 < timeStep) {
-		largeFreq = 2;
-	} else {
-		largeFreq = 2; timeScaleBase /= 2;
-	}
-
-	double timePos = floor(leftTime() / (timeScaleBase * largeFreq)) * (timeScaleBase * largeFreq); //calc the first one just off the left of the screen
-	int x, largeCounter = -1;
-	double ratio = double(width()) / timeWidth();
-	double lTime = leftTime();
-
-	QVector<QVector3D> refLinesDark;
-	QVector<QVector3D> refLinesLight;
-	for (; timePos <= rightTime(); timePos += timeScaleBase) {
-		x = toInt((timePos - lTime) * ratio);
-		if (++largeCounter == largeFreq) {
-			largeCounter = 0;
-#ifdef DWS
-			refLinesDark << QVector3D(x, 0.0f, 0.0f);
-			refLinesDark << QVector3D(x, (float)(height() - 1.0f), 0.0f);
-#endif
-		} else {
-#ifdef DWS
-			refLinesLight << QVector3D(x, 0.0f, 0.0f);
-			refLinesLight << QVector3D(x, (float)(height() - 1.0f), 0.0f);
-#endif
-		}
-	}
-
-	// Draw the dark lines 
-#ifdef DWS
-	m_vao_ref_dark.bind();
-	m_vbo_ref_dark.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-	m_vbo_ref_dark.bind();
-	m_vbo_ref_dark.allocate(refLinesDark.constData(), refLinesDark.count() * 3 * sizeof(float));
-
-	MyGL::DrawShape(m_program, m_vao_ref_dark, m_vbo_ref_dark, refLinesDark.count(), GL_LINES, QColor(25, 125, 170, 128));
-#endif
-
-	// Draw the light lines
-#ifdef DWS
-	m_vao_ref_light.bind();
-	m_vbo_ref_light.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-	m_vbo_ref_light.bind();
-	m_vbo_ref_light.allocate(refLinesLight.constData(), refLinesLight.count() * 3 * sizeof(float));
-
-	MyGL::DrawShape(m_program, m_vao_ref_light, m_vbo_ref_light, refLinesLight.count(), GL_LINES, QColor(25, 125, 170, 64));
-#endif
-}
-
-void AmplitudeWidget::drawChannelAmplitude(Channel* ch)
-{
-	View* view = gdata->view;
-	QVector<QVector3D> amp;
-
-	ChannelLocker channelLocker(ch);
-	ZoomLookup* z = &ch->amplitudeZoomLookup;
-
-	// baseX is the no. of chunks a pixel must represent.
-	double baseX = view->zoomX() / ch->timePerChunk();
-
-	z->setZoomLevel(baseX);
-
-	double currentChunk = ch->chunkFractionAtTime(view->currentTime());
-	double leftFrameTime = currentChunk - ((view->currentTime() - view->viewLeft()) / ch->timePerChunk());
-	int n = 0;
-	int baseElement = int(floor(leftFrameTime / baseX));
-	if (baseElement < 0) {
-		n -= baseElement; baseElement = 0;
-	}
-	int lastBaseElement = int(floor(double(ch->totalChunks()) / baseX));
-	double heightRatio = double(height()) / range();
-
-	QVector<QVector3D> vertexArray;
-	QColor chColor(ch->color.red(), ch->color.green(), ch->color.blue(), ch->color.alpha());
-	
-	// Half the linewidth for lines.
-	float lineWidth = 3.0f;
-	float halfLineWidth = lineWidth/2.0f;
-
-	if (baseX > 1) { // More samples than pixels
-		int theWidth = width();
-		if (lastBaseElement > z->size()) z->setSize(lastBaseElement);
-		for (; n < theWidth && baseElement < lastBaseElement; n++, baseElement++) {
-			myassert(baseElement >= 0);
-			ZoomElement& ze = z->at(baseElement);
-			if (!ze.isValid()) {
-				if (!calcZoomElement(ze, ch, baseElement, baseX)) continue;
-			}
-#ifdef DWS
-			vertexArray << QVector3D((float)n, (float)(1 + ((ze.high() - offsetInv()) * heightRatio)) + halfLineWidth, 0.0f);
-			vertexArray << QVector3D((float)n, (float)(1 + ((ze.low() - offsetInv()) * heightRatio)) - halfLineWidth, 0.0f);
-#endif
-		}
-		myassert(vertexArray.count() <= width() * 2);
-#ifdef DWS
-		m_vao_time_line.bind();
-		m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-		m_vbo_time_line.bind();
-		m_vbo_time_line.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
-
-		MyGL::DrawShape(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINES, chColor);
-#endif
-	} else { //baseX <= 1
-		float val = 0.0;
-		int intChunk = (int)floor(leftFrameTime); // Integer version of frame time
-		double stepSize = 1.0 / baseX; // So we skip some pixels
-
-		double start = (double(intChunk) - leftFrameTime) * stepSize;
-		double stop = width() + (2 * stepSize);
-		double dn = start;
-		int totalChunks = ch->totalChunks();
-		if (intChunk < 0) {
-			dn += stepSize * -intChunk; intChunk = 0;
-		}
-		for (; dn < stop && intChunk < totalChunks; dn += stepSize, intChunk++) {
-			AnalysisData* data = ch->dataAtChunk(intChunk);
-			myassert(data);
-
-			if (!data) continue;
-			val = calculateElement(data);
-#ifdef DWS
-			vertexArray << QVector3D((float)dn, (float)(1 + ((val - offsetInv()) * heightRatio)), 0.0f);
-#endif
-		}
-		myassert(vertexArray.count() <= width() * 2);
-
-#ifdef DWS
-		m_vao_time_line.bind();
-		m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-		m_vbo_time_line.bind();
-		m_vbo_time_line.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
-
-		MyGL::DrawLine(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINE_STRIP, lineWidth, chColor);
-#endif
-	}
-}
-
-
-#ifdef DWS
-void AmplitudeWidget::paintGL()
-#endif
-void AmplitudeWidget::paintEvent(QPaintEvent*)
-{
-#ifdef DWS
-	QPainter p;
-	p.begin(this);
-	p.beginNativePainting();
-	QColor bg = gdata->backgroundColor();
-	glClearColor(double(bg.red()) / 255.0, double(bg.green()) / 255.0, double(bg.blue()) / 255.0, bg.alpha() / 255.0);
-
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_POLYGON_SMOOTH);
-	glEnableClientState(GL_VERTEX_ARRAY);
-#endif
-
-	View* view = gdata->view;
-
-	//draw the red/blue background color shading if needed
-	if (view->backgroundShading() && gdata->getActiveChannel()) {
-		drawChannelAmplitudeFilled(gdata->getActiveChannel());
-	}
-#ifdef DWS
-	glDisable(GL_LINE_SMOOTH);
-#endif
-	drawVerticalRefLines();
-
-#ifdef DWS
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_POLYGON_SMOOTH);
-#endif
-
-	//draw all the visible channels
-	for (uint i = 0; i < gdata->channels.size(); i++) {
-		Channel* ch = gdata->channels.at(i);
-		if (!ch->isVisible()) continue;
-		drawChannelAmplitude(ch);
-	}
-#ifdef DWS
-	glDisable(GL_LINE_SMOOTH);
-	glDisable(GL_POLYGON_SMOOTH);
-#endif
-
-	// Draw the current time line
-	double curScreenTime = (view->currentTime() - view->viewLeft()) / view->zoomX();
-
-	QVector<QVector3D> timeLine;
-	timeLine << QVector3D((float)curScreenTime, 0.0f, 0.0f);
-	timeLine << QVector3D((float)curScreenTime, height() - 1, 0.0f);
-
-#ifdef DWS
-	m_vao_time_line.bind();
-	m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-	m_vbo_time_line.bind();
-	m_vbo_time_line.allocate(timeLine.constData(), timeLine.count() * 3 * sizeof(float));
-
-	MyGL::DrawShape(m_program, m_vao_time_line, m_vbo_time_line, timeLine.count(), GL_LINES, palette().color(QPalette::Foreground));
-#endif
-	// Draw a horizontal line at the current threshold.
-	float y;
-	double heightRatio = double(height()) / range();
-
-	// Draw the horizontal Black line
-	QVector<QVector3D> blkRef;
-	y = 1 + toInt((getCurrentThreshold(0) - offsetInv()) * heightRatio);
-	blkRef << QVector3D(0.0f, y, 0.0f);
-	blkRef << QVector3D((float)width(), y, 0.0f);
-
-#ifdef DWS
-	m_vao_blk_ref.bind();
-	m_vbo_blk_ref.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-	m_vbo_blk_ref.bind();
-	m_vbo_blk_ref.allocate(blkRef.constData(), blkRef.count() * 3 * sizeof(float));
-
-	MyGL::DrawShape(m_program, m_vao_blk_ref, m_vbo_blk_ref, blkRef.count(), GL_LINES, QColor(Qt::black));
-#endif
-
-	// Draw the horizontal Red line
-	QVector<QVector3D> redRef;
-	y = 1 + toInt((getCurrentThreshold(1) - offsetInv()) * heightRatio);
-	redRef << QVector3D(0.0f, y, 0.0f);
-	redRef << QVector3D((float)width(), y, 0.0f);
-
-#ifdef DWS
-	m_vao_red_ref.bind();
-	m_vbo_red_ref.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-	m_vbo_red_ref.bind();
-	m_vbo_red_ref.allocate(redRef.constData(), redRef.count() * 3 * sizeof(float));
-
-	MyGL::DrawShape(m_program, m_vao_red_ref, m_vbo_red_ref, redRef.count(), GL_LINES, QColor(Qt::red));
-	#
-	p.endNativePainting();
-#endif
-
-	p.setPen(Qt::black);
-	p.drawText(2, height() - 3, getCurrentThresholdString());
-	p.end();
-}
 
 /** This function has the side effect of changing ze
 */

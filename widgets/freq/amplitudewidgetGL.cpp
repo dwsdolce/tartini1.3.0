@@ -131,34 +131,6 @@ void AmplitudeWidgetGL::resizeGL(int w, int h)
 
 }
 
-void AmplitudeWidgetGL::setRange(double newRange)
-{
-	if (_range != newRange) {
-		_range = bound(newRange, 0.0, 1.0);
-		setOffset(offset());
-		emit rangeChanged(_range);
-	}
-}
-
-// This is required since setRange is called when a QWTWheel is changed and rangeChanged sets the valye of the QWTWheel which breaks the
-// Mouse Motion.
-void AmplitudeWidgetGL::setRangeQWTWheel(double newRange)
-{
-	if (_range != newRange) {
-		_range = bound(newRange, 0.0, 1.0);
-		setOffset(offset());
-	}
-}
-
-void AmplitudeWidgetGL::setOffset(double newOffset)
-{
-	newOffset = bound(newOffset, 0.0, maxOffset());
-	_offset = newOffset;
-	_offsetInv = maxOffset() - _offset;
-	emit offsetChanged(_offset);
-	emit offsetInvChanged(offsetInv());
-}
-
 void AmplitudeWidgetGL::drawChannelAmplitudeFilledGL(Channel* ch)
 {
 	View* view = gdata->view;
@@ -307,10 +279,10 @@ void AmplitudeWidgetGL::drawChannelAmplitudeGL(Channel* ch)
 	double heightRatio = double(height()) / range();
 
 	QVector<QVector3D> vertexArray;
-	QColor chColor(ch->color.red(), ch->color.green(), ch->color.blue(), ch->color.alpha());
+	//DWS QColor chColor(ch->color.red(), ch->color.green(), ch->color.blue(), ch->color.alpha());
 	
 	// Half the linewidth for lines.
-	float lineWidth = 3.0f;
+	float lineWidth = 2.0f;
 	float halfLineWidth = lineWidth/2.0f;
 
 	if (baseX > 1) { // More samples than pixels
@@ -332,7 +304,7 @@ void AmplitudeWidgetGL::drawChannelAmplitudeGL(Channel* ch)
 		m_vbo_time_line.bind();
 		m_vbo_time_line.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
 
-		MyGL::DrawShape(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINES, chColor);
+		MyGL::DrawShape(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINES, ch->color);
 	} else { //baseX <= 1
 		float val = 0.0;
 		int intChunk = (int)floor(leftFrameTime); // Integer version of frame time
@@ -361,7 +333,7 @@ void AmplitudeWidgetGL::drawChannelAmplitudeGL(Channel* ch)
 		m_vbo_time_line.bind();
 		m_vbo_time_line.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
 
-		MyGL::DrawLine(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINE_STRIP, lineWidth, chColor);
+		MyGL::DrawLine(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINE_STRIP, lineWidth, ch->color);
 	}
 }
 
@@ -455,6 +427,35 @@ void AmplitudeWidgetGL::paintGL()
 	p.setPen(Qt::black);
 	p.drawText(2, height() - 3, getCurrentThresholdString());
 	p.end();
+}
+
+
+void AmplitudeWidgetGL::setRange(double newRange)
+{
+	if (_range != newRange) {
+		_range = bound(newRange, 0.0, 1.0);
+		setOffset(offset());
+		emit rangeChanged(_range);
+	}
+}
+
+// This is required since setRange is called when a QWTWheel is changed and rangeChanged sets the valye of the QWTWheel which breaks the
+// Mouse Motion.
+void AmplitudeWidgetGL::setRangeQWTWheel(double newRange)
+{
+	if (_range != newRange) {
+		_range = bound(newRange, 0.0, 1.0);
+		setOffset(offset());
+	}
+}
+
+void AmplitudeWidgetGL::setOffset(double newOffset)
+{
+	newOffset = bound(newOffset, 0.0, maxOffset());
+	_offset = newOffset;
+	_offsetInv = maxOffset() - _offset;
+	emit offsetChanged(_offset);
+	emit offsetInvChanged(offsetInv());
 }
 
 /** This function has the side effect of changing ze

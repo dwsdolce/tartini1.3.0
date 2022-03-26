@@ -61,7 +61,7 @@ FreqView::FreqView(int viewID_, QWidget* parent)
 	freqFrame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
 	QVBoxLayout* freqFrameLayout = new QVBoxLayout;
 
-	freqWidget = new FreqWidget();
+	freqWidget = new FreqWidget(NULL);
 	freqWidget->setWhatsThis("The line represents the musical pitch of the sound. A higher pitch moves up, with note names shown at the left, with octave numbers. "
 		"The black vertical line shows the current time. This line's position can be moved. "
 		"Pitch-lines are drawn connected only because they change a small amount over a small time step. "

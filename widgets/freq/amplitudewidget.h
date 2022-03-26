@@ -18,16 +18,7 @@
 #ifndef AMPLITUDEWIDGET_H
 #define AMPLITUDEWIDGET_H
 
-#ifdef DWS
-#include <QCoreApplication>
-#include <QOpenGLWidget>
-#include <QOpenGLFunctions>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
-#endif
 #include "drawwidget.h"
-#include <QPixmap>
 
 #include <QMouseEvent>
 #include <QPixmap>
@@ -38,9 +29,6 @@
 
 class AnalysisData;
 
-#ifdef DWS
-class AmplitudeWidget : public QOpenGLWidget, protected QOpenGLFunctions {
-#endif
 class AmplitudeWidget : public DrawWidget
 	{
 
@@ -58,13 +46,7 @@ public:
 	AmplitudeWidget(QWidget* parent);
 	virtual ~AmplitudeWidget();
 
-#ifdef DWS
-	void initializeGL() override;
-	void resizeGL(int w, int h) override;
-	void paintGL() override;
-#endif
 	void paintEvent(QPaintEvent* event);
-	void resizeEvent(QResizeEvent* event);
 
 	void drawVerticalRefLines();
 	bool calcZoomElement(ZoomElement& ze, Channel* ch, int baseElement, double baseX);
@@ -125,31 +107,6 @@ private:
 	double _range;
 	double _offset;
 	double _offsetInv;
-	float lineWidth;
-	float halfLineWidth;
-
-#ifdef DWS
-	QOpenGLShaderProgram m_program;
-	QOpenGLShaderProgram m_program_line;
-
-	QOpenGLVertexArrayObject m_vao_ch_amp;
-	QOpenGLBuffer m_vbo_ch_amp;
-
-	QOpenGLVertexArrayObject m_vao_ref_dark;
-	QOpenGLBuffer m_vbo_ref_dark;
-
-	QOpenGLVertexArrayObject m_vao_ref_light;
-	QOpenGLBuffer m_vbo_ref_light;
-
-	QOpenGLVertexArrayObject m_vao_time_line;
-	QOpenGLBuffer m_vbo_time_line;
-
-	QOpenGLVertexArrayObject m_vao_blk_ref;
-	QOpenGLBuffer m_vbo_blk_ref;
-
-	QOpenGLVertexArrayObject m_vao_red_ref;
-	QOpenGLBuffer m_vbo_red_ref;
-#endif
 };
 
 #endif
