@@ -18,6 +18,7 @@
 #include "piano3d.h"
 #include "useful.h"
 #include "musicnotes.h"
+#include "mygl.h"
 
 double keyOffsetTable[12] = { 0.0, 15.5, 23.5, 43.5, 47.0, 70.5, 85.5, 94.0, 112.5, 117.5, 139.0, 141.0 };
 
@@ -28,6 +29,15 @@ Piano3d::Piano3d(int numKeys_, int firstKey_)
 
 Piano3d::~Piano3d()
 {
+  m_vao_aWhiteKey.destroy();
+  m_vbo_aWhiteKey.destroy();
+  m_vao_aWhiteKeyOutline.destroy();
+  m_vbo_aWhiteKeyOutline.destroy();
+
+  m_vao_aBlackKey.destroy();
+  m_vbo_aBlackKey.destroy();
+  m_vao_aBlackKeyOutline.destroy();
+  m_vbo_aBlackKeyOutline.destroy();
 }
 
 /**
@@ -65,14 +75,20 @@ void Piano3d::init(int numKeys_, int firstKey_)
   }
   
   //build display lists for a white and a black key (for fast rendering later)
-  aWhiteKey = glGenLists(1);
-  glNewList(aWhiteKey, GL_COMPILE);
+  m_vao_aWhiteKey.create();
+  m_vbo_aWhiteKey.create();
+  m_vao_aWhiteKeyOutline.create();
+  m_vbo_aWhiteKeyOutline.create();
+
+  m_vao_aBlackKey.create();
+  m_vbo_aBlackKey.create();
+  m_vao_aBlackKeyFront.create();
+  m_vbo_aBlackKeyFront.create();
+  m_vao_aBlackKeyOutline.create();
+  m_vbo_aBlackKeyOutline.create();
+
   drawWhiteKey();
-  glEndList();
-  aBlackKey = glGenLists(1);
-  glNewList(aBlackKey, GL_COMPILE);
   drawBlackKey();
-  glEndList();
 }
 
 void Piano3d::setAllKeyStatesOff()
@@ -82,49 +98,157 @@ void Piano3d::setAllKeyStatesOff()
 
 void Piano3d::drawWhiteKey()
 {
-  glBegin(GL_QUAD_STRIP);
+  QVector<QVector3D> key, keyOutline;
+
   //top surface
+#ifdef DWS
+  This is for lighting
   glNormal3f(0.0, 1.0, 0.0);
-  glVertex3f(WHITE_KEY_WIDTH, 0.0, 0.0);
-  glVertex3f(0.0, 0.0, 0.0);
-  
-  glVertex3f(WHITE_KEY_WIDTH, 0.0, WHITE_KEY_LENGTH);
-  glVertex3f(0.0, 0.0, WHITE_KEY_LENGTH);
-  
+#endif
+  // These will be GL_TRIANGLE_STRIP for the key top
+  key << QVector3D(0.0,             0.0, 0.0);
+  key << QVector3D(WHITE_KEY_WIDTH, 0.0, 0.0);
+  key << QVector3D(0.0,             0.0, WHITE_KEY_LENGTH);
+  key << QVector3D(WHITE_KEY_WIDTH, 0.0, WHITE_KEY_LENGTH);
+
+  // These will be GL_LINES for the outline of the key top
+  keyOutline << QVector3D(0.0,             0.0, 0.0);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, 0.0, 0.0);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, 0.0, 0.0);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, 0.0, WHITE_KEY_LENGTH);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, 0.0, WHITE_KEY_LENGTH);
+  keyOutline << QVector3D(0.0,             0.0, WHITE_KEY_LENGTH);
+  keyOutline << QVector3D(0.0,             0.0, WHITE_KEY_LENGTH);
+  keyOutline << QVector3D(0.0,             0.0, 0.0);
+
   //front surface
+#ifdef DWS
+  THis is for lighting
   glNormal3f(0.0f, -1.0f, 0.2f); //todo: fix normal
-  glVertex3f(WHITE_KEY_WIDTH, -2.0f, WHITE_KEY_LENGTH_INSIDE);
-  glVertex3f(0.0f, -2.0f, WHITE_KEY_LENGTH_INSIDE);
-  
+#endif
+  // Beveled front edge of key.
+  key << QVector3D(0.0,             -2.0, WHITE_KEY_LENGTH_INSIDE);
+  key << QVector3D(WHITE_KEY_WIDTH, -2.0, WHITE_KEY_LENGTH_INSIDE);
+
+  keyOutline << QVector3D(0.0,              0.0, WHITE_KEY_LENGTH);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH,  0.0, WHITE_KEY_LENGTH);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH,  0.0, WHITE_KEY_LENGTH);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, -2.0, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, -2.0, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(0.0,             -2.0, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(0.0,             -2.0, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(0.0,              0.0, WHITE_KEY_LENGTH);
+
+    // Front of the key.
+
+#ifdef DWS
   glNormal3f(0.0f, 0.0f, 1.0f);
-  glVertex3f(WHITE_KEY_WIDTH, -WHITE_KEY_HEIGHT, WHITE_KEY_LENGTH_INSIDE);
-  glVertex3f(0.0f, -WHITE_KEY_HEIGHT, WHITE_KEY_LENGTH_INSIDE);
-  glEnd();
+#endif
+
+  key << QVector3D(0,               -WHITE_KEY_HEIGHT, WHITE_KEY_LENGTH_INSIDE);
+  key << QVector3D(WHITE_KEY_WIDTH, -WHITE_KEY_HEIGHT, WHITE_KEY_LENGTH_INSIDE);
+
+  keyOutline << QVector3D(0.0,             -2.0, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, -2.0, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, -2.0, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, -WHITE_KEY_HEIGHT, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(WHITE_KEY_WIDTH, -WHITE_KEY_HEIGHT, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(0.0,             -WHITE_KEY_HEIGHT, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(0.0,             -WHITE_KEY_HEIGHT, WHITE_KEY_LENGTH_INSIDE);
+  keyOutline << QVector3D(0.0,             -2.0, WHITE_KEY_LENGTH_INSIDE);
+
+  m_vao_aWhiteKey.bind();
+  m_vbo_aWhiteKey.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+  m_vbo_aWhiteKey.bind();
+  m_vbo_aWhiteKey.allocate(key.constData(), key.count() * 3 * sizeof(float));
+  m_aWhiteKeyCount = key.count();
+
+  m_vao_aWhiteKeyOutline.bind();
+  m_vbo_aWhiteKeyOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+  m_vbo_aWhiteKeyOutline.bind();
+  m_vbo_aWhiteKeyOutline.allocate(keyOutline.constData(), keyOutline.count() * 3 * sizeof(float));
+  m_aWhiteKeyOutlineCount = keyOutline.count();
 }
 
 void Piano3d::drawBlackKey()
 {
-  glBegin(GL_QUAD_STRIP);
+  QVector<QVector3D> key, keyFront, keyOutline;
+
+  // Left side of the key
+#ifdef DWS
   glNormal3f(-1.0, 0.0, 0.0);
-  glVertex3f(0.0, 0.0, 0.0);
-  glVertex3f(0.0, 0.0, BLACK_KEY_LENGTH_BOTTOM);
-  glVertex3f(0.0, BLACK_KEY_HEIGHT, 0.0);
-  glVertex3f(0.0, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+#endif
+  key << QVector3D(0.0, 0.0,              0.0);
+  key << QVector3D(0.0, 0.0,              BLACK_KEY_LENGTH_BOTTOM);
+  key << QVector3D(0.0, BLACK_KEY_HEIGHT, 0.0);
+  key << QVector3D(0.0, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+
+  keyOutline << QVector3D(0.0, 0.0,              0.0);
+  keyOutline << QVector3D(0.0, 0.0,              BLACK_KEY_LENGTH_BOTTOM);
+  keyOutline << QVector3D(0.0, 0.0,              BLACK_KEY_LENGTH_BOTTOM);
+  keyOutline << QVector3D(0.0, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+  keyOutline << QVector3D(0.0, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+  keyOutline << QVector3D(0.0, BLACK_KEY_HEIGHT, 0.0);
+  keyOutline << QVector3D(0.0, BLACK_KEY_HEIGHT, 0.0);
+  keyOutline << QVector3D(0.0, 0.0,              0.0);
+
+  // Top of the key
+#ifdef DWS
   glNormal3f(0.0, 1.0, 0.0);
-  glVertex3f(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, 0.0);
-  glVertex3f(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+#endif
+  key << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, 0.0);
+  key << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+
+  keyOutline << QVector3D(0.0,             BLACK_KEY_HEIGHT, 0.0);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, 0.0);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, 0.0);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+  keyOutline << QVector3D(0,               BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+
+  // Right side of the key
+#ifdef DWS
   glNormal3f(1.0, 0.0, 0.0);
-  glVertex3f(BLACK_KEY_WIDTH, 0.0, 0.0);
-  glVertex3f(BLACK_KEY_WIDTH, 0.0, BLACK_KEY_LENGTH_BOTTOM);
-  glEnd();
-  
-  glBegin(GL_QUADS);
+#endif
+  key << QVector3D(BLACK_KEY_WIDTH, 0.0, 0.0);
+  key << QVector3D(BLACK_KEY_WIDTH, 0.0, BLACK_KEY_LENGTH_BOTTOM);
+
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, 0.0,              0.0);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, 0.0,              BLACK_KEY_LENGTH_BOTTOM);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, 0.0,              BLACK_KEY_LENGTH_BOTTOM);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, 0.0);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, 0.0,              0.0);
+
+  m_vao_aBlackKey.bind();
+  m_vbo_aBlackKey.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+  m_vbo_aBlackKey.bind();
+  m_vbo_aBlackKey.allocate(key.constData(), key.count() * 3 * sizeof(float));
+  m_aBlackKeyCount = key.count();
+
+  // Front of the key
+#ifdef DWS
   glNormal3f(0.0, 3.0, 1.0); //todo: fix normal
-  glVertex3f(BLACK_KEY_WIDTH, 0.0, BLACK_KEY_LENGTH_BOTTOM);
-  glVertex3f(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
-  glVertex3f(0.0, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
-  glVertex3f(0.0, 0.0, BLACK_KEY_LENGTH_BOTTOM);
-  glEnd();
+#endif
+  keyFront << QVector3D(0.0,             0.0,              BLACK_KEY_LENGTH_BOTTOM);
+  keyFront << QVector3D(BLACK_KEY_WIDTH, 0.0,              BLACK_KEY_LENGTH_BOTTOM);
+  keyFront << QVector3D(0.0,             BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+  keyFront << QVector3D(BLACK_KEY_WIDTH, BLACK_KEY_HEIGHT, BLACK_KEY_LENGTH_TOP);
+
+  keyOutline << QVector3D(0.0,             0.0, BLACK_KEY_LENGTH_BOTTOM);
+  keyOutline << QVector3D(BLACK_KEY_WIDTH, 0.0, BLACK_KEY_LENGTH_BOTTOM);
+
+  m_vao_aBlackKeyFront.bind();
+  m_vbo_aBlackKeyFront.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+  m_vbo_aBlackKeyFront.bind();
+  m_vbo_aBlackKeyFront.allocate(keyFront.constData(), keyFront.count() * 3 * sizeof(float));
+  m_aBlackKeyFrontCount = keyFront.count();
+
+  m_vao_aBlackKeyOutline.bind();
+  m_vbo_aBlackKeyOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+  m_vbo_aBlackKeyOutline.bind();
+  m_vbo_aBlackKeyOutline.allocate(keyOutline.constData(), keyOutline.count() * 3 * sizeof(float));
+  m_aBlackKeyOutlineCount = keyOutline.count();
 }
 
 void Piano3d::setMaterialWhiteKey()
@@ -139,7 +263,7 @@ void Piano3d::setMaterialBlackKey()
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, pianoKeyDiffuse);
 }
 
-void Piano3d::draw()
+void Piano3d::draw(QOpenGLShaderProgram& program, QMatrix4x4& pianoModel)
 {
   int curKey;
   int j;
@@ -148,84 +272,102 @@ void Piano3d::draw()
   glEnable(GL_POLYGON_OFFSET_FILL);
   glPolygonOffset(1.0f, 1.0f);
   glPolygonMode(GL_FRONT, GL_FILL);
-  
+    
   //draw white keys filled
+  QColor keyColor(230, 230, 230);
+#ifdef DWS
   setMaterialSpecular( 0.2f, 0.2f, 0.2f, 50.0f);
   setMaterialColor(0.9f, 0.9f, 0.9f);
-  glPushMatrix();
+#endif
+  QMatrix4x4 pianoKeyModel = pianoModel;
+  QMatrix4x4 pianoKeyPressedModel;
+
   for(j=0; j<_numKeys; j++) {
     curKey = j+_firstKey;
     if(!isBlackNote(curKey)) {
+      keyColor = QColor(230, 230, 230);
+#ifdef DWS
+      setMaterialColor(0.9f, 0.9f, 0.9f);
+#endif
+
       if(keyStates[j]) {
+        keyColor = QColor(230, 230, 0);
+
+#ifdef DWS
         setMaterialColor(0.9f, 0.9f, 0.0f);
-        glPushMatrix();
-        glRotated(5.0, 1.0, 0.0, 0.0);
-        glCallList(aWhiteKey);
-        glPopMatrix();
-        setMaterialColor(0.9f, 0.9f, 0.9f);
+#endif
+        pianoKeyPressedModel = pianoKeyModel;
+        pianoKeyPressedModel.rotate(5.0, 1.0, 0.0, 0.0);
+
+        program.bind();
+        program.setUniformValue("model", pianoKeyPressedModel);
+        program.release();
+        MyGL::DrawShape(program, m_vao_aWhiteKey, m_vbo_aWhiteKey, m_aWhiteKeyCount, GL_TRIANGLE_STRIP, keyColor);
+        keyColor = QColor(0, 0, 0);
+#ifdef DWS
+        setMaterialColor(0.0, 0.0, 0.0);
+#endif
+        MyGL::DrawShape(program, m_vao_aWhiteKeyOutline, m_vbo_aWhiteKeyOutline, m_aWhiteKeyOutlineCount, GL_LINES, keyColor);
+#ifdef DWS
+#endif
       } else {
-        glCallList(aWhiteKey);
+        program.bind();
+        program.setUniformValue("model", pianoKeyModel);
+        program.release();
+        MyGL::DrawShape(program, m_vao_aWhiteKey, m_vbo_aWhiteKey, m_aWhiteKeyCount, GL_TRIANGLE_STRIP, keyColor);
+        keyColor = QColor(0, 0, 0);
+#ifdef DWS
+        setMaterialColor(0.0, 0.0, 0.0);
+#endif
+        MyGL::DrawShape(program, m_vao_aWhiteKeyOutline, m_vbo_aWhiteKeyOutline, m_aWhiteKeyOutlineCount, GL_LINES, keyColor);
       }
-      glTranslatef(WHITE_KEY_WIDTH, 0.0, 0.0);
+      pianoKeyModel.translate(WHITE_KEY_WIDTH, 0.0, 0.0);
     }
   }
-  glPopMatrix();
   
   //draw black keys filled
-  setMaterialColor(0.15f, 0.15f, 0.15f);
   for(j=0; j<_numKeys; j++) {
     curKey = j+_firstKey;
     if(isBlackNote(curKey)) {
-      glPushMatrix();
-      glTranslatef(keyOffsets[j], 0.0, 0.0);
+      QColor keyColor(38, 38, 38);
+#ifdef DWS
+      setMaterialColor(0.15f, 0.15f, 0.15f);
+#endif
+      pianoKeyModel = pianoModel;
+      pianoKeyModel.translate(keyOffsets[j], 0.0, 0.0);
       if(keyStates[j]) {
-        glRotated(5.0, 1.0, 0.0, 0.0);
+        pianoKeyPressedModel = pianoKeyModel;
+        pianoKeyPressedModel.rotate(5.0, 1.0, 0.0, 0.0);
+
+        keyColor = QColor(128, 128, 0);
+#ifdef DWS
         setMaterialColor(0.5, 0.5, 0.0);
-        glCallList(aBlackKey);
-        setMaterialColor(0.15f, 0.15f, 0.15f);
+#endif
+        program.bind();
+        program.setUniformValue("model", pianoKeyPressedModel);
+        program.release();
+        MyGL::DrawShape(program, m_vao_aBlackKey, m_vbo_aBlackKey, m_aBlackKeyCount, GL_TRIANGLE_STRIP, keyColor);
+        MyGL::DrawShape(program, m_vao_aBlackKeyFront, m_vbo_aBlackKeyFront, m_aBlackKeyFrontCount, GL_TRIANGLE_STRIP, keyColor);
+
+        keyColor = QColor(90, 90, 90);
+#ifdef DWS
+        setMaterialColor(0.35f, 0.35f, 0.35f);
+#endif
+        MyGL::DrawShape(program, m_vao_aBlackKeyOutline, m_vbo_aBlackKeyOutline, m_aBlackKeyOutlineCount, GL_LINES, keyColor);
       } else {
-        glCallList(aBlackKey);
+        program.bind();
+        program.setUniformValue("model", pianoKeyModel);
+        program.release();
+        MyGL::DrawShape(program, m_vao_aBlackKey, m_vbo_aBlackKey, m_aBlackKeyCount, GL_TRIANGLE_STRIP, keyColor);
+        MyGL::DrawShape(program, m_vao_aBlackKeyFront, m_vbo_aBlackKeyFront, m_aBlackKeyFrontCount, GL_TRIANGLE_STRIP, keyColor);
+
+        keyColor = QColor(90, 90, 90);
+#ifdef DWS
+        setMaterialColor(0.35f, 0.35f, 0.35f);
+#endif
+        MyGL::DrawShape(program, m_vao_aBlackKeyOutline, m_vbo_aBlackKeyOutline, m_aBlackKeyOutlineCount, GL_LINES, keyColor);
       }
-      glPopMatrix();
     }
   }
   glDisable(GL_POLYGON_OFFSET_FILL);
-  
-  //draw white key outline
-  setMaterialColor(0.0, 0.0, 0.0);
-  glLineWidth(1.0);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glPushMatrix();
-  for(j=0; j<_numKeys; j++) {
-    curKey = j+_firstKey;
-    if(!isBlackNote(curKey)) {
-      if(keyStates[j]) {
-        glPushMatrix();
-        glRotated(5.0, 1.0, 0.0, 0.0);
-        glCallList(aWhiteKey);
-        glPopMatrix();
-      } else {
-        glCallList(aWhiteKey);
-      }
-      glTranslatef(WHITE_KEY_WIDTH, 0.0, 0.0);
-    }
-  }
-  glPopMatrix();
-
-  //draw black key outline
-  setMaterialColor(0.35f, 0.35f, 0.35f);
-  for(j=0; j<_numKeys; j++) {
-    curKey = j+_firstKey;
-    if(isBlackNote(curKey)) {
-      glPushMatrix();
-      glTranslatef(keyOffsets[j], 0.0, 0.0);
-      if(keyStates[j]) {
-        glRotated(5.0, 1.0, 0.0, 0.0);
-        glCallList(aBlackKey);
-      } else {
-        glCallList(aBlackKey);
-      }
-      glPopMatrix();
-    }
-  }
 }

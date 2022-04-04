@@ -12,5 +12,8 @@
         <file>shader.fs.glsl</file>
         <file>shader.vs.glsl</file>
         <file>shader.gs.glsl</file>
+        <file>camera.vs.glsl</file>
+        <file>shaderMaterial.fs.glsl</file>
+        <file>shaderMaterial.vs.glsl</file>
     </qresource>
 </RCC>

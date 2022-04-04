@@ -18,7 +18,16 @@
 
 #include <vector>
 #include <stdio.h>
+#ifdef DWS
 #include <QGLWidget>
+#endif
+#include <QOpenGLWidget>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
+
+#include <QMatrix4x4>
+
 #include "myassert.h"
 
 #define WHITE_KEY_WIDTH            23.5f
@@ -34,20 +43,23 @@
 class Piano3d
 {
 public:
-  Piano3d(int numKeys_=85, int firstKey_=21);
+  Piano3d(int numKeys_ = 85, int firstKey_ = 21);
   ~Piano3d();
-  
+
+#ifdef DWS
   static void drawWhiteKey();
   static void drawBlackKey();
-  
-  void draw();
+#endif
+  void drawWhiteKey();
+  void drawBlackKey();
+
+  void draw(QOpenGLShaderProgram &program, QMatrix4x4 &pianoModel);
   
   void init(int numKeys_=85, int firstKey_=21);
   
   void setMaterialWhiteKey();
   void setMaterialBlackKey();
-
-  
+    
   double offsetAtKey(int keyNum);
   bool keyState(int keyNum) { return (keyNum >= 0 && keyNum < _numKeys) ? keyStates[keyNum] : false; }
   bool midiKeyState(int keyNum) { return keyState(keyNum-_firstKey); }
@@ -65,8 +77,32 @@ private:
   std::vector<float> keyOffsets;
   int _numKeys;
   int _firstKey; //on the midi scale (ie middle C = 60)
+
+  QOpenGLVertexArrayObject m_vao_aWhiteKey;
+  QOpenGLBuffer m_vbo_aWhiteKey;
+  int m_aWhiteKeyCount;
+
+  QOpenGLVertexArrayObject m_vao_aWhiteKeyOutline;
+  QOpenGLBuffer m_vbo_aWhiteKeyOutline;
+  int m_aWhiteKeyOutlineCount;
+
+
+  QOpenGLVertexArrayObject m_vao_aBlackKey;
+  QOpenGLBuffer m_vbo_aBlackKey;
+  int m_aBlackKeyCount;
+
+  QOpenGLVertexArrayObject m_vao_aBlackKeyFront;
+  QOpenGLBuffer m_vbo_aBlackKeyFront;
+  int m_aBlackKeyFrontCount;
+
+  QOpenGLVertexArrayObject m_vao_aBlackKeyOutline;
+  QOpenGLBuffer m_vbo_aBlackKeyOutline;
+  int m_aBlackKeyOutlineCount;
+
+#ifdef DWS
   GLint aWhiteKey; //, aWhiteKeyLine;
   GLint aBlackKey;
+#endif
 };
 
 inline void setMaterialColor(float r, float g, float b) {

@@ -20,7 +20,6 @@
 #include <qslider.h>
 #include <qwt_wheel.h>
 #include <qsizegrip.h>
-#include <QFrame>
 #include <qtooltip.h>
 #include <qpushbutton.h>
 #include <QVBoxLayout>
@@ -35,17 +34,19 @@ HTrackView::HTrackView( int viewID_, QWidget *parent )
   QGridLayout *mainLayout = new QGridLayout(this);
   mainLayout->setSizeConstraint(QLayout::SetNoConstraint);
 
-  QBoxLayout *rightLayout = new QVBoxLayout();
-  QBoxLayout *bottomLayout = new QHBoxLayout();
-
   QFrame *frame = new QFrame(this);
   frame->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
-  QWidget *aWidget = new QWidget(frame);
-  hTrackWidget = new HTrackWidget(aWidget);
+  QVBoxLayout* hTrackFrameLayout = new QVBoxLayout;
+  hTrackWidget = new HTrackWidget(0);
+
   hTrackWidget->setWhatsThis("Shows a 3D keyboard with the current note coloured. "
     "Vertical columns (or tracks), each representing a harmonic (or component frequency), protrude from the back, and move further away over time. "
     "The height of each track is related to how much energy is at that frequency. "
     "Tracks alternate in colour for better visibility. It can be seen how the hamonics in a note fit into the musical scale.");
+  hTrackFrameLayout->addWidget(hTrackWidget);
+  hTrackFrameLayout->setMargin(0);
+  hTrackFrameLayout->setSpacing(0 );
+  frame->setLayout(hTrackFrameLayout);
 
   peakThresholdSlider = new QSlider(Qt::Vertical, this);
   peakThresholdSlider->setMinimum(0);
@@ -83,15 +84,21 @@ HTrackView::HTrackView( int viewID_, QWidget *parent )
   
   QSizeGrip *sizeGrip = new QSizeGrip(this);
   
+
+  QBoxLayout* rightLayout = new QVBoxLayout();
+  QBoxLayout* bottomLayout = new QHBoxLayout();
+
   mainLayout->addWidget(frame, 0, 0);
   mainLayout->addLayout(bottomLayout, 1, 0);
   mainLayout->addLayout(rightLayout, 0, 1);
+
   rightLayout->addStretch(2);
   rightLayout->addWidget(peakThresholdSlider);
   rightLayout->addStretch(4);
   rightLayout->addWidget(rotateYWheel);
   rightLayout->addSpacing(14);
   rightLayout->addWidget(distanceWheel);
+
   bottomLayout->addStretch(0);
   bottomLayout->addWidget(homeButton);
   bottomLayout->addSpacing(14);
@@ -101,13 +108,13 @@ HTrackView::HTrackView( int viewID_, QWidget *parent )
   //make the widget get updated when the view changes
   connect(gdata->view, SIGNAL(onSlowUpdate(double)), hTrackWidget, SLOT(update()));
   connect(peakThresholdSlider, SIGNAL(valueChanged(int)), this, SLOT(setPeakThreshold(int)));
-  connect(rotateYWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(setViewAngleVertical(double)));
+  connect(rotateYWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(setViewAngleVerticalQWTWheel(double)));
   connect(rotateYWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(update()));
   connect(hTrackWidget, SIGNAL(viewAngleVerticalChanged(double)), rotateYWheel, SLOT(setValue(double)));
-  connect(distanceWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(setDistanceAway(double)));
+  connect(distanceWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(setDistanceAwayQWTWheel(double)));
   connect(distanceWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(update()));
   connect(hTrackWidget, SIGNAL(distanceAwayChanged(double)), distanceWheel, SLOT(setValue(double)));
-  connect(rotateXWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(setViewAngleHorizontal(double)));
+  connect(rotateXWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(setViewAngleHorizontalQWTWheel(double)));
   connect(rotateXWheel, SIGNAL(valueChanged(double)), hTrackWidget, SLOT(update()));
   connect(hTrackWidget, SIGNAL(viewAngleHorizontalChanged(double)), rotateXWheel, SLOT(setValue(double)));
   connect(homeButton, SIGNAL(clicked()), hTrackWidget, SLOT(home()));

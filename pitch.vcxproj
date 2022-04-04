@@ -248,7 +248,6 @@
     <ClCompile Include="widgets\mainwindow\mainwindow.cpp" />
     <ClCompile Include="general\musicnotes.cpp" />
     <ClCompile Include="general\myalgo.cpp" />
-    <ClCompile Include="general\myglfonts.cpp" />
     <ClCompile Include="general\myio.cpp" />
     <ClCompile Include="widgets\mylabel.cpp" />
     <ClCompile Include="general\mymatrix.cpp" />
@@ -321,6 +320,7 @@
     <ClInclude Include="rtAudio\audio_stream.h" />
     <ClInclude Include="sound\audio_thread.h" />
     <ClInclude Include="general\bspline.h" />
+    <ClInclude Include="include\camera.h" />
     <QtMoc Include="widgets\cepstrum\cepstrumview.h">
     </QtMoc>
     <QtMoc Include="widgets\cepstrum\cepstrumwidget.h">
@@ -384,7 +384,6 @@
     <ClInclude Include="general\myalgo.h" />
     <ClInclude Include="include\myassert.h" />
     <ClInclude Include="general\mygl.h" />
-    <ClInclude Include="general\myglfonts.h" />
     <ClInclude Include="general\myio.h" />
     <ClInclude Include="widgets\mylabel.h" />
     <ClInclude Include="general\mymatrix.h" />
@@ -415,6 +414,7 @@
     </QtMoc>
     <QtMoc Include="widgets\score\scorewidget.h">
     </QtMoc>
+    <ClInclude Include="include\shader.h" />
     <ClInclude Include="sound\sound_file_stream.h" />
     <ClInclude Include="sound\sound_stream.h" />
     <ClInclude Include="sound\soundfile.h" />
@@ -496,6 +496,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE.txt" />
+    <None Include="camera.vs.glsl" />
     <None Include="color.fs.glsl" />
     <None Include="color.vs.glsl" />
     <None Include="line.fs.glsl" />
@@ -506,6 +507,8 @@
     <None Include="shader.fs.glsl" />
     <None Include="shader.gs.glsl" />
     <None Include="shader.vs.glsl" />
+    <None Include="shaderMaterial.fs.glsl" />
+    <None Include="shaderMaterial.vs.glsl" />
     <None Include="pics\tartinilogo.png" />
   </ItemGroup>
   <ItemGroup>

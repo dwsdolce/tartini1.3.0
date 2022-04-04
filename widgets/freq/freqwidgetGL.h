@@ -30,7 +30,6 @@
 #include <QEvent>
 #include <QPaintEvent>
 #include <QPaintDevice>
-#include <QGLWidget>
 
 #include "gdata.h"
 #include "channel.h"

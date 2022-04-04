@@ -279,7 +279,6 @@ void AmplitudeWidgetGL::drawChannelAmplitudeGL(Channel* ch)
 	double heightRatio = double(height()) / range();
 
 	QVector<QVector3D> vertexArray;
-	//DWS QColor chColor(ch->color.red(), ch->color.green(), ch->color.blue(), ch->color.alpha());
 	
 	// Half the linewidth for lines.
 	float lineWidth = 2.0f;

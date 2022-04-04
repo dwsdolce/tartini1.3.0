@@ -192,9 +192,6 @@
     <ClCompile Include="general\myalgo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="general\myglfonts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="general\myio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -401,6 +398,9 @@
     <ClInclude Include="general\bspline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <QtMoc Include="widgets\cepstrum\cepstrumview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -512,9 +512,6 @@
     <ClInclude Include="general\mygl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="general\myglfonts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="general\myio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -584,6 +581,9 @@
     <QtMoc Include="widgets\score\scorewidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <ClInclude Include="include\shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="sound\sound_file_stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -695,6 +695,9 @@
     <None Include="LICENSE.txt">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="camera.vs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="color.fs.glsl">
       <Filter>Resource Files</Filter>
     </None>
@@ -720,6 +723,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="shader.vs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaderMaterial.fs.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaderMaterial.vs.glsl">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="pics\tartinilogo.png">

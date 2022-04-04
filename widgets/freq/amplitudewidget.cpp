@@ -19,6 +19,7 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QVector3D>
+#include <QDebug>
 
 #include "gdata.h"
 #include "channel.h"
@@ -286,7 +287,6 @@ void AmplitudeWidget::paintEvent(QPaintEvent*)
 
 	p.setPen(Qt::black);
 	p.drawText(2, height() - 3, getCurrentThresholdString());
-	p.end();
 
 	endDrawing();
 }

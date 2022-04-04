@@ -74,7 +74,7 @@
 #include "hcircleview.h"
 #include "waveview.h"
 #include "pianoview.h"
-//DWS #include "htrackview.h"
+#include "htrackview.h"
 #include "correlationview.h"
 #include "fftview.h"
 #include "cepstrumview.h"
@@ -125,8 +125,6 @@
 #include "pics/shadingon32x32.xpm"
 #include "pics/shadingoff32x32.xpm"
 
-//#include "myglfonts.h"
-
 #ifdef MACX
 #include "main.h"
 #endif
@@ -143,7 +141,7 @@ ViewData viewData[NUM_VIEWS] = {
                                  ViewData("Pitch Contour",     "&Pitch Contour",      "FreqView",          0),
                                  ViewData("Chromatic Tuner GL", "Chromatic Tuner GL", "TunerViewGL",       0),
                                  ViewData("Chromatic Tuner",    "&Chromatic Tuner",  "TunerView",          0),
-                                 //DWS ViewData("Harmonic Track",    "3D Harmonic &Track",  "HTrackView",        0),
+                                 ViewData("Harmonic Track",    "3D Harmonic &Track",  "HTrackView",        0),
                                  ViewData("Vibrato View GL",   "Vibrato View GL",     "VibratoViewGL",     0),
                                  ViewData("Vibrato View",      "V&ibrato View",       "VibratoView",       0),
                                  ViewData("Musical Score",     "&Musical Score",      "ScoreView",         0),
@@ -902,12 +900,9 @@ QWidget *MainWindow::openView(int viewID)
    case VIEW_PIANO:
       w = new PianoView(viewID, parent);
       break;
-#ifdef UNUSED
-      DWS
    case VIEW_HTRACK:
       w = new HTrackView(viewID, parent);
       break;
-#endif
    case VIEW_CORRELATION:
       w = new CorrelationView(viewID, parent);
       break;

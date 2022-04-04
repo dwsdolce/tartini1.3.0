@@ -171,12 +171,13 @@ HEADERS += main.h \
   include/SmartPtr.h \
   general/prony.h \
   general/mymatrix.h \
-  general/myglfonts.h \
   general/mygl.h \
   general/myqt.h \
   general/musicnotes.h \
   general/myalgo.h \
-  include/RingBuffer.h
+  include/RingBuffer.h \
+  include/shader.h \
+  include/camera.h
 
 SOURCES += main.cpp \
   sound/wave_stream.cpp \
@@ -269,7 +270,6 @@ SOURCES += main.cpp \
   widgets/vibrato/vibratocirclewidgetGL.cpp \
   general/prony.cpp \
   general/mymatrix.cpp \
-  general/myglfonts.cpp \
   general/myqt.cpp \
   general/musicnotes.cpp \
   general/myalgo.cpp
