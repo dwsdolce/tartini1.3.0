@@ -25,6 +25,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
+#include <QTime>
 #include <QDebug>
 
 #include <QMouseEvent>
@@ -125,8 +126,7 @@ signals:
 
 private:
   float _peakThreshold;
-  bool mouseDown;
-  int mouseX, mouseY;
+
   double _distanceAway;
   double _viewAngleHorizontal;
   double _viewAngleVertical;
@@ -134,18 +134,31 @@ private:
   double translateX, translateY;
 
   // Define the camera to use
-  Camera camera;
+  Camera m_camera;
 
+  // State for the mouse handling
+  bool mouseDown;
+  int mouseX, mouseY;
+  bool firstMouse = true;
+  bool trackMouse = false;
+  float lastX;
+  float lastY;
+
+  // timing for use in mouse handling
+  float getTime()
+  {
+    return QTime::currentTime().second() + QTime::currentTime().msec() / 1000.0f;
+  }
+
+  float deltaTime = 0.0f; // Time between current frame and last frame
+  float lastFrame = 0.0f; // Time of last frame
 
   QMatrix4x4 m_model;
   QMatrix4x4 m_view;
   QMatrix4x4 m_projection;
 
- //QOpenGLShaderProgram m_program;
   QOpenGLShaderProgram m_program_camera;
-  //QOpenGLShaderProgram m_program_line;
-  QOpenGLShaderProgram m_program_line_camera;
-
+  QOpenGLShaderProgram m_program_lighting;
 };
 
 #endif

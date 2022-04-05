@@ -49,7 +49,6 @@ public:
         initYaw = yaw;
         initPitch = pitch;
         ResetCamera();
-        updateCameraVectors();
     }
 
     void ResetCamera ()
@@ -62,6 +61,7 @@ public:
         Zoom             = ZOOM;
         MovementSpeed    = SPEED;
         MouseSensitivity = SENSITIVITY;
+        updateCameraVectors();
     }
 
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix

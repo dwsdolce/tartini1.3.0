@@ -59,7 +59,7 @@ void HTrackWidget::initializeGL()
   }
 
   try {
-    Shader ourShader(&m_program_line_camera, ":/camera.vs.glsl", ":/shader.fs.glsl", ":/shader.gs.glsl");
+    Shader ourShader(&m_program_lighting, ":/shaderMaterial.vs.glsl", ":/shaderMaterial.fs.glsl");
   } catch (...) {
     close();
   }
@@ -222,7 +222,6 @@ void HTrackWidget::paintGL()
       vbo_refLines.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       vbo_refLines.bind();
       vbo_refLines.allocate(refLinePoints.constData(), refLinePoints.count() * 3 * sizeof(float));
-      qDebug() << "DEBUG: refLines = " << refLinePoints;
       MyGL::DrawShape(m_program_camera, vao_refLines, vbo_refLines, refLinePoints.count(), GL_LINES, QColor(0.3f, 0.3f, 0.3f, 1.0f));
       vao_refLines.destroy();
       vbo_refLines.destroy();
@@ -493,7 +492,6 @@ void HTrackWidget::mousePressEvent(QMouseEvent* e)
 
 void HTrackWidget::mouseMoveEvent(QMouseEvent* e)
 {
-  qDebug() << "MouseMoveEvent";
   if (mouseDown) {
     translate(float(e->x() - mouseX), -float(e->y() - mouseY), 0.0);
 
@@ -510,7 +508,6 @@ void HTrackWidget::mouseReleaseEvent(QMouseEvent*)
 
 void HTrackWidget::wheelEvent(QWheelEvent* e)
 {
-  qDebug() << "wheelEvent";
   setDistanceAway(_distanceAway * pow(2.0, -(double(e->delta()) / double(WHEEL_DELTA)) / 20.0));
   update();
   e->accept();

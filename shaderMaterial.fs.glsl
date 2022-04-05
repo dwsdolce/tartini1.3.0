@@ -4,7 +4,7 @@ out vec4 FragColor;
 in vec3 FragPos;
 in vec3 Normal;
 
-uniform mat4 viewPos;
+uniform vec3 viewPos;
 
 uniform struct LightInfo {
   vec4 position; // Light position in eye coords.
@@ -26,9 +26,14 @@ void main() {
   	
     // diffuse 
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(light.position - FragPos);
-    float diff
-    if (gl_FrontFacing) {
+    vec3 lightDir;
+    if ( light.position.w == 0.0 ) {
+        lightDir = normalize(-light.position.xyz);
+    } else {
+        lightDir = normalize(light.position.xyz - FragPos);
+    }
+    float diff;
+    if ( gl_FrontFacing ) {
         diff = max(dot(norm, lightDir), 0.0);
     } else {
         diff = max(dot(norm, -lightDir), 0.0);
@@ -38,7 +43,7 @@ void main() {
     // specular
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir;
-    if (gl_FrontFacing) {
+    if ( gl_FrontFacing ) {
         reflectDir = reflect(-lightDir, norm); 
     } else {
         reflectDir = reflect(lightDir, norm); 
