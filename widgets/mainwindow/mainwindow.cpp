@@ -1125,7 +1125,14 @@ TartiniDialog::TartiniDialog(QWidget *parent) : QDialog(parent)
     /*"<qt text=\"white\">*/"Tartini is a graphical tool for analysing the music of solo instruments.<br>"
     "This program was created by Philip McLeod as part of PhD work at the University of Otago, New Zealand<br>"
     "You can find the latest info about Tartini at <a href=\"http://www.tartini.net\">http://www.tartini.net</a><br><br>"
-    "Copyright 2002-2007 Philip McLeod (pmcleod@cs.otago.ac.nz).<br><br>"
+    "Copyright 2002-2007 Philip McLeod (pmcleod@cs.otago.ac.nz).<br>"
+    "Copyfight 2022 David W. Smith.<br><br>"
+
+    "New features in version 1.3 include:<br>"
+    "- Updated to QT 5.15.2"
+    "- Reworked OpenGL code to use shaders and work with latest OpenGL"
+    "- Create QT versions of all OpenGL widgets except for htrackwidget - which is a good use of OpenGL"
+    "- Built with Visual Studio 2019 - not tested on other platforms"
 
     "New features in version 1.2 include:<br>"
     "- The ability to set an offset frequency. i.e. not fixed to A=440 Hz<br>"

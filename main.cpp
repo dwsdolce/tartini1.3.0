@@ -54,7 +54,7 @@ int main( int argc, char **argv )
   QSurfaceFormat::setDefaultFormat(format);
 
   a.setApplicationName("Tartini");
-  a.setApplicationVersion("1.2.1");
+  a.setApplicationVersion("1.3.0");
 
   //Create one instance only of the global data
   gdata = new GData();
