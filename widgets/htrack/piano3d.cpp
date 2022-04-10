@@ -359,6 +359,8 @@ void Piano3d::draw(QOpenGLShaderProgram& program, QMatrix4x4& pianoModel)
         program.setUniformValue("material.ambient", QVector3D(0.9f, 0.9f, 0.0f));
         program.setUniformValue("material.diffuse", QVector3D(0.9f, 0.9f, 0.0f));
         program.setUniformValue("model", pianoKeyPressedModel);
+        program.setUniformValue("normalMatrix", pianoKeyPressedModel.normalMatrix());
+
         program.release();
 
         MyGL::DrawShape(program, m_vao_aWhiteKey, m_vbo_aWhiteKey, m_aWhiteKeyCount, GL_TRIANGLE_STRIP);
@@ -372,6 +374,7 @@ void Piano3d::draw(QOpenGLShaderProgram& program, QMatrix4x4& pianoModel)
       } else {
         program.bind();
         program.setUniformValue("model", pianoKeyModel);
+        program.setUniformValue("normalMatrix", pianoKeyModel.normalMatrix());
         program.release();
 
         MyGL::DrawShape(program, m_vao_aWhiteKey, m_vbo_aWhiteKey, m_aWhiteKeyCount, GL_TRIANGLE_STRIP);
@@ -407,6 +410,7 @@ void Piano3d::draw(QOpenGLShaderProgram& program, QMatrix4x4& pianoModel)
         program.setUniformValue("material.ambient", QVector3D(0.5, 0.5, 0.0));
         program.setUniformValue("material.diffuse", QVector3D(0.5, 0.5, 0.0));
         program.setUniformValue("model", pianoKeyPressedModel);
+        program.setUniformValue("normalMatrix", pianoKeyPressedModel.normalMatrix());
         program.release();
 
         MyGL::DrawShape(program, m_vao_aBlackKey, m_vbo_aBlackKey, m_aBlackKeyCount, GL_TRIANGLE_STRIP);
@@ -422,6 +426,7 @@ void Piano3d::draw(QOpenGLShaderProgram& program, QMatrix4x4& pianoModel)
         program.setUniformValue("material.ambient", QVector3D(0.35f, 0.35f, 0.35f));
         program.setUniformValue("material.diffuse", QVector3D(0.35f, 0.35f, 0.35f));
         program.setUniformValue("model", pianoKeyModel);
+        program.setUniformValue("normalMatrix", pianoKeyModel.normalMatrix());
         program.release();
 
         MyGL::DrawShape(program, m_vao_aBlackKey, m_vbo_aBlackKey, m_aBlackKeyCount, GL_TRIANGLE_STRIP);

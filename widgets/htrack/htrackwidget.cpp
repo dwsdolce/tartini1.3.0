@@ -180,6 +180,7 @@ void HTrackWidget::paintGL()
   m_program_lighting.setUniformValue("light.diffuse", QVector3D(0.9f, 0.9f, 0.9f));
 
   m_program_lighting.setUniformValue("model", harmonicModel);
+  m_program_lighting.setUniformValue("normalMatrix", harmonicModel.normalMatrix());
   m_program_lighting.release();
 
   if (active) {
