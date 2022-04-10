@@ -369,7 +369,7 @@ win32{
 
   DEFINES += WINDOWS
   REQUIRES += thread
-  LIBS += $$MY_LIB_PATH -lqwt -lfftw3f -lole32 -ldsound -lGlu32 -lOpengl32
+  LIBS += $$MY_LIB_PATH -lqwt -lfftw3f -lole32 -ldsound -lOpengl32
   #DEFINES += QT_DLL QT_THREAD_SUPPORT
   DEFINES -= UNICODE       #I think some things broke without this?
 }
