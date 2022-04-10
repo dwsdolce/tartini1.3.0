@@ -13,14 +13,16 @@
    Please read LICENSE.txt for details.
  ***************************************************************************/
 
-#include <QMouseEvent>
-#include <QWheelEvent>
+
 
 #include "htrackwidget.h"
 #include <QOpenGLContext>
 #include <QCoreApplication>
+#include <QMouseEvent>
+#include <QWheelEvent>
 #include <QDebug>
 #include <QPainter>
+#include <QVector4D>
 #include "shader.h"
 #include "mygl.h"
 
@@ -50,7 +52,7 @@ void HTrackWidget::initializeGL()
 {
   initializeOpenGLFunctions();
 
-   // build and compile our shader program
+     // build and compile our shader program
   // ------------------------------------
   try {
     Shader ourShader(&m_program_camera, ":/camera.vs.glsl", ":/shader.fs.glsl");
@@ -64,11 +66,9 @@ void HTrackWidget::initializeGL()
     close();
   }
 
-  // Create the vao/vbo items
-
   // Set some appropriate values vefore creating the piano.
-
   setPeakThreshold(0.05f);
+
   setDistanceAway(1500.0);
   setViewAngleVertical(-35.0);
   setViewAngleHorizontal(20.0);
@@ -82,12 +82,10 @@ void HTrackWidget::initializeGL()
 
   m_model.setToIdentity();
 
-#ifdef DWS
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-  setLightSpecular(0.5, 0.5, 0.5);
-  glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-#endif
+  m_program_lighting.bind();
+  m_program_lighting.setUniformValue("light.specular", QVector3D(0.5, 0.5, 0.5));
+  m_program_lighting.release();
+
 }
 
 void HTrackWidget::resizeGL(int w, int h)
@@ -106,44 +104,56 @@ void HTrackWidget::paintGL()
 
   // Pass Projection Matrix to shader
   // Setup model, view, and projection matrices.
-  m_projection.setToIdentity();
+
+  QMatrix4x4 projection;
+  projection.setToIdentity();
 
   double nearPlane = 100.0;
+
   double w2 = double(width()) / 2.0;
   double h2 = double(height()) / 2.0;
   double ratio = nearPlane / double(width());
-  m_projection.frustum((-w2 - translateX) * ratio,
-    (w2 - translateX) * ratio,
-    (-h2 - translateY) * ratio,
-    (h2 - translateY) * ratio,
-    nearPlane, 10000.0);
-
+  projection.frustum((-w2 - translateX) * ratio,
+                     ( w2 - translateX) * ratio,
+                     (-h2 - translateY) * ratio,
+                     ( h2 - translateY) * ratio,
+                     nearPlane, 10000.0);
 
   m_model.setToIdentity();
-  m_view.setToIdentity();
 
-  double center_x = 0.0, center_z = 0.0;
-  m_view.lookAt(QVector3D(0.0, 0.0/*_distanceAway*/, _distanceAway), QVector3D(center_x, 0.0, center_z), QVector3D(0.0, 1.0, 0.0));
+  QMatrix4x4 view;
+  view.setToIdentity();
+  view.lookAt(QVector3D(0.0, 0.0, m_distanceAway), QVector3D(0.0, 0.0, 0.0), QVector3D(0.0, 1.0, 0.0));
 
-  m_view.rotate(-viewAngleVertical(), 1.0, 0.0, 0.0);
-  m_view.rotate(viewAngleHorizontal(), 0.0, 1.0, 0.0);
+  view.rotate(-viewAngleVertical(), 1.0, 0.0, 0.0);
+  view.rotate(viewAngleHorizontal(), 0.0, 1.0, 0.0);
 
+  // Use m_program_camera for the ref lines and the outlines of the harmonics
   m_program_camera.bind();
-  m_program_camera.setUniformValue("projection", m_projection);
-  m_program_camera.setUniformValue("view", m_view);
+  m_program_camera.setUniformValue("projection", projection);
+  m_program_camera.setUniformValue("view", view);
   m_program_camera.release();
 
-#ifdef DWS
+  // use m_program_lighting for the piano and the faces of the harmonics
+  m_program_lighting.bind();
+  m_program_lighting.setUniformValue("projection", projection);
+  m_program_lighting.setUniformValue("view", view);
+
   // Setup lighting
-  setLightPosition(0.0, 2000.0, -1600.0);
-  setLightAmbient(0.4f, 0.4f, 0.4f);
-  setLightDiffuse(0.9f, 0.9f, 0.9f);
-#endif
+  // I think this is the same as used in the lookAt function.
+  m_program_lighting.setUniformValue("viewPos", QVector3D(0.0, 0.0, m_distanceAway));
+
+  m_program_lighting.setUniformValue("light.position", QVector4D(0.0f, 2000.0f, -1600.0f, 1.0f));
+  m_program_lighting.setUniformValue("light.ambient", QVector3D(0.4f, 0.4f, 0.4f));
+  m_program_lighting.setUniformValue("light.diffuse", QVector3D(0.9f, 0.9f, 0.9f));
+
+  m_program_lighting.release();
+
 
   // Draw the piano keyboard.
   double pianoWidth = piano3d->pianoWidth();
   QMatrix4x4 pianoModel = m_model;
-  pianoModel.translate(-pianoWidth / 2.0, 0.0, 0.0);//set center of keyboard at origin
+  pianoModel.translate(-pianoWidth / 2.0, 0.0, 0.0); //set center of keyboard at origin
 
   piano3d->setAllKeyStatesOff();
   if (active) {
@@ -152,33 +162,25 @@ void HTrackWidget::paintGL()
       piano3d->setMidiKeyState(toInt(data->pitch), true);
     }
   }
-#ifdef DWS
-  glLineWidth(0.01f);
-#endif
-  piano3d->draw(m_program_camera, pianoModel);
 
-#ifdef DWS
-  // Change the lighting
-  setLightDirection(-1.0, 0.0, 0.0);
-  setLightAmbient(0.2f, 0.2f, 0.2f);
-  setLightDiffuse(0.9f, 0.9f, 0.9f);
-#endif
+  piano3d->draw(m_program_lighting, pianoModel);
 
   // Change the scaling
   QMatrix4x4 harmonicModel = pianoModel;
   harmonicModel.translate(-piano3d->firstKeyOffset, 0.0f, 0.0f);
   harmonicModel.scale(OCTAVE_WIDTH / 12.0f, 200.0f, 5.0f); //set a scale of 1 semitime = 1 unit
+
   m_program_camera.bind();
   m_program_camera.setUniformValue("model", harmonicModel);
   m_program_camera.release();
 
-#ifdef DWS
-  glTranslatef(-piano3d->firstKeyOffset, 0.0, 0.0);
-  glScaled(OCTAVE_WIDTH / 12.0, 200.0, 5.0); //set a scale of 1 semitime = 1 unit
+  m_program_lighting.bind();
+  m_program_lighting.setUniformValue("light.position", QVector4D(-1.0, 0.0, 0.0, 0.0));
+  m_program_lighting.setUniformValue("light.ambient", QVector3D(0.2f, 0.2f, 0.2f));
+  m_program_lighting.setUniformValue("light.diffuse", QVector3D(0.9f, 0.9f, 0.9f));
 
-  glColor4f(0.3f, 0.3f, 0.3f, 1.0f);
-  glLineWidth(1.0);
-#endif
+  m_program_lighting.setUniformValue("model", harmonicModel);
+  m_program_lighting.release();
 
   if (active) {
     active->lock();
@@ -198,22 +200,12 @@ void HTrackWidget::paintGL()
     //draw the time ref lines
     {
       QVector<QVector3D> refLinePoints;
-#ifdef DWS
-      glBegin(GL_LINES);
-#endif
       for (j = roundUp(startChunk, 16); j < finishChunk; j += 16) {
         if (active->isValidChunk(j)) {
           refLinePoints << QVector3D(piano3d->firstKey(), 0.0, double(j - finishChunk));
           refLinePoints << QVector3D(piano3d->firstKey() + piano3d->numKeys(), 0.0, double(j - finishChunk));
-#ifdef DWS
-          glVertex3f(piano3d->firstKey(), 0.0, double(j - finishChunk));
-          glVertex3f(piano3d->firstKey() + piano3d->numKeys(), 0.0, double(j - finishChunk));
-#endif
         }
       }
-#ifdef DWS
-      glEnd();
-#endif
       QOpenGLVertexArrayObject vao_refLines;
       QOpenGLBuffer vbo_refLines;
       vao_refLines.create();
@@ -227,7 +219,7 @@ void HTrackWidget::paintGL()
       vbo_refLines.destroy();
     }
 
-      //build a table of frequencies and amplitudes for faster drawing
+    //build a table of frequencies and amplitudes for faster drawing
     for (chunkOffset = 0; chunkOffset < visibleChunks; chunkOffset++) {
       data = active->dataAtChunk(startChunk + chunkOffset);
       if (data && data->harmonicFreq.size() > 0) {
@@ -248,21 +240,19 @@ void HTrackWidget::paintGL()
 
     //draw the outlines
     {
-#ifdef DWS
-      setMaterialSpecular(0.0, 0.0, 0.0, 0.0);
-      setMaterialColor(0.0f, 0.0f, 0.0f);
-      glLineWidth(2.0);
-#endif
+      m_program_lighting.bind();
+      m_program_lighting.setUniformValue("material.specular", QVector3D(0.0f, 0.0f, 0.0f));
+      m_program_lighting.setUniformValue("material.ambient", QVector3D(0.0f, 0.0f, 0.0f));
+      m_program_lighting.setUniformValue("material.diffuse", QVector3D(0.0f, 0.0f, 0.0f));
+      m_program_lighting.release();
 
-      //printf("_peakThreshold = %f\n", _peakThreshold);
       for (harmonic = 0; harmonic < numHarmonics; harmonic++) {
         QVector<QVector3D> harmonicOutline;
 
         insideLine = false;
         pos = -double(visibleChunks - 1);
         for (chunkOffset = 0; chunkOffset < visibleChunks; chunkOffset++, pos++) {
-          curAmp = amps(harmonic, chunkOffset) - _peakThreshold;
-          //printf("curAmp = %f\n", curAmp);
+          curAmp = amps(harmonic, chunkOffset) - m_peakThreshold;
           if (curAmp > 0.0) {
             prevPitch = curPitch;
             curPitch = pitches(harmonic, chunkOffset);
@@ -271,18 +261,9 @@ void HTrackWidget::paintGL()
               if (!insideLine) {
                 harmonicOutline.clear();
                 harmonicOutline << QVector3D(curPitch, 0, pos);
-#ifdef DWS
-
-                glBegin(GL_LINE_STRIP);
-                glVertex3f(curPitch, 0, pos);
-#endif
                 insideLine = true;
               }
               harmonicOutline << QVector3D(curPitch, curAmp, pos);
-#ifdef DWS
-
-              glVertex3f(curPitch, curAmp, pos);
-#endif
             } else {
               QOpenGLVertexArrayObject vao_harmonicOutline;
               QOpenGLBuffer vbo_harmonicOutline;
@@ -296,9 +277,6 @@ void HTrackWidget::paintGL()
               MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(0, 0, 0, 1));
               vao_harmonicOutline.destroy();
               vbo_harmonicOutline.destroy();
-#ifdef DWS
-              glEnd();
-#endif
               insideLine = false;
             }
           } else {
@@ -317,10 +295,6 @@ void HTrackWidget::paintGL()
               MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(0, 0, 0, 1));
               vao_harmonicOutline.destroy();
               vbo_harmonicOutline.destroy();
-#ifdef DWS
-              glVertex3f(curPitch, 0, pos - 1);
-              glEnd();
-#endif
               insideLine = false;
             }
           }
@@ -340,10 +314,6 @@ void HTrackWidget::paintGL()
           MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(0, 0, 0, 1));
           vao_harmonicOutline.destroy();
           vbo_harmonicOutline.destroy();
-#ifdef DWS
-          glVertex3f(curPitch, 0, pos - 1);
-          glEnd();
-#endif
           insideLine = false;
         }
       }
@@ -354,56 +324,75 @@ void HTrackWidget::paintGL()
     glShadeModel(GL_FLAT);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for (harmonic = 0; harmonic < numHarmonics; harmonic++) {
-      QColor harmonicColor;
-      QVector<QVector3D> harmonicPolygon;
 
+      QColor harmonicColor;
+
+      QVector<QVector3D> harmonicPolygon;
       if (harmonic % 2 == 0) {
         isEven = true;
         harmonicColor = QColor(128, 128, 230);
-#ifdef DWS
-        setMaterialColor(0.5f, 0.5f, 0.9f);
-#endif
+        m_program_lighting.bind();
+        m_program_lighting.setUniformValue("material.ambient", QVector3D(0.5f, 0.5f, 0.9f));
+        m_program_lighting.setUniformValue("material.diffuse", QVector3D(0.5f, 0.5f, 0.9f));
+        m_program_lighting.release();
       } else {
         harmonicColor = QColor(128, 230, 128);
-
-#ifdef DWS
-        setMaterialColor(0.5f, 0.9f, 0.5f);
-#endif
+        m_program_lighting.bind();
+        m_program_lighting.setUniformValue("material.ambient", QVector3D(0.5f, 0.9f, 0.5f));
+        m_program_lighting.setUniformValue("material.diffuse", QVector3D(0.5f, 0.9f, 0.5f));
+        m_program_lighting.release();
         isEven = false;
       }
       insideLine = false;
       pos = -double(visibleChunks - 1);
       // Create polygon of the harnmonics
+      QVector3D pt1;
+      QVector3D pt2;
+      QVector3D pt3;
+      QVector3D pt4;
       for (chunkOffset = 0; chunkOffset < visibleChunks; chunkOffset++, pos++) {
-
-        if (amps(harmonic, chunkOffset) > _peakThreshold) {
+        curAmp = amps(harmonic, chunkOffset) - m_peakThreshold;
+        if (curAmp > 0.0) { 
           if (!insideLine) {
             // Polygon
-#ifdef DWS
-            glBegin(GL_QUAD_STRIP);
-#endif
             insideLine = true;
             curPitch = pitches(harmonic, chunkOffset);
             harmonicPolygon.clear();
-            harmonicPolygon << QVector3D(curPitch, 0, pos);
-            harmonicPolygon << QVector3D(curPitch, (amps(harmonic, chunkOffset) - _peakThreshold), pos);
-
-#ifdef DWS
-            glVertex3f(curPitch, (amps(harmonic, chunkOffset) - _peakThreshold), pos);
-            glVertex3f(curPitch, 0, pos);
-#endif
+            pt1 = QVector3D(curPitch, curAmp, pos);
+            pt2 = QVector3D(curPitch, 0, pos);
           } else {
             prevPitch = curPitch;
             curPitch = pitches(harmonic, chunkOffset);
             diffNote = prevPitch - curPitch;
             if (fabs(diffNote) < 1.0) {
-              harmonicPolygon << QVector3D(curPitch, 0, pos);
-              harmonicPolygon << QVector3D(curPitch, (amps(harmonic, chunkOffset) - _peakThreshold), pos);
-#ifdef DWS
-              glNormal3f(diffNote, 0.0, 1.0);
-              glVertex3f(curPitch, (amps(harmonic, chunkOffset) - _peakThreshold), pos);
-              glVertex3f(curPitch, 0, pos);
-#endif
+              pt3 = QVector3D(curPitch, (amps(harmonic, chunkOffset) - m_peakThreshold), pos);
+              pt4 = QVector3D(curPitch, 0, pos);
+
+              // Calculate normal to this pair of triangles
+              // Normal points to negative x
+              // Positive x is the pitch
+              // Positive y is the amplitude aboce the threashold
+              // Negative z is the chunk number (corresponding to time)
+              QVector3D side1 = pt3 - pt2;
+              QVector3D side2 = pt1 - pt2;
+              QVector3D normal = QVector3D::crossProduct(side1, side2);
+              normal.normalize();
+              harmonicPolygon << pt1;
+              harmonicPolygon << normal;
+              harmonicPolygon << pt2;
+              harmonicPolygon << normal;
+              harmonicPolygon << pt3;
+              harmonicPolygon << normal;
+
+              harmonicPolygon << pt3;
+              harmonicPolygon << normal;
+              harmonicPolygon << pt2;
+              harmonicPolygon << normal;
+              harmonicPolygon << pt4;
+              harmonicPolygon << normal;
+              // Save for the next normal
+              pt1 = pt3;
+              pt2 = pt4;
             } else {
               QOpenGLVertexArrayObject vao_harmonicPolygon;
               QOpenGLBuffer vbo_harmonicPolygon;
@@ -414,12 +403,9 @@ void HTrackWidget::paintGL()
               vbo_harmonicPolygon.bind();
 
               vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), harmonicPolygon.count() * 3 * sizeof(float));
-              MyGL::DrawShape(m_program_camera, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count(), GL_TRIANGLE_STRIP, harmonicColor);
+              MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
               vao_harmonicPolygon.destroy();
               vbo_harmonicPolygon.destroy();
-#ifdef DWS
-              glEnd();
-#endif
               insideLine = false;
             }
           }
@@ -434,12 +420,9 @@ void HTrackWidget::paintGL()
             vbo_harmonicPolygon.bind();
 
             vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), harmonicPolygon.count() * 3 * sizeof(float));
-            MyGL::DrawShape(m_program_camera, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count(), GL_TRIANGLE_STRIP, harmonicColor);
+            MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
             vao_harmonicPolygon.destroy();
             vbo_harmonicPolygon.destroy();
-#ifdef DWS
-            glEnd();
-#endif
             insideLine = false;
           }
         }
@@ -454,15 +437,13 @@ void HTrackWidget::paintGL()
         vbo_harmonicPolygon.bind();
 
         vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), harmonicPolygon.count() * 3 * sizeof(float));
-        MyGL::DrawShape(m_program_camera, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count(), GL_TRIANGLE_STRIP, harmonicColor);
+        MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
         vao_harmonicPolygon.destroy();
         vbo_harmonicPolygon.destroy();
-#ifdef DWS
-        glEnd();
-#endif
         insideLine = false;
       }
     }
+
     active->unlock();
   }
 }
@@ -470,21 +451,33 @@ void HTrackWidget::paintGL()
 void HTrackWidget::home()
 {
   setPeakThreshold(0.05f);
+
+  // Reset the camera view
   setDistanceAway(1500.0);
   setViewAngleVertical(-35.0);
   setViewAngleHorizontal(20.0);
   translateX = 0.0;
   translateY = -60.0;
+
+  update();
 }
 
-void HTrackWidget::translate(float x, float y, float z)
+void HTrackWidget::translate(float x, float y)
 {
   translateX += x;
   translateY += y;
+  update();
 }
 
-void HTrackWidget::mousePressEvent(QMouseEvent* e)
+void HTrackWidget::mouseDoubleClickEvent(QMouseEvent*)
 {
+  home();
+  update();
+}
+
+void HTrackWidget::mousePressEvent(QMouseEvent*e)
+{
+  // Without camera use
   mouseDown = true;
   mouseX = e->x();
   mouseY = e->y();
@@ -493,7 +486,7 @@ void HTrackWidget::mousePressEvent(QMouseEvent* e)
 void HTrackWidget::mouseMoveEvent(QMouseEvent* e)
 {
   if (mouseDown) {
-    translate(float(e->x() - mouseX), -float(e->y() - mouseY), 0.0);
+    translate(float(e->x() - mouseX), -float(e->y() - mouseY));
 
     mouseX = e->x();
     mouseY = e->y();
@@ -508,8 +501,7 @@ void HTrackWidget::mouseReleaseEvent(QMouseEvent*)
 
 void HTrackWidget::wheelEvent(QWheelEvent* e)
 {
-  setDistanceAway(_distanceAway * pow(2.0, -(double(e->delta()) / double(WHEEL_DELTA)) / 20.0));
+  setDistanceAway(m_distanceAway * pow(2.0, -(double(e->delta()) / double(WHEEL_DELTA)) / 20.0));
   update();
   e->accept();
 }
-

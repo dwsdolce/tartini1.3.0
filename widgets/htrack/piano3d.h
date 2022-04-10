@@ -18,9 +18,6 @@
 
 #include <vector>
 #include <stdio.h>
-#ifdef DWS
-#include <QGLWidget>
-#endif
 #include <QOpenGLWidget>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
@@ -46,19 +43,12 @@ public:
   Piano3d(int numKeys_ = 85, int firstKey_ = 21);
   ~Piano3d();
 
-#ifdef DWS
-  static void drawWhiteKey();
-  static void drawBlackKey();
-#endif
   void drawWhiteKey();
   void drawBlackKey();
 
   void draw(QOpenGLShaderProgram &program, QMatrix4x4 &pianoModel);
   
   void init(int numKeys_=85, int firstKey_=21);
-  
-  void setMaterialWhiteKey();
-  void setMaterialBlackKey();
     
   double offsetAtKey(int keyNum);
   bool keyState(int keyNum) { return (keyNum >= 0 && keyNum < _numKeys) ? keyStates[keyNum] : false; }
@@ -98,49 +88,6 @@ private:
   QOpenGLVertexArrayObject m_vao_aBlackKeyOutline;
   QOpenGLBuffer m_vbo_aBlackKeyOutline;
   int m_aBlackKeyOutlineCount;
-
-#ifdef DWS
-  GLint aWhiteKey; //, aWhiteKeyLine;
-  GLint aBlackKey;
-#endif
 };
-
-inline void setMaterialColor(float r, float g, float b) {
-  GLfloat theColor[4] = { r, g, b, 1.0 };
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, theColor);
-}
-
-inline void setMaterialSpecular(float r, float g, float b, float shiney) {
-  GLfloat theSpecular[4] = { r, g, b, 1.0 };
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, theSpecular);
-  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiney);
-}
-
-inline void setLightPosition(float x, float y, float z)
-{
-  GLfloat light_position[4] = { x, y, z, 1.0 };
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-}
-
-inline void setLightDirection(float x, float y, float z)
-{
-  GLfloat light_position[4] = { x, y, z, 0.0 };
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-}
-
-inline void setLightAmbient(float r, float g, float b) {
-  GLfloat theColor[4] = { r, g, b, 1.0 };
-  glLightfv(GL_LIGHT0, GL_AMBIENT, theColor);
-}
-
-inline void setLightDiffuse(float r, float g, float b) {
-  GLfloat theColor[4] = { r, g, b, 1.0 };
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, theColor);
-}
-
-inline void setLightSpecular(float r, float g, float b) {
-  GLfloat theColor[4] = { r, g, b, 1.0 };
-  glLightfv(GL_LIGHT0, GL_SPECULAR, theColor);
-}
 
 #endif

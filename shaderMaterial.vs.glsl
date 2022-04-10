@@ -9,11 +9,14 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-void main()
+void main()	
 {
+    // Position in world coordinates
     FragPos = vec3(model * vec4(aPos, 1.0));
+	// To handle non-uniform scaling use the Normal matrix instead of just the model transform of the
+	// normal. Then use it to transform the normal to world coordinates.
 	Normal = mat3(transpose(inverse(model))) * aNormal;
 
-	gl_Position = projection * view * model * vec4(FragPos, 1.0);
+	gl_Position = projection * view * model * vec4(aPos, 1.0);
 }
 

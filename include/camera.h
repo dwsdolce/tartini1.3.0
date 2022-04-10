@@ -49,6 +49,7 @@ public:
         initYaw = yaw;
         initPitch = pitch;
         ResetCamera();
+        updateCameraVectors();
     }
 
     void ResetCamera ()
@@ -61,7 +62,6 @@ public:
         Zoom             = ZOOM;
         MovementSpeed    = SPEED;
         MouseSensitivity = SENSITIVITY;
-        updateCameraVectors();
     }
 
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
@@ -70,6 +70,23 @@ public:
         QMatrix4x4 view;
         view.lookAt(Position, Position + Front, Up);
         return view;
+    }
+
+    void SetYaw(double yaw)
+    {
+      if (yaw != Yaw) {
+        Yaw = yaw;
+        // update Front, Right and Up Vectors using the updated Euler angles
+        updateCameraVectors();
+      }
+    }
+    void SetPitch(double pitch)
+    {
+      if (pitch != Pitch) {
+        Pitch = pitch;
+        // update Front, Right and Up Vectors using the updated Euler angles
+        updateCameraVectors();
+      }
     }
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)

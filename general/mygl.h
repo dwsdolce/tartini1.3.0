@@ -99,6 +99,7 @@ public:
       vbo.bind();
       program.enableAttributeArray(0);
       program.setAttributeBuffer(0, GL_FLOAT, 0, 3, 6 * sizeof(float));
+      program.enableAttributeArray(1);
       program.setAttributeBuffer(1, GL_FLOAT, 3 * sizeof(float), 3, 6 * sizeof(float));
 
       glDrawArrays(shapeType, 0, count);
@@ -110,10 +111,12 @@ public:
 
     static void DrawShape(QOpenGLShaderProgram& program, QOpenGLVertexArrayObject& vao, QOpenGLBuffer& vbo, int count, int shapeType)
     {
+      program.bind();
       vao.bind();
       vbo.bind();
       program.enableAttributeArray(0);
       program.setAttributeBuffer(0, GL_FLOAT, 0, 3, 6 * sizeof(float));
+      program.enableAttributeArray(1);
       program.setAttributeBuffer(1, GL_FLOAT, 3 * sizeof(float), 3, 6 * sizeof(float));
 
       glDrawArrays(shapeType, 0, count);
