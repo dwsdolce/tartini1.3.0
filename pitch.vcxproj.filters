@@ -398,9 +398,6 @@
     <ClInclude Include="general\bspline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <QtMoc Include="widgets\cepstrum\cepstrumview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -734,6 +731,7 @@
     <None Include="pics\tartinilogo.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="LICENSE.txt" />
     <None Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>

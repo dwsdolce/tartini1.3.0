@@ -320,7 +320,6 @@
     <ClInclude Include="rtAudio\audio_stream.h" />
     <ClInclude Include="sound\audio_thread.h" />
     <ClInclude Include="general\bspline.h" />
-    <ClInclude Include="include\camera.h" />
     <QtMoc Include="widgets\cepstrum\cepstrumview.h">
     </QtMoc>
     <QtMoc Include="widgets\cepstrum\cepstrumwidget.h">

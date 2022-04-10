@@ -176,8 +176,7 @@ HEADERS += main.h \
   general/musicnotes.h \
   general/myalgo.h \
   include/RingBuffer.h \
-  include/shader.h \
-  include/camera.h
+  include/shader.h
 
 SOURCES += main.cpp \
   sound/wave_stream.cpp \
