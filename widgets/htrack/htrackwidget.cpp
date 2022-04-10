@@ -12,9 +12,6 @@
 
    Please read LICENSE.txt for details.
  ***************************************************************************/
-
-
-
 #include "htrackwidget.h"
 #include <QOpenGLContext>
 #include <QCoreApplication>
@@ -85,7 +82,6 @@ void HTrackWidget::initializeGL()
   m_program_lighting.bind();
   m_program_lighting.setUniformValue("light.specular", QVector3D(0.5, 0.5, 0.5));
   m_program_lighting.release();
-
 }
 
 void HTrackWidget::resizeGL(int w, int h)
@@ -104,7 +100,6 @@ void HTrackWidget::paintGL()
 
   // Pass Projection Matrix to shader
   // Setup model, view, and projection matrices.
-
   QMatrix4x4 projection;
   projection.setToIdentity();
 
@@ -149,7 +144,6 @@ void HTrackWidget::paintGL()
 
   m_program_lighting.release();
 
-
   // Draw the piano keyboard.
   double pianoWidth = piano3d->pianoWidth();
   QMatrix4x4 pianoModel = m_model;
@@ -165,7 +159,7 @@ void HTrackWidget::paintGL()
 
   piano3d->draw(m_program_lighting, pianoModel);
 
-  // Change the scaling
+  // Change the scaling for the harmonic display
   QMatrix4x4 harmonicModel = pianoModel;
   harmonicModel.translate(-piano3d->firstKeyOffset, 0.0f, 0.0f);
   harmonicModel.scale(OCTAVE_WIDTH / 12.0f, 200.0f, 5.0f); //set a scale of 1 semitime = 1 unit
@@ -238,106 +232,21 @@ void HTrackWidget::paintGL()
 
     bool insideLine;
     float curPitch = 0.0, curAmp = 0.0, prevPitch, diffNote;
-
-    //draw the outlines
-    {
-      m_program_lighting.bind();
-      m_program_lighting.setUniformValue("material.specular", QVector3D(0.0f, 0.0f, 0.0f));
-      m_program_lighting.setUniformValue("material.ambient", QVector3D(0.0f, 0.0f, 0.0f));
-      m_program_lighting.setUniformValue("material.diffuse", QVector3D(0.0f, 0.0f, 0.0f));
-      m_program_lighting.release();
-
-      for (harmonic = 0; harmonic < numHarmonics; harmonic++) {
-        QVector<QVector3D> harmonicOutline;
-
-        insideLine = false;
-        pos = -double(visibleChunks - 1);
-        for (chunkOffset = 0; chunkOffset < visibleChunks; chunkOffset++, pos++) {
-          curAmp = amps(harmonic, chunkOffset) - m_peakThreshold;
-          if (curAmp > 0.0) {
-            prevPitch = curPitch;
-            curPitch = pitches(harmonic, chunkOffset);
-            diffNote = prevPitch - curPitch;
-            if (fabs(diffNote) < 1.0) {
-              if (!insideLine) {
-                harmonicOutline.clear();
-                harmonicOutline << QVector3D(curPitch, 0, pos);
-                insideLine = true;
-              }
-              harmonicOutline << QVector3D(curPitch, curAmp, pos);
-            } else {
-              QOpenGLVertexArrayObject vao_harmonicOutline;
-              QOpenGLBuffer vbo_harmonicOutline;
-              vao_harmonicOutline.create();
-              vbo_harmonicOutline.create();
-              vao_harmonicOutline.bind();
-              vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-              vbo_harmonicOutline.bind();
-
-              vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
-              MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(0, 0, 0, 1));
-              vao_harmonicOutline.destroy();
-              vbo_harmonicOutline.destroy();
-              insideLine = false;
-            }
-          } else {
-            if (insideLine) {
-              harmonicOutline << QVector3D(curPitch, 0, pos - 1);
-
-              QOpenGLVertexArrayObject vao_harmonicOutline;
-              QOpenGLBuffer vbo_harmonicOutline;
-              vao_harmonicOutline.create();
-              vbo_harmonicOutline.create();
-              vao_harmonicOutline.bind();
-              vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-              vbo_harmonicOutline.bind();
-
-              vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
-              MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(0, 0, 0, 1));
-              vao_harmonicOutline.destroy();
-              vbo_harmonicOutline.destroy();
-              insideLine = false;
-            }
-          }
-        }
-        if (insideLine) {
-          harmonicOutline << QVector3D(curPitch, 0, pos - 1);
-
-          QOpenGLVertexArrayObject vao_harmonicOutline;
-          QOpenGLBuffer vbo_harmonicOutline;
-          vao_harmonicOutline.create();
-          vbo_harmonicOutline.create();
-          vao_harmonicOutline.bind();
-          vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-          vbo_harmonicOutline.bind();
-
-          vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
-          MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(0, 0, 0, 1));
-          vao_harmonicOutline.destroy();
-          vbo_harmonicOutline.destroy();
-          insideLine = false;
-        }
-      }
-    }
-
     bool isEven;
-    //draw the faces
+    //draw the faces and outlines
     glShadeModel(GL_FLAT);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for (harmonic = 0; harmonic < numHarmonics; harmonic++) {
-
-      QColor harmonicColor;
-
+      QVector<QVector3D> harmonicOutline;
       QVector<QVector3D> harmonicPolygon;
+      // Change the face color on alternatic harmonics
       if (harmonic % 2 == 0) {
         isEven = true;
-        harmonicColor = QColor(128, 128, 230);
         m_program_lighting.bind();
         m_program_lighting.setUniformValue("material.ambient", QVector3D(0.5f, 0.5f, 0.9f));
         m_program_lighting.setUniformValue("material.diffuse", QVector3D(0.5f, 0.5f, 0.9f));
         m_program_lighting.release();
       } else {
-        harmonicColor = QColor(128, 230, 128);
         m_program_lighting.bind();
         m_program_lighting.setUniformValue("material.ambient", QVector3D(0.5f, 0.9f, 0.5f));
         m_program_lighting.setUniformValue("material.diffuse", QVector3D(0.5f, 0.9f, 0.5f));
@@ -351,6 +260,7 @@ void HTrackWidget::paintGL()
       QVector3D pt2;
       QVector3D pt3;
       QVector3D pt4;
+      bool firstPt = true;
       for (chunkOffset = 0; chunkOffset < visibleChunks; chunkOffset++, pos++) {
         curAmp = amps(harmonic, chunkOffset) - m_peakThreshold;
         if (curAmp > 0.0) { 
@@ -361,6 +271,7 @@ void HTrackWidget::paintGL()
             harmonicPolygon.clear();
             pt1 = QVector3D(curPitch, curAmp, pos);
             pt2 = QVector3D(curPitch, 0, pos);
+            firstPt = true;
           } else {
             prevPitch = curPitch;
             curPitch = pitches(harmonic, chunkOffset);
@@ -368,6 +279,12 @@ void HTrackWidget::paintGL()
             if (fabs(diffNote) < 1.0) {
               pt3 = QVector3D(curPitch, (amps(harmonic, chunkOffset) - m_peakThreshold), pos);
               pt4 = QVector3D(curPitch, 0, pos);
+
+              if (firstPt) {
+                harmonicOutline << pt2 << pt1;
+                firstPt = false;
+              }
+              harmonicOutline << pt3;
 
               // Calculate normal to this pair of triangles
               // Normal points to negative x
@@ -407,6 +324,23 @@ void HTrackWidget::paintGL()
               MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
               vao_harmonicPolygon.destroy();
               vbo_harmonicPolygon.destroy();
+
+              if (!firstPt) {
+                harmonicOutline << pt2; // this was pt4 while creating polygons
+                QOpenGLVertexArrayObject vao_harmonicOutline;
+                QOpenGLBuffer vbo_harmonicOutline;
+                vao_harmonicOutline.create();
+                vbo_harmonicOutline.create();
+                vao_harmonicOutline.bind();
+                vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+                vbo_harmonicOutline.bind();
+
+                vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
+                MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(Qt::black));
+                vao_harmonicOutline.destroy();
+                vbo_harmonicOutline.destroy();
+              }
+
               insideLine = false;
             }
           }
@@ -424,6 +358,21 @@ void HTrackWidget::paintGL()
             MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
             vao_harmonicPolygon.destroy();
             vbo_harmonicPolygon.destroy();
+            if (!firstPt) {
+              harmonicOutline << pt2; // this was pt4 while creating polygons
+              QOpenGLVertexArrayObject vao_harmonicOutline;
+              QOpenGLBuffer vbo_harmonicOutline;
+              vao_harmonicOutline.create();
+              vbo_harmonicOutline.create();
+              vao_harmonicOutline.bind();
+              vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+              vbo_harmonicOutline.bind();
+
+              vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
+              MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(Qt::black));
+              vao_harmonicOutline.destroy();
+              vbo_harmonicOutline.destroy();
+            }
             insideLine = false;
           }
         }
@@ -441,6 +390,21 @@ void HTrackWidget::paintGL()
         MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
         vao_harmonicPolygon.destroy();
         vbo_harmonicPolygon.destroy();
+        if (!firstPt) {
+          harmonicOutline << pt2; // this was pt4 while creating polygons
+          QOpenGLVertexArrayObject vao_harmonicOutline;
+          QOpenGLBuffer vbo_harmonicOutline;
+          vao_harmonicOutline.create();
+          vbo_harmonicOutline.create();
+          vao_harmonicOutline.bind();
+          vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+          vbo_harmonicOutline.bind();
+
+          vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
+          MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(Qt::black));
+          vao_harmonicOutline.destroy();
+          vbo_harmonicOutline.destroy();
+        }
         insideLine = false;
       }
     }
@@ -449,7 +413,7 @@ void HTrackWidget::paintGL()
   }
 }
 
-void HTrackWidget::home()
+void HTrackWidget::home(void)
 {
   setPeakThreshold(0.05f);
 

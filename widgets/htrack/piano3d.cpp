@@ -12,7 +12,6 @@
    
    Please read LICENSE.txt for details.
  ***************************************************************************/
-
 #include <algorithm>
 
 #include "piano3d.h"

@@ -12,7 +12,6 @@
 
    Please read LICENSE.txt for details.
  ***************************************************************************/
-
 #ifndef HTRACK_H
 #define HTRACK_H
 
@@ -28,8 +27,6 @@
 #include <QWheelEvent>
 #include <QMatrix4x4>
 #include <vector>
-
-#include "camera.h"
 
 class Piano3d;
 
@@ -72,6 +69,7 @@ public slots:
   {
     m_peakThreshold = peakThreshold;
   }
+
   // This is required since setRange is called when a QWTWheel is changed and rangeChanged sets the valye of the QWTWheel which breaks the
   // Mouse Motion.
   void setViewAngleHorizontalQWTWheel(double angle)
@@ -112,13 +110,14 @@ public slots:
       m_distanceAway = distance;
     }
   }
+
   void setDistanceAway(double distance)
   {
     if (distance != m_distanceAway) {
       m_distanceAway = distance; emit distanceAwayChanged(distance);
     }
   }
-  void home();
+  void home(void);
 
 signals:
   void distanceAwayChanged(double);
