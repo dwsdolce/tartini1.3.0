@@ -258,7 +258,7 @@ bool moveFile(const QString &src, const QString &dest)
   */
 size_t nextPowerOf2(size_t x)
 {
-  myassert(x > 1<<31);
+  //myassert(x > 1<<31);
   size_t y = 1;
   while(y < x) y <<= 1;
   return y;

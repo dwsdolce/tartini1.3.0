@@ -17,7 +17,14 @@ unix{
   }
 }
 win32{ #Windows
-  MY_LIB_PATH += -L"C:/Qwt-6.1.6/lib" -L"C:\fftw-3.3.9"
+  debug {
+    MY_LIB_PATH += -L"C:/Qwt-6.1.6/lib/Debug" -L"C:\fftw-3.3.9/Debug"
+    QWT_LIB = qwtd
+  }
+  release {
+    MY_LIB_PATH += -L"C:/Qwt-6.1.6/lib/Release" -L"C:\fftw-3.3.9/Release"
+    QWT_LIB = qwt
+  }
   MY_INCLUDE_PATH += "./" "C:/Qwt-6.1.6/include" "C:\fftw-3.3.9"
   #Note just stick the *.dll files in the executables directory to run
 }
@@ -25,8 +32,8 @@ win32{ #Windows
 
 TEMPLATE = app
 CONFIG += qt thread opengl
-CONFIG -= debug
-CONFIG += release
+#CONFIG -= debug
+#CONFIG += release
 CONFIG += warn_on
 CONFIG += precompile_header
 #CONFIG += profile
@@ -369,7 +376,7 @@ win32{
 
   DEFINES += WINDOWS
   REQUIRES += thread
-  LIBS += $$MY_LIB_PATH -lqwt -lfftw3f -lole32 -ldsound -lOpengl32
+  LIBS += $$MY_LIB_PATH -l$$QWT_LIB -lfftw3f -lole32 -ldsound -lOpengl32
   #DEFINES += QT_DLL QT_THREAD_SUPPORT
   DEFINES -= UNICODE       #I think some things broke without this?
 }

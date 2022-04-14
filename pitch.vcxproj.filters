@@ -345,6 +345,9 @@
     <ClCompile Include="sound\zoomlookup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include=".\tartini_plugin_import.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sound\filters\FastSmoothedAveragingFilter.h">

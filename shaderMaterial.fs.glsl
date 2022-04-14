@@ -39,9 +39,9 @@ void main() {
 
     float diff;
     if ( gl_FrontFacing ) {
-        diff = max(dot(norm, lightDir), 0.0);
+        diff = max(dot(lightDir, norm), 0.0);
     } else {
-        diff = max(dot(-norm, lightDir), 0.0);
+        diff = max(dot(lightDir, -norm), 0.0);
     }
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
     

@@ -38,11 +38,21 @@ HTrackWidget::HTrackWidget(QWidget* parent, const char* name)
   : QOpenGLWidget(parent)
 {
   setObjectName(name);
+  m_pianoLightPosition = QVector3D(0.0f, 2000.0f, -1600.0f);
+  m_harmonicLightPosition = QVector3D(-1000.0, 0.0, 0.0);
+
+  setFocusPolicy(Qt::StrongFocus);
 }
 
 HTrackWidget::~HTrackWidget()
 {
+  makeCurrent();
   delete piano3d;
+  m_vao_light.destroy();
+  m_vbo_light.destroy();
+  m_program_camera.deleteLater();
+  m_program_lighting.deleteLater();
+  doneCurrent();
 }
 
 void HTrackWidget::initializeGL()
@@ -82,6 +92,68 @@ void HTrackWidget::initializeGL()
   m_program_lighting.bind();
   m_program_lighting.setUniformValue("light.specular", QVector3D(0.5, 0.5, 0.5));
   m_program_lighting.release();
+
+  // Define the light cube that uses the light.position and the specified color
+  QVector<QVector3D> lightVector;
+  float lightOffset = 20.0f;
+  // Bottom
+  lightVector << QVector3D(-lightOffset, -lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset, -lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset, -lightOffset);
+  lightVector << QVector3D(-lightOffset,  lightOffset, -lightOffset);
+  lightVector << QVector3D(-lightOffset, -lightOffset, -lightOffset);
+
+  // Top
+  lightVector << QVector3D(-lightOffset, -lightOffset,  lightOffset);
+  lightVector << QVector3D( lightOffset, -lightOffset,  lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset,  lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset,  lightOffset);
+  lightVector << QVector3D(-lightOffset,  lightOffset,  lightOffset);
+  lightVector << QVector3D(-lightOffset, -lightOffset,  lightOffset);
+
+  // Left
+  lightVector << QVector3D(-lightOffset,  lightOffset,  lightOffset);
+  lightVector << QVector3D(-lightOffset,  lightOffset, -lightOffset);
+  lightVector << QVector3D(-lightOffset, -lightOffset, -lightOffset);
+  lightVector << QVector3D(-lightOffset, -lightOffset, -lightOffset);
+  lightVector << QVector3D(-lightOffset, -lightOffset,  lightOffset);
+  lightVector << QVector3D(-lightOffset,  lightOffset,  lightOffset);
+
+  // Right
+  lightVector << QVector3D( lightOffset,  lightOffset,  lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset, -lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset, -lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset, -lightOffset,  lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset,  lightOffset);
+
+  // Front
+  lightVector << QVector3D(-lightOffset, -lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset, -lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset, -lightOffset,  lightOffset);
+  lightVector << QVector3D( lightOffset, -lightOffset,  lightOffset);
+  lightVector << QVector3D(-lightOffset, -lightOffset,  lightOffset);
+  lightVector << QVector3D(-lightOffset, -lightOffset, -lightOffset);
+
+  // Back
+  lightVector << QVector3D(-lightOffset,  lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset, -lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset,  lightOffset);
+  lightVector << QVector3D( lightOffset,  lightOffset,  lightOffset);
+  lightVector << QVector3D(-lightOffset,  lightOffset,  lightOffset);
+  lightVector << QVector3D(-lightOffset,  lightOffset, -lightOffset);
+
+  m_vao_light.create();
+  m_vbo_light.create();
+
+  m_program_camera.bind();
+  m_vao_light.bind();
+
+  m_vbo_light.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  m_vbo_light.bind();
+  m_vbo_light.allocate(lightVector.constData(), lightVector.count() * 3 * sizeof(float));
+  m_count_light = lightVector.count();
 }
 
 void HTrackWidget::resizeGL(int w, int h)
@@ -138,11 +210,20 @@ void HTrackWidget::paintGL()
   // I think this is the same as used in the lookAt function.
   m_program_lighting.setUniformValue("viewPos", QVector3D(0.0, 0.0, m_distanceAway));
 
-  m_program_lighting.setUniformValue("light.position", QVector4D(0.0f, 2000.0f, -1600.0f, 1.0f));
+  // Light is positioned behind the keyboard and above it.
+  m_program_lighting.setUniformValue("light.position", QVector4D(m_pianoLightPosition, 1.0f));
   m_program_lighting.setUniformValue("light.ambient", QVector3D(0.4f, 0.4f, 0.4f));
   m_program_lighting.setUniformValue("light.diffuse", QVector3D(0.9f, 0.9f, 0.9f));
 
   m_program_lighting.release();
+
+  // Draw the light for the piano
+  QMatrix4x4 lightModel = m_model;
+  lightModel.translate(m_pianoLightPosition);
+  m_program_camera.bind();
+  m_program_camera.setUniformValue("model", lightModel);
+  m_program_camera.release();
+  MyGL::DrawShape(m_program_camera, m_vao_light, m_vbo_light, m_count_light, GL_TRIANGLES, QColor(255.0f, 255.0f, 255.0f, 1.0f));
 
   // Draw the piano keyboard.
   double pianoWidth = piano3d->pianoWidth();
@@ -159,6 +240,15 @@ void HTrackWidget::paintGL()
 
   piano3d->draw(m_program_lighting, pianoModel);
 
+
+  // Draw the harmonic lightlight
+  lightModel = m_model;
+  lightModel.translate(m_harmonicLightPosition);
+  m_program_camera.bind();
+  m_program_camera.setUniformValue("model", lightModel);
+  m_program_camera.release();
+  MyGL::DrawShape(m_program_camera, m_vao_light, m_vbo_light, m_count_light, GL_TRIANGLES, QColor(255.0f, 255.0f, 255.0f, 1.0f));
+
   // Change the scaling for the harmonic display
   QMatrix4x4 harmonicModel = pianoModel;
   harmonicModel.translate(-piano3d->firstKeyOffset, 0.0f, 0.0f);
@@ -169,7 +259,8 @@ void HTrackWidget::paintGL()
   m_program_camera.release();
 
   m_program_lighting.bind();
-  m_program_lighting.setUniformValue("light.position", QVector4D(-1.0, 0.0, 0.0, 0.0));
+ // m_program_lighting.setUniformValue("light.position", QVector4D(-1.0, 0.0, 0.0, 0.0));
+  m_program_lighting.setUniformValue("light.position", QVector4D(m_harmonicLightPosition, 1.0));
   m_program_lighting.setUniformValue("light.ambient", QVector3D(0.2f, 0.2f, 0.2f));
   m_program_lighting.setUniformValue("light.diffuse", QVector3D(0.9f, 0.9f, 0.9f));
 
@@ -424,6 +515,10 @@ void HTrackWidget::home(void)
   translateX = 0.0;
   translateY = -60.0;
 
+  // Reset the light position
+  m_pianoLightPosition = QVector3D(0.0f, 2000.0f, -1600.0f);
+  m_harmonicLightPosition = QVector3D(-2000.0, 2000.0, 2000.0);
+
   update();
 }
 
@@ -469,4 +564,46 @@ void HTrackWidget::wheelEvent(QWheelEvent* e)
   setDistanceAway(m_distanceAway * pow(2.0, -(double(e->delta()) / double(WHEEL_DELTA)) / 20.0));
   update();
   e->accept();
+}
+
+void HTrackWidget::keyPressEvent(QKeyEvent* e)
+{
+  if (e->key() == Qt::Key_W) {
+    m_pianoLightPosition.setY(m_pianoLightPosition.y() + 100);
+  }
+  if (e->key() == Qt::Key_S) {
+    m_pianoLightPosition.setY(m_pianoLightPosition.y() - 100);
+  }
+  if (e->key() == Qt::Key_A) {
+    m_pianoLightPosition.setX(m_pianoLightPosition.x() - 100);
+  }
+  if (e->key() == Qt::Key_D) {
+    m_pianoLightPosition.setX(m_pianoLightPosition.x() + 100);
+  }
+  if (e->key() == Qt::Key_Q) {
+    m_pianoLightPosition.setZ(m_pianoLightPosition.z() - 100);
+  }
+  if (e->key() == Qt::Key_E) {
+    m_pianoLightPosition.setZ(m_pianoLightPosition.z() + 100);
+  }
+
+  if (e->key() == Qt::Key_I) {
+    m_harmonicLightPosition.setY(m_harmonicLightPosition.y() + 100);
+  }
+  if (e->key() == Qt::Key_K) {
+    m_harmonicLightPosition.setY(m_harmonicLightPosition.y() - 100);
+  }
+  if (e->key() == Qt::Key_J) {
+    m_harmonicLightPosition.setX(m_harmonicLightPosition.x() - 100);
+  }
+  if (e->key() == Qt::Key_L) {
+    m_harmonicLightPosition.setX(m_harmonicLightPosition.x() + 100);
+  }
+  if (e->key() == Qt::Key_U) {
+    m_harmonicLightPosition.setZ(m_harmonicLightPosition.z() - 100);
+  }
+  if (e->key() == Qt::Key_O) {
+    m_harmonicLightPosition.setZ(m_harmonicLightPosition.z() + 100);
+  }
+  update();
 }

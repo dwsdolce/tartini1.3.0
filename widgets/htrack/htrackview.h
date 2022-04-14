@@ -34,6 +34,8 @@ class HTrackView : public ViewWidget {
 
     QSize sizeHint() const { return QSize(500, 400); }
 
+    void keyPressEvent(QKeyEvent* e) override;
+
   public slots:
     void setPeakThreshold(int value);
 

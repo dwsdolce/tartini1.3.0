@@ -50,6 +50,7 @@ public:
   void mouseReleaseEvent(QMouseEvent* e) override;
   void mouseDoubleClickEvent(QMouseEvent* e) override;
   void wheelEvent(QWheelEvent* e) override;
+  void keyPressEvent(QKeyEvent* e) override;
 
   float peakThreshold()
   {
@@ -125,14 +126,15 @@ signals:
   void viewAngleVerticalChanged(double);
 
 private:
-  bool m_useLighting;
-  
   float m_peakThreshold;
 
   double m_distanceAway;
   double m_viewAngleHorizontal;
   double m_viewAngleVertical;
   double translateX, translateY;
+
+  QVector3D m_pianoLightPosition;
+  QVector3D m_harmonicLightPosition;
 
   Piano3d* piano3d;
 
@@ -144,6 +146,10 @@ private:
 
   QOpenGLShaderProgram m_program_camera;
   QOpenGLShaderProgram m_program_lighting;
+
+  QOpenGLVertexArrayObject m_vao_light;
+  QOpenGLBuffer m_vbo_light;
+  int m_count_light;
 };
 
 #endif

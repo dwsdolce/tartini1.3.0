@@ -135,3 +135,8 @@ void HTrackView::setPeakThreshold(int value)
   hTrackWidget->setPeakThreshold(float(value) / 100.0);
   hTrackWidget->update();
 }
+
+void HTrackView::keyPressEvent(QKeyEvent* e)
+{
+  hTrackWidget->keyPressEvent(e);
+}
