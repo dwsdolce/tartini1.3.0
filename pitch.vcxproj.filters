@@ -735,7 +735,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="LICENSE.txt" />
-    <None Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="INSTALL.txt">
