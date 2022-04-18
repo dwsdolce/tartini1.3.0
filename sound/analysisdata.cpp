@@ -46,7 +46,7 @@ AnalysisData::AnalysisData()
   highestCorrelationIndex = -1;
   chosenCorrelationIndex = -1;
   periodRatio = 1.0f;
-  cepstrumIndex = -1;
+  cepstrumIndex = size_t(-1);
   cepstrumPitch = 0.0f;
   //periodOctaveEstimate = -1.0f;
   noteIndex = NO_NOTE;

@@ -122,7 +122,7 @@ void CepstrumWidget::paintEvent( QPaintEvent * )
       }
       p.drawPolyline(pointArray);
 
-      if(data->cepstrumIndex >= 0) {
+      if(data->cepstrumIndex != size_t(-1)) {
         p.setPen(Qt::blue);
         p.setBrush(Qt::blue);
         int x1 = toInt(double(data->cepstrumIndex) / double(active->cepstrumData.size()) * double(width()));
