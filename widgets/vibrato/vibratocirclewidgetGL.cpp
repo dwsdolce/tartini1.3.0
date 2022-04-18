@@ -30,6 +30,7 @@ VibratoCircleWidgetGL::VibratoCircleWidgetGL(QWidget* parent)
   type = 5;
   lastPeriodToDraw = -1;
   m_CurrentPeriodAlpha = 200;
+  m_currentPeriodCount = 0;
 }
 
 VibratoCircleWidgetGL::~VibratoCircleWidgetGL()
@@ -199,6 +200,8 @@ void VibratoCircleWidgetGL::doUpdate()
   int rightMinimumTime = -1;
   int leftMinimumAt = -1;
   int maximumAt = -1;
+  m_currentPeriodCount = 0;
+
   
   if ((active) && (active->doingDetailedPitch()) && (active->pitchLookupSmoothed.size() > 0)) {
     AnalysisData* data = active->dataAtCurrentChunk();
@@ -257,7 +260,6 @@ void VibratoCircleWidgetGL::doUpdate()
           const int stepSize = active->rate() / 1000;  // Draw element for every 0.001s
           const int prevPeriodDuration = rightMinimumTime - leftMinimumTime;
           const int currentChunk = active->chunkAtCurrentTime();
-          m_currentPeriodCount = 0;
 
           float prevMinimumPitch = (pitchLookupUsed.at(leftMinimumTime) >
             pitchLookupUsed.at(rightMinimumTime))
@@ -361,7 +363,6 @@ void VibratoCircleWidgetGL::doUpdate()
         } else if (type == 4) {
 
           const int periodDuration = rightMinimumTime - leftMinimumTime;
-          m_currentPeriodCount = 0;
           m_CurrentPeriodAlpha = 200;
 
           vertices << QVector3D(halfWidth, halfHeight, 0.0f);
@@ -397,7 +398,6 @@ void VibratoCircleWidgetGL::doUpdate()
           m_currentPeriodCount = vertices.count();
 
         } else if (type == 5) {
-
           if (leftMinimumAt == 0) {  // Fade in first period
             const int periodDuration = rightMinimumTime - leftMinimumTime;
             const int fadeAlphaInt = 200 * (currentTime - rightMinimumTime) / periodDuration;
@@ -440,7 +440,6 @@ void VibratoCircleWidgetGL::doUpdate()
               distanceRatio = 1;
             }
 
-            m_currentPeriodCount = 0;
             m_CurrentPeriodAlpha = 200;
 
             vertices << QVector3D(halfWidth, halfHeight, 0.0f);
