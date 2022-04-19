@@ -345,9 +345,6 @@
     <ClCompile Include="sound\zoomlookup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".\tartini_plugin_import.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sound\filters\FastSmoothedAveragingFilter.h">
@@ -679,12 +676,138 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <ClCompile Include="D:\Users\dws\src\Tartini\tartini1.3.0\tartini_plugin_import.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="dialogs\settingsdialog.ui">
@@ -734,7 +857,6 @@
     <None Include="pics\tartinilogo.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="INSTALL.txt">
@@ -832,6 +954,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include=".\tartini_resource.rc" />
+    <ResourceCompile Include="D:\Users\dws\src\Tartini\tartini1.3.0\tartini_resource.rc" />
   </ItemGroup>
 </Project>

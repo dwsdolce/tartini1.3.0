@@ -1,0 +1,1354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3431D29C-D8A0-3CC4-8FA4-9CC21245D89A}</ProjectGuid>
+    <RootNamespace>tartini</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>tartini</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>tartini</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists(&apos;$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props&apos;)" />
+  </ImportGroup>
+  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists(&apos;$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props&apos;)" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\</OutDir>
+    <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\</IntDir>
+    <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">tartini</TargetName>
+    <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</IgnoreImportLibrary>
+    <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\</OutDir>
+    <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\</IntDir>
+    <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">tartini</TargetName>
+    <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;include;general;sound;widgets;global;dialogs;widgets\mainwindow;widgets\freq;widgets\summary;widgets\pitchcompass;widgets\openfiles;widgets\volumemeter;widgets\tuner;widgets\hblock;widgets\hstack;widgets\wave;widgets\piano;widgets\htrack;widgets\correlation;widgets\fft;widgets\cepstrum;widgets\hbubble;widgets\hcircle;widgets\debugview;widgets\score;widgets\vibrato;sound\filters;.;C:\Qwt-6.2.0\include;C:\fftw-3.3.10;rtAudio;dialogs;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtOpenGL;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtPrintSupport;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtWidgets;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtGui;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtANGLE;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtCore;debug;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;SINGLE_DRAWING_BUFFER;__WINDOWS_DS__;WINDOWS;MYDEBUG;QT_OPENGL_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>C:\Qwt-6.2.0\lib\qwtd.lib;C:\fftw-3.3.10\Debug\fftw3f.lib;dsound.lib;Opengl32.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\printsupport\windowsprintersupportd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\styles\qwindowsvistastyled.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\platforms\qwindowsd.lib;shlwapi.lib;wtsapi32.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5EventDispatcherSupportd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5FontDatabaseSupportd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtfreetyped.lib;dwrite.lib;d2d1.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5ThemeSupportd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5AccessibilitySupportd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5WindowsUIAutomationSupportd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qgifd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qicnsd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qicod.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qjpegd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qtgad.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qtiffd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qwbmpd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qwebpd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5OpenGLd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5PrintSupportd.lib;winspool.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5Widgetsd.lib;uxtheme.lib;dwmapi.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5Guid.lib;d3d11.lib;dxgi.lib;dxguid.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtlibpngd.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtharfbuzzd.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5Cored.lib;mpr.lib;userenv.lib;version.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtpcre2d.lib;netapi32.lib;ws2_32.lib;advapi32.lib;kernel32.lib;ole32.lib;shell32.lib;uuid.lib;user32.lib;winmm.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtmaind.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Qwt-6.2.0\lib;C:\fftw-3.3.10\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\tartini.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <Version>1.3</Version>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;SINGLE_DRAWING_BUFFER;__WINDOWS_DS__;WINDOWS;MYDEBUG;QT_OPENGL_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;include;general;sound;widgets;global;dialogs;widgets\mainwindow;widgets\freq;widgets\summary;widgets\pitchcompass;widgets\openfiles;widgets\volumemeter;widgets\tuner;widgets\hblock;widgets\hstack;widgets\wave;widgets\piano;widgets\htrack;widgets\correlation;widgets\fft;widgets\cepstrum;widgets\hbubble;widgets\hcircle;widgets\debugview;widgets\score;widgets\vibrato;sound\filters;.;C:\Qwt-6.2.0\include;C:\fftw-3.3.10;rtAudio;dialogs;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtOpenGL;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtPrintSupport;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtWidgets;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtGui;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtANGLE;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\include\QtCore;release;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;SINGLE_DRAWING_BUFFER;__WINDOWS_DS__;WINDOWS;MYDEBUG;NDEBUG;QT_NO_DEBUG;QT_OPENGL_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName></ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>C:\Qwt-6.2.0\lib\qwt.lib;C:\fftw-3.3.10\Release\fftw3f.lib;dsound.lib;Opengl32.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\printsupport\windowsprintersupport.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\styles\qwindowsvistastyle.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\platforms\qwindows.lib;shlwapi.lib;wtsapi32.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5EventDispatcherSupport.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5FontDatabaseSupport.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtfreetype.lib;dwrite.lib;d2d1.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5ThemeSupport.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5AccessibilitySupport.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5WindowsUIAutomationSupport.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qgif.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qicns.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qico.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qjpeg.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qtga.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qtiff.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qwbmp.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\plugins\imageformats\qwebp.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5OpenGL.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5PrintSupport.lib;winspool.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5Widgets.lib;uxtheme.lib;dwmapi.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5Gui.lib;d3d11.lib;dxgi.lib;dxguid.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtlibpng.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtharfbuzz.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\Qt5Core.lib;mpr.lib;userenv.lib;version.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtpcre2.lib;netapi32.lib;ws2_32.lib;advapi32.lib;kernel32.lib;ole32.lib;shell32.lib;uuid.lib;user32.lib;winmm.lib;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\lib\qtmain.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Qwt-6.2.0\lib;C:\fftw-3.3.10\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)\tartini.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <Version>1.3</Version>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;SINGLE_DRAWING_BUFFER;__WINDOWS_DS__;WINDOWS;MYDEBUG;NDEBUG;QT_NO_DEBUG;QT_OPENGL_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="sound\filters\FastSmoothedAveragingFilter.cpp" />
+    <ClCompile Include="sound\filters\FixedAveragingFilter.cpp" />
+    <ClCompile Include="sound\filters\GrowingAveragingFilter.cpp" />
+    <ClCompile Include="sound\filters\IIR_Filter.cpp" />
+    <ClCompile Include="rtAudio\RtAudio.cpp" />
+    <ClCompile Include="widgets\freq\amplitudewidget.cpp" />
+    <ClCompile Include="widgets\freq\amplitudewidgetGL.cpp" />
+    <ClCompile Include="sound\analysisdata.cpp" />
+    <ClCompile Include="rtAudio\audio_stream.cpp" />
+    <ClCompile Include="sound\audio_thread.cpp" />
+    <ClCompile Include="general\bspline.cpp" />
+    <ClCompile Include="widgets\cepstrum\cepstrumview.cpp" />
+    <ClCompile Include="widgets\cepstrum\cepstrumwidget.cpp" />
+    <ClCompile Include="sound\channel.cpp" />
+    <ClCompile Include="cleanup.c" />
+    <ClCompile Include="global\conversions.cpp" />
+    <ClCompile Include="widgets\correlation\correlationview.cpp" />
+    <ClCompile Include="widgets\correlation\correlationwidget.cpp" />
+    <ClCompile Include="widgets\debugview\debugview.cpp" />
+    <ClCompile Include="widgets\debugview\debugwidget.cpp" />
+    <ClCompile Include="widgets\drawwidget.cpp" />
+    <ClCompile Include="general\equalloudness.cpp" />
+    <ClCompile Include="general\fast_smooth.cpp" />
+    <ClCompile Include="widgets\fft\fftview.cpp" />
+    <ClCompile Include="widgets\fft\fftwidget.cpp" />
+    <ClCompile Include="widgets\freq\freqview.cpp" />
+    <ClCompile Include="widgets\freq\freqviewGL.cpp" />
+    <ClCompile Include="widgets\freq\freqwidget.cpp" />
+    <ClCompile Include="widgets\freq\freqwidgetGL.cpp" />
+    <ClCompile Include="global\gdata.cpp" />
+    <ClCompile Include="widgets\hblock\hblockview.cpp" />
+    <ClCompile Include="widgets\hblock\hblockwidget.cpp" />
+    <ClCompile Include="widgets\hbubble\hbubbleview.cpp" />
+    <ClCompile Include="widgets\hbubble\hbubblewidget.cpp" />
+    <ClCompile Include="widgets\hcircle\hcircleview.cpp" />
+    <ClCompile Include="widgets\hcircle\hcirclewidget.cpp" />
+    <ClCompile Include="widgets\hstack\hstackview.cpp" />
+    <ClCompile Include="widgets\hstack\hstackwidget.cpp" />
+    <ClCompile Include="widgets\htrack\htrackview.cpp" />
+    <ClCompile Include="widgets\htrack\htrackwidget.cpp" />
+    <ClCompile Include="widgets\ledindicator.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="widgets\mainwindow\mainwindow.cpp" />
+    <ClCompile Include="general\musicnotes.cpp" />
+    <ClCompile Include="general\myalgo.cpp" />
+    <ClCompile Include="general\myio.cpp" />
+    <ClCompile Include="widgets\mylabel.cpp" />
+    <ClCompile Include="general\mymatrix.cpp" />
+    <ClCompile Include="general\myqt.cpp" />
+    <ClCompile Include="widgets\myscrollbar.cpp" />
+    <ClCompile Include="general\mystring.cpp" />
+    <ClCompile Include="general\mytransforms.cpp" />
+    <ClCompile Include="sound\notedata.cpp" />
+    <ClCompile Include="sound\notesynth.cpp" />
+    <ClCompile Include="dialogs\opendialog.cpp" />
+    <ClCompile Include="widgets\openfiles\openfiles.cpp" />
+    <ClCompile Include="widgets\htrack\piano3d.cpp" />
+    <ClCompile Include="widgets\piano\pianoview.cpp" />
+    <ClCompile Include="widgets\piano\pianowidget.cpp" />
+    <ClCompile Include="widgets\pitchcompass\pitchcompassdrawwidget.cpp" />
+    <ClCompile Include="widgets\pitchcompass\pitchcompassview.cpp" />
+    <ClCompile Include="general\prony.cpp" />
+    <ClCompile Include="dialogs\savedialog.cpp" />
+    <ClCompile Include="widgets\score\scoresegmentiterator.cpp" />
+    <ClCompile Include="widgets\score\scoreview.cpp" />
+    <ClCompile Include="widgets\score\scorewidget.cpp" />
+    <ClCompile Include="sound\sound_stream.cpp" />
+    <ClCompile Include="sound\soundfile.cpp" />
+    <ClCompile Include="widgets\summary\summarydrawwidget.cpp" />
+    <ClCompile Include="widgets\summary\summaryview.cpp" />
+    <ClCompile Include="dialogs\tartinisettingsdialog.cpp" />
+    <ClCompile Include="widgets\timeaxis.cpp" />
+    <ClCompile Include="widgets\tuner\tunerview.cpp" />
+    <ClCompile Include="widgets\tuner\tunerviewGL.cpp" />
+    <ClCompile Include="widgets\tuner\tunerwidget.cpp" />
+    <ClCompile Include="widgets\tuner\tunerwidgetGL.cpp" />
+    <ClCompile Include="general\useful.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratocirclewidget.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratocirclewidgetGL.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratoperiodwidget.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratoperiodwidgetGL.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratospeedwidget.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratospeedwidgetGL.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratotimeaxis.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratoview.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratoviewGL.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratowidget.cpp" />
+    <ClCompile Include="widgets\vibrato\vibratowidgetGL.cpp" />
+    <ClCompile Include="global\view.cpp" />
+    <ClCompile Include="widgets\viewwidget.cpp" />
+    <ClCompile Include="widgets\volumemeter\volumemeterview.cpp" />
+    <ClCompile Include="widgets\volumemeter\volumemeterwidget.cpp" />
+    <ClCompile Include="sound\wave_stream.cpp" />
+    <ClCompile Include="widgets\wave\waveview.cpp" />
+    <ClCompile Include="widgets\wave\wavewidget.cpp" />
+    <ClCompile Include="sound\zoomlookup.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sound\filters\FastSmoothedAveragingFilter.h" />
+    <ClInclude Include="sound\filters\Filter.h" />
+    <ClInclude Include="sound\filters\FixedAveragingFilter.h" />
+    <ClInclude Include="sound\filters\GrowingAveragingFilter.h" />
+    <ClInclude Include="sound\filters\IIR_Filter.h" />
+    <ClInclude Include="include\RingBuffer.h" />
+    <ClInclude Include="rtAudio\RtAudio.h" />
+    <ClInclude Include="rtAudio\RtError.h" />
+    <ClInclude Include="include\SmartPtr.h" />
+    <CustomBuild Include="widgets\freq\amplitudewidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\freq\amplitudewidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\freq\amplitudewidget.h -o debug\moc_amplitudewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/freq/amplitudewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_amplitudewidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\freq\amplitudewidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\freq\amplitudewidget.h -o release\moc_amplitudewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/freq/amplitudewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_amplitudewidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\freq\amplitudewidgetGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\freq\amplitudewidgetGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\freq\amplitudewidgetGL.h -o debug\moc_amplitudewidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/freq/amplitudewidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_amplitudewidgetGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\freq\amplitudewidgetGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\freq\amplitudewidgetGL.h -o release\moc_amplitudewidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/freq/amplitudewidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_amplitudewidgetGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="sound\analysisdata.h" />
+    <ClInclude Include="include\array1d.h" />
+    <ClInclude Include="include\array2d.h" />
+    <ClInclude Include="rtAudio\audio_stream.h" />
+    <ClInclude Include="sound\audio_thread.h" />
+    <ClInclude Include="general\bspline.h" />
+    <CustomBuild Include="widgets\cepstrum\cepstrumview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\cepstrum\cepstrumview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\cepstrum\cepstrumview.h -o debug\moc_cepstrumview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/cepstrum/cepstrumview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_cepstrumview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\cepstrum\cepstrumview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\cepstrum\cepstrumview.h -o release\moc_cepstrumview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/cepstrum/cepstrumview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_cepstrumview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\cepstrum\cepstrumwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\cepstrum\cepstrumwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\cepstrum\cepstrumwidget.h -o debug\moc_cepstrumwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/cepstrum/cepstrumwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_cepstrumwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\cepstrum\cepstrumwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\cepstrum\cepstrumwidget.h -o release\moc_cepstrumwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/cepstrum/cepstrumwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_cepstrumwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="sound\channel.h" />
+    <ClInclude Include="global\conversions.h" />
+    <CustomBuild Include="widgets\correlation\correlationview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\correlation\correlationview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\correlation\correlationview.h -o debug\moc_correlationview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/correlation/correlationview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_correlationview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\correlation\correlationview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\correlation\correlationview.h -o release\moc_correlationview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/correlation/correlationview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_correlationview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\correlation\correlationwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\correlation\correlationwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\correlation\correlationwidget.h -o debug\moc_correlationwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/correlation/correlationwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_correlationwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\correlation\correlationwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\correlation\correlationwidget.h -o release\moc_correlationwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/correlation/correlationwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_correlationwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\debugview\debugview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\debugview\debugview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\debugview\debugview.h -o debug\moc_debugview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/debugview/debugview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_debugview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\debugview\debugview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\debugview\debugview.h -o release\moc_debugview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/debugview/debugview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_debugview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\debugview\debugwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\debugview\debugwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\debugview\debugwidget.h -o debug\moc_debugwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/debugview/debugwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_debugwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\debugview\debugwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\debugview\debugwidget.h -o release\moc_debugwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/debugview/debugwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_debugwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\drawwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\drawwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\drawwidget.h -o debug\moc_drawwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/drawwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_drawwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\drawwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\drawwidget.h -o release\moc_drawwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/drawwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_drawwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="general\equalloudness.h" />
+    <ClInclude Include="general\fast_smooth.h" />
+    <CustomBuild Include="widgets\fft\fftview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\fft\fftview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\fft\fftview.h -o debug\moc_fftview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/fft/fftview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_fftview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\fft\fftview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\fft\fftview.h -o release\moc_fftview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/fft/fftview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_fftview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\fft\fftwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\fft\fftwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\fft\fftwidget.h -o debug\moc_fftwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/fft/fftwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_fftwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\fft\fftwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\fft\fftwidget.h -o release\moc_fftwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/fft/fftwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_fftwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="include\freqpair.h" />
+    <CustomBuild Include="widgets\freq\freqview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\freq\freqview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\freq\freqview.h -o debug\moc_freqview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/freq/freqview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_freqview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\freq\freqview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\freq\freqview.h -o release\moc_freqview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/freq/freqview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_freqview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\freq\freqviewGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\freq\freqviewGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\freq\freqviewGL.h -o debug\moc_freqviewGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/freq/freqviewGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_freqviewGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\freq\freqviewGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\freq\freqviewGL.h -o release\moc_freqviewGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/freq/freqviewGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_freqviewGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\freq\freqwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\freq\freqwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\freq\freqwidget.h -o debug\moc_freqwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/freq/freqwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_freqwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\freq\freqwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\freq\freqwidget.h -o release\moc_freqwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/freq/freqwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_freqwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\freq\freqwidgetGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\freq\freqwidgetGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\freq\freqwidgetGL.h -o debug\moc_freqwidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/freq/freqwidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_freqwidgetGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\freq\freqwidgetGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\freq\freqwidgetGL.h -o release\moc_freqwidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/freq/freqwidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_freqwidgetGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="global\gdata.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">global\gdata.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt global\gdata.h -o debug\moc_gdata.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC global/gdata.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_gdata.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">global\gdata.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt global\gdata.h -o release\moc_gdata.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC global/gdata.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_gdata.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\hblock\hblockview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\hblock\hblockview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\hblock\hblockview.h -o debug\moc_hblockview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/hblock/hblockview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_hblockview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\hblock\hblockview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\hblock\hblockview.h -o release\moc_hblockview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/hblock/hblockview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_hblockview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\hblock\hblockwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\hblock\hblockwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\hblock\hblockwidget.h -o debug\moc_hblockwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/hblock/hblockwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_hblockwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\hblock\hblockwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\hblock\hblockwidget.h -o release\moc_hblockwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/hblock/hblockwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_hblockwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\hbubble\hbubbleview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\hbubble\hbubbleview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\hbubble\hbubbleview.h -o debug\moc_hbubbleview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/hbubble/hbubbleview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_hbubbleview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\hbubble\hbubbleview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\hbubble\hbubbleview.h -o release\moc_hbubbleview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/hbubble/hbubbleview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_hbubbleview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\hbubble\hbubblewidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\hbubble\hbubblewidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\hbubble\hbubblewidget.h -o debug\moc_hbubblewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/hbubble/hbubblewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_hbubblewidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\hbubble\hbubblewidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\hbubble\hbubblewidget.h -o release\moc_hbubblewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/hbubble/hbubblewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_hbubblewidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\hcircle\hcircleview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\hcircle\hcircleview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\hcircle\hcircleview.h -o debug\moc_hcircleview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/hcircle/hcircleview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_hcircleview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\hcircle\hcircleview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\hcircle\hcircleview.h -o release\moc_hcircleview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/hcircle/hcircleview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_hcircleview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\hcircle\hcirclewidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\hcircle\hcirclewidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\hcircle\hcirclewidget.h -o debug\moc_hcirclewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/hcircle/hcirclewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_hcirclewidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\hcircle\hcirclewidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\hcircle\hcirclewidget.h -o release\moc_hcirclewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/hcircle/hcirclewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_hcirclewidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\hstack\hstackview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\hstack\hstackview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\hstack\hstackview.h -o debug\moc_hstackview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/hstack/hstackview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_hstackview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\hstack\hstackview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\hstack\hstackview.h -o release\moc_hstackview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/hstack/hstackview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_hstackview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\hstack\hstackwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\hstack\hstackwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\hstack\hstackwidget.h -o debug\moc_hstackwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/hstack/hstackwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_hstackwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\hstack\hstackwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\hstack\hstackwidget.h -o release\moc_hstackwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/hstack/hstackwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_hstackwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\htrack\htrackview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\htrack\htrackview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\htrack\htrackview.h -o debug\moc_htrackview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/htrack/htrackview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_htrackview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\htrack\htrackview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\htrack\htrackview.h -o release\moc_htrackview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/htrack/htrackview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_htrackview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\htrack\htrackwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\htrack\htrackwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\htrack\htrackwidget.h -o debug\moc_htrackwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/htrack/htrackwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_htrackwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\htrack\htrackwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\htrack\htrackwidget.h -o release\moc_htrackwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/htrack/htrackwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_htrackwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="general\large_vector.h" />
+    <CustomBuild Include="widgets\ledindicator.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\ledindicator.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\ledindicator.h -o debug\moc_ledindicator.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/ledindicator.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_ledindicator.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\ledindicator.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\ledindicator.h -o release\moc_ledindicator.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/ledindicator.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_ledindicator.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="main.h" />
+    <CustomBuild Include="widgets\mainwindow\mainwindow.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\mainwindow\mainwindow.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\mainwindow\mainwindow.h -o debug\moc_mainwindow.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/mainwindow/mainwindow.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_mainwindow.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\mainwindow\mainwindow.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\mainwindow\mainwindow.h -o release\moc_mainwindow.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/mainwindow/mainwindow.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_mainwindow.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="general\musicnotes.h" />
+    <ClInclude Include="general\myalgo.h" />
+    <ClInclude Include="include\myassert.h" />
+    <ClInclude Include="general\mygl.h" />
+    <ClInclude Include="general\myio.h" />
+    <ClInclude Include="widgets\mylabel.h" />
+    <ClInclude Include="general\mymatrix.h" />
+    <ClInclude Include="include\myqmutex.h" />
+    <ClInclude Include="general\myqt.h" />
+    <CustomBuild Include="widgets\myscrollbar.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\myscrollbar.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\myscrollbar.h -o debug\moc_myscrollbar.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/myscrollbar.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_myscrollbar.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\myscrollbar.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\myscrollbar.h -o release\moc_myscrollbar.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/myscrollbar.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_myscrollbar.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="general\mystring.h" />
+    <ClInclude Include="general\mytransforms.h" />
+    <ClInclude Include="sound\notedata.h" />
+    <ClInclude Include="sound\notesynth.h" />
+    <ClInclude Include="dialogs\opendialog.h" />
+    <CustomBuild Include="widgets\openfiles\openfiles.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\openfiles\openfiles.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\openfiles\openfiles.h -o debug\moc_openfiles.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/openfiles/openfiles.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_openfiles.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\openfiles\openfiles.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\openfiles\openfiles.h -o release\moc_openfiles.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/openfiles/openfiles.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_openfiles.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="widgets\htrack\piano3d.h" />
+    <CustomBuild Include="widgets\piano\pianoview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\piano\pianoview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\piano\pianoview.h -o debug\moc_pianoview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/piano/pianoview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_pianoview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\piano\pianoview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\piano\pianoview.h -o release\moc_pianoview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/piano/pianoview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_pianoview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="widgets\piano\pianowidget.h" />
+    <CustomBuild Include="widgets\pitchcompass\pitchcompassdrawwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\pitchcompass\pitchcompassdrawwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\pitchcompass\pitchcompassdrawwidget.h -o debug\moc_pitchcompassdrawwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/pitchcompass/pitchcompassdrawwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_pitchcompassdrawwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\pitchcompass\pitchcompassdrawwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\pitchcompass\pitchcompassdrawwidget.h -o release\moc_pitchcompassdrawwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/pitchcompass/pitchcompassdrawwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_pitchcompassdrawwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\pitchcompass\pitchcompassview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\pitchcompass\pitchcompassview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\pitchcompass\pitchcompassview.h -o debug\moc_pitchcompassview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/pitchcompass/pitchcompassview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_pitchcompassview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\pitchcompass\pitchcompassview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\pitchcompass\pitchcompassview.h -o release\moc_pitchcompassview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/pitchcompass/pitchcompassview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_pitchcompassview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="general\prony.h" />
+    <ClInclude Include="include\safe_bool.h" />
+    <ClInclude Include="dialogs\savedialog.h" />
+    <ClInclude Include="widgets\score\scoresegmentiterator.h" />
+    <CustomBuild Include="widgets\score\scoreview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\score\scoreview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\score\scoreview.h -o debug\moc_scoreview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/score/scoreview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_scoreview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\score\scoreview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\score\scoreview.h -o release\moc_scoreview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/score/scoreview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_scoreview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\score\scorewidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\score\scorewidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\score\scorewidget.h -o debug\moc_scorewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/score/scorewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_scorewidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\score\scorewidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\score\scorewidget.h -o release\moc_scorewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/score/scorewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_scorewidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="include\shader.h" />
+    <ClInclude Include="sound\sound_file_stream.h" />
+    <ClInclude Include="sound\sound_stream.h" />
+    <ClInclude Include="sound\soundfile.h" />
+    <CustomBuild Include="widgets\summary\summarydrawwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\summary\summarydrawwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\summary\summarydrawwidget.h -o debug\moc_summarydrawwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/summary/summarydrawwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_summarydrawwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\summary\summarydrawwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\summary\summarydrawwidget.h -o release\moc_summarydrawwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/summary/summarydrawwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_summarydrawwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\summary\summaryview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\summary\summaryview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\summary\summaryview.h -o debug\moc_summaryview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/summary/summaryview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_summaryview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\summary\summaryview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\summary\summaryview.h -o release\moc_summaryview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/summary/summaryview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_summaryview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="dialogs\tartinisettingsdialog.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">dialogs\tartinisettingsdialog.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt dialogs\tartinisettingsdialog.h -o debug\moc_tartinisettingsdialog.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC dialogs/tartinisettingsdialog.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_tartinisettingsdialog.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">dialogs\tartinisettingsdialog.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt dialogs\tartinisettingsdialog.h -o release\moc_tartinisettingsdialog.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC dialogs/tartinisettingsdialog.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_tartinisettingsdialog.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\timeaxis.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\timeaxis.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\timeaxis.h -o debug\moc_timeaxis.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/timeaxis.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_timeaxis.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\timeaxis.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\timeaxis.h -o release\moc_timeaxis.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/timeaxis.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_timeaxis.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\tuner\tunerview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\tuner\tunerview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\tuner\tunerview.h -o debug\moc_tunerview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/tuner/tunerview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_tunerview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\tuner\tunerview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\tuner\tunerview.h -o release\moc_tunerview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/tuner/tunerview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_tunerview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\tuner\tunerviewGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\tuner\tunerviewGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\tuner\tunerviewGL.h -o debug\moc_tunerviewGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/tuner/tunerviewGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_tunerviewGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\tuner\tunerviewGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\tuner\tunerviewGL.h -o release\moc_tunerviewGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/tuner/tunerviewGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_tunerviewGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\tuner\tunerwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\tuner\tunerwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\tuner\tunerwidget.h -o debug\moc_tunerwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/tuner/tunerwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_tunerwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\tuner\tunerwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\tuner\tunerwidget.h -o release\moc_tunerwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/tuner/tunerwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_tunerwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\tuner\tunerwidgetGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\tuner\tunerwidgetGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\tuner\tunerwidgetGL.h -o debug\moc_tunerwidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/tuner/tunerwidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_tunerwidgetGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\tuner\tunerwidgetGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\tuner\tunerwidgetGL.h -o release\moc_tunerwidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/tuner/tunerwidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_tunerwidgetGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="general\useful.h" />
+    <CustomBuild Include="widgets\vibrato\vibratocirclewidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratocirclewidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratocirclewidget.h -o debug\moc_vibratocirclewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratocirclewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratocirclewidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratocirclewidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratocirclewidget.h -o release\moc_vibratocirclewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratocirclewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratocirclewidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratocirclewidgetGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratocirclewidgetGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratocirclewidgetGL.h -o debug\moc_vibratocirclewidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratocirclewidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratocirclewidgetGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratocirclewidgetGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratocirclewidgetGL.h -o release\moc_vibratocirclewidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratocirclewidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratocirclewidgetGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratoperiodwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratoperiodwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratoperiodwidget.h -o debug\moc_vibratoperiodwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratoperiodwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratoperiodwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratoperiodwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratoperiodwidget.h -o release\moc_vibratoperiodwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratoperiodwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratoperiodwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratoperiodwidgetGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratoperiodwidgetGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratoperiodwidgetGL.h -o debug\moc_vibratoperiodwidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratoperiodwidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratoperiodwidgetGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratoperiodwidgetGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratoperiodwidgetGL.h -o release\moc_vibratoperiodwidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratoperiodwidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratoperiodwidgetGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratospeedwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratospeedwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratospeedwidget.h -o debug\moc_vibratospeedwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratospeedwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratospeedwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratospeedwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratospeedwidget.h -o release\moc_vibratospeedwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratospeedwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratospeedwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratospeedwidgetGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratospeedwidgetGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratospeedwidgetGL.h -o debug\moc_vibratospeedwidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratospeedwidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratospeedwidgetGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratospeedwidgetGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratospeedwidgetGL.h -o release\moc_vibratospeedwidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratospeedwidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratospeedwidgetGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratotimeaxis.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratotimeaxis.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratotimeaxis.h -o debug\moc_vibratotimeaxis.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratotimeaxis.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratotimeaxis.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratotimeaxis.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratotimeaxis.h -o release\moc_vibratotimeaxis.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratotimeaxis.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratotimeaxis.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratoview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratoview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratoview.h -o debug\moc_vibratoview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratoview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratoview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratoview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratoview.h -o release\moc_vibratoview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratoview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratoview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratoviewGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratoviewGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratoviewGL.h -o debug\moc_vibratoviewGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratoviewGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratoviewGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratoviewGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratoviewGL.h -o release\moc_vibratoviewGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratoviewGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratoviewGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratowidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratowidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratowidget.h -o debug\moc_vibratowidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratowidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratowidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratowidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratowidget.h -o release\moc_vibratowidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratowidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratowidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\vibrato\vibratowidgetGL.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\vibrato\vibratowidgetGL.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\vibrato\vibratowidgetGL.h -o debug\moc_vibratowidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/vibrato/vibratowidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_vibratowidgetGL.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\vibrato\vibratowidgetGL.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\vibrato\vibratowidgetGL.h -o release\moc_vibratowidgetGL.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/vibrato/vibratowidgetGL.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_vibratowidgetGL.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="global\view.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">global\view.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt global\view.h -o debug\moc_view.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC global/view.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_view.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">global\view.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt global\view.h -o release\moc_view.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC global/view.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_view.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\viewwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\viewwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\viewwidget.h -o debug\moc_viewwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/viewwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_viewwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\viewwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\viewwidget.h -o release\moc_viewwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/viewwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_viewwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\volumemeter\volumemeterview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\volumemeter\volumemeterview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\volumemeter\volumemeterview.h -o debug\moc_volumemeterview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/volumemeter/volumemeterview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_volumemeterview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\volumemeter\volumemeterview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\volumemeter\volumemeterview.h -o release\moc_volumemeterview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/volumemeter/volumemeterview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_volumemeterview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\volumemeter\volumemeterwidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\volumemeter\volumemeterwidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\volumemeter\volumemeterwidget.h -o debug\moc_volumemeterwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/volumemeter/volumemeterwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_volumemeterwidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\volumemeter\volumemeterwidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\volumemeter\volumemeterwidget.h -o release\moc_volumemeterwidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/volumemeter/volumemeterwidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_volumemeterwidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="sound\wave_stream.h" />
+    <CustomBuild Include="widgets\wave\waveview.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\wave\waveview.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\wave\waveview.h -o debug\moc_waveview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/wave/waveview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_waveview.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\wave\waveview.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\wave\waveview.h -o release\moc_waveview.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/wave/waveview.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_waveview.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="widgets\wave\wavewidget.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">widgets\wave\wavewidget.h;debug\mocinclude.opt;debug\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/debug/moc_predefs.h @debug/mocinclude.opt widgets\wave\wavewidget.h -o debug\moc_wavewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC widgets/wave/wavewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_wavewidget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">widgets\wave\wavewidget.h;release\mocinclude.opt;release\moc_predefs.h;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\moc.exe  -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DSINGLE_DRAWING_BUFFER -D__WINDOWS_DS__ -DWINDOWS -DMYDEBUG -DNDEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include D:/Users/dws/src/Tartini/tartini1.3.0/release/moc_predefs.h @release/mocinclude.opt widgets\wave\wavewidget.h -o release\moc_wavewidget.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC widgets/wave/wavewidget.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_wavewidget.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="sound\zoomlookup.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug\moc_amplitudewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_amplitudewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_amplitudewidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_amplitudewidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_cepstrumview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_cepstrumview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_cepstrumwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_cepstrumwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_correlationview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_correlationview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_correlationwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_correlationwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_debugview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_debugview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_debugwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_debugwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_drawwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_drawwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_fftview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_fftview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_fftwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_fftwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_freqview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_freqview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_freqviewGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_freqviewGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_freqwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_freqwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_freqwidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_freqwidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_gdata.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_gdata.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_hblockview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_hblockview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_hblockwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_hblockwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_hbubbleview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_hbubbleview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_hbubblewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_hbubblewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_hcircleview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_hcircleview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_hcirclewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_hcirclewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_hstackview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_hstackview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_hstackwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_hstackwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_htrackview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_htrackview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_htrackwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_htrackwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_ledindicator.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_ledindicator.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_mainwindow.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_mainwindow.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_myscrollbar.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_myscrollbar.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_openfiles.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_openfiles.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_pianoview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_pianoview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_pitchcompassdrawwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_pitchcompassdrawwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_pitchcompassview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_pitchcompassview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">cl -BxC:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -Zi -MDd -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">Generate moc_predefs.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_predefs.h;%(Outputs)</Outputs>
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">cl -BxC:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">Generate moc_predefs.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_predefs.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClCompile Include="debug\moc_scoreview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_scoreview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_scorewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_scorewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_summarydrawwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_summarydrawwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_summaryview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_summaryview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_tartinisettingsdialog.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_tartinisettingsdialog.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_timeaxis.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_timeaxis.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_tunerview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_tunerview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_tunerviewGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_tunerviewGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_tunerwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_tunerwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_tunerwidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_tunerwidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratocirclewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratocirclewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratocirclewidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratocirclewidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratoperiodwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratoperiodwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratoperiodwidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratoperiodwidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratospeedwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratospeedwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratospeedwidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratospeedwidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratotimeaxis.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratotimeaxis.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratoview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratoview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratoviewGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratoviewGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratowidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratowidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_vibratowidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_vibratowidgetGL.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_view.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_view.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_viewwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_viewwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_volumemeterview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_volumemeterview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_volumemeterwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_volumemeterwidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_waveview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_waveview.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_wavewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_wavewidget.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\qrc_pitch.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\qrc_pitch.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="D:\Users\dws\src\Tartini\tartini1.3.0\tartini_plugin_import.cpp" />
+    <ClInclude Include="dialogs\ui_settingsdialog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="dialogs\settingsdialog.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">dialogs\settingsdialog.ui;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\uic.exe dialogs\settingsdialog.ui -o dialogs\ui_settingsdialog.h</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">UIC dialogs/settingsdialog.ui</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">dialogs\ui_settingsdialog.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">dialogs\settingsdialog.ui;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\uic.exe dialogs\settingsdialog.ui -o dialogs\ui_settingsdialog.h</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">UIC dialogs/settingsdialog.ui</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">dialogs\ui_settingsdialog.h;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE.txt" />
+    <None Include="camera.vs.glsl" />
+    <None Include="color.fs.glsl" />
+    <None Include="color.vs.glsl" />
+    <None Include="line.fs.glsl" />
+    <None Include="line.gs.glsl" />
+    <None Include="line.vs.glsl" />
+    <CustomBuild Include="pitch.qrc">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">pitch.qrc;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\rcc.exe;camera.vs.glsl;shaderMaterial.vs.glsl;shaderMaterial.fs.glsl;line.gs.glsl;shader.gs.glsl;line.vs.glsl;shader.vs.glsl;line.fs.glsl;shader.fs.glsl;color.vs.glsl;color.fs.glsl;LICENSE.txt;pics\tartinilogo.png;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\rcc.exe -name pitch pitch.qrc -o debug\qrc_pitch.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">RCC pitch.qrc</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\qrc_pitch.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">pitch.qrc;C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\rcc.exe;camera.vs.glsl;shaderMaterial.vs.glsl;shaderMaterial.fs.glsl;line.gs.glsl;shader.gs.glsl;line.vs.glsl;shader.vs.glsl;line.fs.glsl;shader.fs.glsl;color.vs.glsl;color.fs.glsl;LICENSE.txt;pics\tartinilogo.png;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt\Qt5.15.2\5.15.2\msvc2019_static\bin\rcc.exe -name pitch pitch.qrc -o release\qrc_pitch.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">RCC pitch.qrc</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\qrc_pitch.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="shader.fs.glsl" />
+    <None Include="shader.gs.glsl" />
+    <None Include="shader.vs.glsl" />
+    <None Include="shaderMaterial.fs.glsl" />
+    <None Include="shaderMaterial.vs.glsl" />
+    <None Include="pics\tartinilogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="INSTALL.txt" />
+    <None Include="LICENSE.txt" />
+    <None Include="README.txt" />
+    <None Include="pics\autofollow32x32.xpm" />
+    <None Include="pics\background.xpm" />
+    <None Include="widgets\base\baseview.cpp" />
+    <None Include="widgets\base\baseview.h" />
+    <None Include="widgets\base\basewidget.cpp" />
+    <None Include="widgets\base\basewidget.h" />
+    <None Include="pics\beginning32x32.xpm" />
+    <None Include="pics\chain_closed.xpm" />
+    <None Include="pics\chain_open.xpm" />
+    <None Include="pics\close32x32.xpm" />
+    <None Include="pics\end32x32.xpm" />
+    <None Include="pics\fastforward32x32.xpm" />
+    <None Include="gomacx" />
+    <None Include="gowindows.bat" />
+    <None Include="pics\open.xpm" />
+    <None Include="pics\play32x32.xpm" />
+    <None Include="pics\playrecord32x32.xpm" />
+    <None Include="pics\record32x32.xpm" />
+    <None Include="pics\rewind32x32.xpm" />
+    <None Include="pics\save32x32.xpm" />
+    <None Include="pics\shadingoff32x32.xpm" />
+    <None Include="pics\shadingon32x32.xpm" />
+    <None Include="pics\stop32x32.xpm" />
+    <None Include="pics\tartinilogo.jpg" />
+    <None Include="pics\zoomx.xpm" />
+    <None Include="pics\zoomxout.xpm" />
+    <None Include="pics\zoomy.xpm" />
+    <None Include="pics\zoomyout.xpm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="D:\Users\dws\src\Tartini\tartini1.3.0\tartini_resource.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

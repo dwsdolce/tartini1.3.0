@@ -17,18 +17,15 @@ unix{
   }
 }
 win32{ #Windows
-  debug {
-    MY_LIB_PATH += -L"C:/Qwt-6.1.6/lib/Debug" -L"C:\fftw-3.3.9/Debug"
+  CONFIG( debug, debug|release ) {
+    MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib" -L"C:/fftw-3.3.10/Debug"
     QWT_LIB = qwtd
-  }
-  release {
-    MY_LIB_PATH += -L"C:/Qwt-6.1.6/lib/Release" -L"C:\fftw-3.3.9/Release"
+  } else {
+    MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib" -L"C:/fftw-3.3.10/Release"
     QWT_LIB = qwt
   }
-  MY_INCLUDE_PATH += "./" "C:/Qwt-6.1.6/include" "C:\fftw-3.3.9"
-  #Note just stick the *.dll files in the executables directory to run
+  MY_INCLUDE_PATH += "./" "C:/Qwt-6.2.0/include" "C:/fftw-3.3.10"
 }
-
 
 TEMPLATE = app
 CONFIG += qt thread opengl

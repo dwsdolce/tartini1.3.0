@@ -16,8 +16,7 @@
     <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
-    <QtMsBuild Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
-  </PropertyGroup>
+  <QtMsBuild Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <PlatformToolset>v142</PlatformToolset>
@@ -37,10 +36,7 @@
     <IntermediateDirectory>release\</IntermediateDirectory>
     <PrimaryOutput>tartini</PrimaryOutput>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
-    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
-  </Target>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /><Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')"><Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." /></Target>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
@@ -48,37 +44,11 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
-    <Import Project="$(QtMsBuild)\qt_defaults.props" />
-  </ImportGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>release\</OutDir>
-    <IntDir>release\</IntDir>
-    <TargetName>tartini</TargetName>
-    <IgnoreImportLibrary>true</IgnoreImportLibrary>
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>debug\</OutDir>
-    <IntDir>debug\</IntDir>
-    <TargetName>tartini</TargetName>
-    <IgnoreImportLibrary>true</IgnoreImportLibrary>
-  </PropertyGroup>
-  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>5.15.2_static</QtInstall>
-    <QtModules>core;opengl;gui;widgets;printsupport</QtModules>
-  </PropertyGroup>
-  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>5.15.2_static</QtInstall>
-    <QtModules>core;opengl;gui;widgets;printsupport</QtModules>
-  </PropertyGroup>
-  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
-    <Import Project="$(QtMsBuild)\qt.props" />
-  </ImportGroup>
+  <PropertyGroup Label="UserMacros" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')"><Import Project="$(QtMsBuild)\qt_defaults.props" /></ImportGroup><PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'"><OutDir>release\</OutDir><IntDir>release\</IntDir><TargetName>tartini</TargetName><IgnoreImportLibrary>true</IgnoreImportLibrary><LinkIncremental>false</LinkIncremental></PropertyGroup><PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"><OutDir>debug\</OutDir><IntDir>debug\</IntDir><TargetName>tartini</TargetName><IgnoreImportLibrary>true</IgnoreImportLibrary></PropertyGroup><PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'"><QtInstall>5.15.2_static</QtInstall><QtModules>core;opengl;gui;widgets;printsupport</QtModules></PropertyGroup><PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"><QtInstall>5.15.2_static</QtInstall><QtModules>core;opengl;gui;widgets;printsupport</QtModules></PropertyGroup><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
+  
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;include;general;sound;widgets;global;dialogs;widgets\mainwindow;widgets\freq;widgets\summary;widgets\pitchcompass;widgets\openfiles;widgets\volumemeter;widgets\tuner;widgets\hblock;widgets\hstack;widgets\wave;widgets\piano;widgets\htrack;widgets\correlation;widgets\fft;widgets\cepstrum;widgets\hbubble;widgets\hcircle;widgets\debugview;widgets\score;widgets\vibrato;sound\filters;C:\Qwt-6.1.6\include;C:\fftw-3.3.9;rtAudio;debug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;include;general;sound;widgets;global;dialogs;widgets\mainwindow;widgets\freq;widgets\summary;widgets\pitchcompass;widgets\openfiles;widgets\volumemeter;widgets\tuner;widgets\hblock;widgets\hstack;widgets\wave;widgets\piano;widgets\htrack;widgets\correlation;widgets\fft;widgets\cepstrum;widgets\hbubble;widgets\hcircle;widgets\debugview;widgets\score;widgets\vibrato;sound\filters;C:\Qwt-6.2.0\include;C:\fftw-3.3.10;rtAudio;debug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -93,11 +63,10 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
+    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Qwt-6.1.6\lib\Debug\qwtd.lib;C:\fftw-3.3.9\Debug\fftw3f.lib;dsound.lib;Opengl32.lib;$(QTDIR)\plugins\printsupport\windowsprintersupportd.lib;$(QTDIR)\plugins\styles\qwindowsvistastyled.lib;$(QTDIR)\plugins\platforms\qwindowsd.lib;shlwapi.lib;wtsapi32.lib;$(QTDIR)\lib\Qt5EventDispatcherSupportd.lib;$(QTDIR)\lib\Qt5FontDatabaseSupportd.lib;$(QTDIR)\lib\qtfreetyped.lib;dwrite.lib;d2d1.lib;$(QTDIR)\lib\Qt5ThemeSupportd.lib;$(QTDIR)\lib\Qt5AccessibilitySupportd.lib;$(QTDIR)\lib\Qt5WindowsUIAutomationSupportd.lib;$(QTDIR)\plugins\imageformats\qgifd.lib;$(QTDIR)\plugins\imageformats\qicnsd.lib;$(QTDIR)\plugins\imageformats\qicod.lib;$(QTDIR)\plugins\imageformats\qjpegd.lib;$(QTDIR)\plugins\imageformats\qtgad.lib;$(QTDIR)\plugins\imageformats\qtiffd.lib;$(QTDIR)\plugins\imageformats\qwbmpd.lib;$(QTDIR)\plugins\imageformats\qwebpd.lib;winspool.lib;uxtheme.lib;dwmapi.lib;d3d11.lib;dxgi.lib;dxguid.lib;$(QTDIR)\lib\qtlibpngd.lib;$(QTDIR)\lib\qtharfbuzzd.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;mpr.lib;userenv.lib;version.lib;$(QTDIR)\lib\qtpcre2d.lib;netapi32.lib;ws2_32.lib;advapi32.lib;kernel32.lib;ole32.lib;shell32.lib;uuid.lib;user32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Qwt-6.1.6\lib\Debug;C:\fftw-3.3.9\Debug;C:\Qwt-6.1.6\lib\Release;C:\fftw-3.3.9\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>C:\Qwt-6.2.0\lib\qwtd.lib;C:\fftw-3.3.10\Debug\fftw3f.lib;dsound.lib;Opengl32.lib;$(QTDIR)\plugins\printsupport\windowsprintersupportd.lib;$(QTDIR)\plugins\styles\qwindowsvistastyled.lib;$(QTDIR)\plugins\platforms\qwindowsd.lib;shlwapi.lib;wtsapi32.lib;$(QTDIR)\lib\Qt5EventDispatcherSupportd.lib;$(QTDIR)\lib\Qt5FontDatabaseSupportd.lib;$(QTDIR)\lib\qtfreetyped.lib;dwrite.lib;d2d1.lib;$(QTDIR)\lib\Qt5ThemeSupportd.lib;$(QTDIR)\lib\Qt5AccessibilitySupportd.lib;$(QTDIR)\lib\Qt5WindowsUIAutomationSupportd.lib;$(QTDIR)\plugins\imageformats\qgifd.lib;$(QTDIR)\plugins\imageformats\qicnsd.lib;$(QTDIR)\plugins\imageformats\qicod.lib;$(QTDIR)\plugins\imageformats\qjpegd.lib;$(QTDIR)\plugins\imageformats\qtgad.lib;$(QTDIR)\plugins\imageformats\qtiffd.lib;$(QTDIR)\plugins\imageformats\qwbmpd.lib;$(QTDIR)\plugins\imageformats\qwebpd.lib;winspool.lib;uxtheme.lib;dwmapi.lib;d3d11.lib;dxgi.lib;dxguid.lib;$(QTDIR)\lib\qtlibpngd.lib;$(QTDIR)\lib\qtharfbuzzd.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;mpr.lib;userenv.lib;version.lib;$(QTDIR)\lib\qtpcre2d.lib;netapi32.lib;ws2_32.lib;advapi32.lib;kernel32.lib;ole32.lib;shell32.lib;uuid.lib;user32.lib;winmm.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Qwt-6.2.0\lib;C:\fftw-3.3.10\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -116,30 +85,10 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_WINDOWS;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;SINGLE_DRAWING_BUFFER;__WINDOWS_DS__;WINDOWS;MYDEBUG;QT_OPENGL_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <QtMoc>
-      <CompilerFlavor>msvc</CompilerFlavor>
-      <Include>./$(Configuration)/moc_predefs.h</Include>
-      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <DynamicSource>output</DynamicSource>
-      <QtMocDir>$(Configuration)</QtMocDir>
-      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
-    </QtMoc>
-    <QtRcc>
-      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
-      <Compression>default</Compression>
-      <InitFuncName>pitch</InitFuncName>
-      <QtRccDir>$(Configuration)</QtRccDir>
-      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
-    </QtRcc>
-    <QtUic>
-      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
-      <QtUicDir>dialogs</QtUicDir>
-      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
-    </QtUic>
-  </ItemDefinitionGroup>
+  <QtMoc><CompilerFlavor>msvc</CompilerFlavor><Include>./$(Configuration)/moc_predefs.h</Include><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource><QtMocDir>$(Configuration)</QtMocDir><QtMocFileName>moc_%(Filename).cpp</QtMocFileName></QtMoc><QtRcc><ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription><Compression>default</Compression><InitFuncName>pitch</InitFuncName><QtRccDir>$(Configuration)</QtRccDir><QtRccFileName>qrc_%(Filename).cpp</QtRccFileName></QtRcc><QtUic><ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription><QtUicDir>dialogs</QtUicDir><QtUicFileName>ui_%(Filename).h</QtUicFileName></QtUic></ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;include;general;sound;widgets;global;dialogs;widgets\mainwindow;widgets\freq;widgets\summary;widgets\pitchcompass;widgets\openfiles;widgets\volumemeter;widgets\tuner;widgets\hblock;widgets\hstack;widgets\wave;widgets\piano;widgets\htrack;widgets\correlation;widgets\fft;widgets\cepstrum;widgets\hbubble;widgets\hcircle;widgets\debugview;widgets\score;widgets\vibrato;sound\filters;C:\Qwt-6.1.6\include;C:\fftw-3.3.9;rtAudio;release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;include;general;sound;widgets;global;dialogs;widgets\mainwindow;widgets\freq;widgets\summary;widgets\pitchcompass;widgets\openfiles;widgets\volumemeter;widgets\tuner;widgets\hblock;widgets\hstack;widgets\wave;widgets\piano;widgets\htrack;widgets\correlation;widgets\fft;widgets\cepstrum;widgets\hbubble;widgets\hcircle;widgets\debugview;widgets\score;widgets\vibrato;sound\filters;C:\Qwt-6.2.0\include;C:\fftw-3.3.10;rtAudio;release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -150,17 +99,15 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>_WINDOWS;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;SINGLE_DRAWING_BUFFER;__WINDOWS_DS__;WINDOWS;MYDEBUG;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
-      <ProgramDataBaseFileName>
-      </ProgramDataBaseFileName>
+      <ProgramDataBaseFileName></ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
+    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Qwt-6.1.6\lib\Release\qwt.lib;C:\fftw-3.3.9\Release\fftw3f.lib;dsound.lib;Opengl32.lib;$(QTDIR)\plugins\printsupport\windowsprintersupport.lib;$(QTDIR)\plugins\styles\qwindowsvistastyle.lib;$(QTDIR)\plugins\platforms\qwindows.lib;shlwapi.lib;wtsapi32.lib;$(QTDIR)\lib\Qt5EventDispatcherSupport.lib;$(QTDIR)\lib\Qt5FontDatabaseSupport.lib;$(QTDIR)\lib\qtfreetype.lib;dwrite.lib;d2d1.lib;$(QTDIR)\lib\Qt5ThemeSupport.lib;$(QTDIR)\lib\Qt5AccessibilitySupport.lib;$(QTDIR)\lib\Qt5WindowsUIAutomationSupport.lib;$(QTDIR)\plugins\imageformats\qgif.lib;$(QTDIR)\plugins\imageformats\qicns.lib;$(QTDIR)\plugins\imageformats\qico.lib;$(QTDIR)\plugins\imageformats\qjpeg.lib;$(QTDIR)\plugins\imageformats\qtga.lib;$(QTDIR)\plugins\imageformats\qtiff.lib;$(QTDIR)\plugins\imageformats\qwbmp.lib;$(QTDIR)\plugins\imageformats\qwebp.lib;winspool.lib;uxtheme.lib;dwmapi.lib;d3d11.lib;dxgi.lib;dxguid.lib;$(QTDIR)\lib\qtlibpng.lib;$(QTDIR)\lib\qtharfbuzz.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;mpr.lib;userenv.lib;version.lib;$(QTDIR)\lib\qtpcre2.lib;netapi32.lib;ws2_32.lib;advapi32.lib;kernel32.lib;ole32.lib;shell32.lib;uuid.lib;user32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Qwt-6.1.6\lib\Debug;C:\fftw-3.3.9\Debug;C:\Qwt-6.1.6\lib\Release;C:\fftw-3.3.9\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>C:\Qwt-6.2.0\lib\qwt.lib;C:\fftw-3.3.10\Release\fftw3f.lib;dsound.lib;Opengl32.lib;$(QTDIR)\plugins\printsupport\windowsprintersupport.lib;$(QTDIR)\plugins\styles\qwindowsvistastyle.lib;$(QTDIR)\plugins\platforms\qwindows.lib;shlwapi.lib;wtsapi32.lib;$(QTDIR)\lib\Qt5EventDispatcherSupport.lib;$(QTDIR)\lib\Qt5FontDatabaseSupport.lib;$(QTDIR)\lib\qtfreetype.lib;dwrite.lib;d2d1.lib;$(QTDIR)\lib\Qt5ThemeSupport.lib;$(QTDIR)\lib\Qt5AccessibilitySupport.lib;$(QTDIR)\lib\Qt5WindowsUIAutomationSupport.lib;$(QTDIR)\plugins\imageformats\qgif.lib;$(QTDIR)\plugins\imageformats\qicns.lib;$(QTDIR)\plugins\imageformats\qico.lib;$(QTDIR)\plugins\imageformats\qjpeg.lib;$(QTDIR)\plugins\imageformats\qtga.lib;$(QTDIR)\plugins\imageformats\qtiff.lib;$(QTDIR)\plugins\imageformats\qwbmp.lib;$(QTDIR)\plugins\imageformats\qwebp.lib;winspool.lib;uxtheme.lib;dwmapi.lib;d3d11.lib;dxgi.lib;dxguid.lib;$(QTDIR)\lib\qtlibpng.lib;$(QTDIR)\lib\qtharfbuzz.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;mpr.lib;userenv.lib;version.lib;$(QTDIR)\lib\qtpcre2.lib;netapi32.lib;ws2_32.lib;advapi32.lib;kernel32.lib;ole32.lib;shell32.lib;uuid.lib;user32.lib;winmm.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Qwt-6.2.0\lib;C:\fftw-3.3.10\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -181,27 +128,7 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_WINDOWS;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;SINGLE_DRAWING_BUFFER;__WINDOWS_DS__;WINDOWS;MYDEBUG;NDEBUG;QT_NO_DEBUG;QT_OPENGL_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <QtMoc>
-      <CompilerFlavor>msvc</CompilerFlavor>
-      <Include>./$(Configuration)/moc_predefs.h</Include>
-      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <DynamicSource>output</DynamicSource>
-      <QtMocDir>$(Configuration)</QtMocDir>
-      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
-    </QtMoc>
-    <QtRcc>
-      <Compression>default</Compression>
-      <InitFuncName>pitch</InitFuncName>
-      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
-      <QtRccDir>$(Configuration)</QtRccDir>
-      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
-    </QtRcc>
-    <QtUic>
-      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
-      <QtUicDir>dialogs</QtUicDir>
-      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
-    </QtUic>
-  </ItemDefinitionGroup>
+  <QtMoc><CompilerFlavor>msvc</CompilerFlavor><Include>./$(Configuration)/moc_predefs.h</Include><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource><QtMocDir>$(Configuration)</QtMocDir><QtMocFileName>moc_%(Filename).cpp</QtMocFileName></QtMoc><QtRcc><Compression>default</Compression><InitFuncName>pitch</InitFuncName><ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription><QtRccDir>$(Configuration)</QtRccDir><QtRccFileName>qrc_%(Filename).cpp</QtRccFileName></QtRcc><QtUic><ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription><QtUicDir>dialogs</QtUicDir><QtUicFileName>ui_%(Filename).h</QtUicFileName></QtUic></ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="sound\filters\FastSmoothedAveragingFilter.cpp" />
     <ClCompile Include="sound\filters\FixedAveragingFilter.cpp" />
@@ -311,8 +238,24 @@
     <ClInclude Include="rtAudio\RtError.h" />
     <ClInclude Include="include\SmartPtr.h" />
     <QtMoc Include="widgets\freq\amplitudewidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\freq\amplitudewidgetGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="sound\analysisdata.h" />
     <ClInclude Include="include\array1d.h" />
@@ -321,63 +264,271 @@
     <ClInclude Include="sound\audio_thread.h" />
     <ClInclude Include="general\bspline.h" />
     <QtMoc Include="widgets\cepstrum\cepstrumview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\cepstrum\cepstrumwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="sound\channel.h" />
     <ClInclude Include="global\conversions.h" />
     <QtMoc Include="widgets\correlation\correlationview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\correlation\correlationwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\debugview\debugview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\debugview\debugwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\drawwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="general\equalloudness.h" />
     <ClInclude Include="general\fast_smooth.h" />
     <QtMoc Include="widgets\fft\fftview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\fft\fftwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="include\freqpair.h" />
     <QtMoc Include="widgets\freq\freqview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\freq\freqviewGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\freq\freqwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\freq\freqwidgetGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="global\gdata.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\hblock\hblockview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\hblock\hblockwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\hbubble\hbubbleview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\hbubble\hbubblewidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\hcircle\hcircleview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\hcircle\hcirclewidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\hstack\hstackview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\hstack\hstackwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\htrack\htrackview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\htrack\htrackwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="general\large_vector.h" />
     <QtMoc Include="widgets\ledindicator.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="main.h" />
     <QtMoc Include="widgets\mainwindow\mainwindow.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="general\musicnotes.h" />
     <ClInclude Include="general\myalgo.h" />
@@ -389,6 +540,14 @@
     <ClInclude Include="include\myqmutex.h" />
     <ClInclude Include="general\myqt.h" />
     <QtMoc Include="widgets\myscrollbar.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="general\mystring.h" />
     <ClInclude Include="general\mytransforms.h" />
@@ -396,82 +555,396 @@
     <ClInclude Include="sound\notesynth.h" />
     <ClInclude Include="dialogs\opendialog.h" />
     <QtMoc Include="widgets\openfiles\openfiles.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="widgets\htrack\piano3d.h" />
     <QtMoc Include="widgets\piano\pianoview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="widgets\piano\pianowidget.h" />
     <QtMoc Include="widgets\pitchcompass\pitchcompassdrawwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\pitchcompass\pitchcompassview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="general\prony.h" />
     <ClInclude Include="include\safe_bool.h" />
     <ClInclude Include="dialogs\savedialog.h" />
     <ClInclude Include="widgets\score\scoresegmentiterator.h" />
     <QtMoc Include="widgets\score\scoreview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\score\scorewidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="include\shader.h" />
     <ClInclude Include="sound\sound_file_stream.h" />
     <ClInclude Include="sound\sound_stream.h" />
     <ClInclude Include="sound\soundfile.h" />
     <QtMoc Include="widgets\summary\summarydrawwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\summary\summaryview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="dialogs\tartinisettingsdialog.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\timeaxis.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\tuner\tunerview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\tuner\tunerviewGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\tuner\tunerwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\tuner\tunerwidgetGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="general\useful.h" />
     <QtMoc Include="widgets\vibrato\vibratocirclewidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratocirclewidgetGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoperiodwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoperiodwidgetGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratospeedwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratospeedwidgetGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratotimeaxis.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratoviewGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratowidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\vibrato\vibratowidgetGL.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="global\view.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\viewwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\volumemeter\volumemeterview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\volumemeter\volumemeterwidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="sound\wave_stream.h" />
     <QtMoc Include="widgets\wave\waveview.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <QtMoc Include="widgets\wave\wavewidget.h">
+      
+      
+      
+      
+      
+      
+      
+      
     </QtMoc>
     <ClInclude Include="sound\zoomlookup.h" />
   </ItemGroup>
   <ItemGroup>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
@@ -488,10 +961,76 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generate moc_predefs.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_predefs.h;%(Outputs)</Outputs>
     </CustomBuild>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <ClCompile Include=".\tartini_plugin_import.cpp" />
+    
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="dialogs\settingsdialog.ui">
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -503,6 +1042,15 @@
     <None Include="line.gs.glsl" />
     <None Include="line.vs.glsl" />
     <QtRcc Include="pitch.qrc">
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </QtRcc>
     <None Include="shader.fs.glsl" />
     <None Include="shader.gs.glsl" />
@@ -547,9 +1095,6 @@
   <ItemGroup>
     <ResourceCompile Include=".\tartini_resource.rc" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
-    <Import Project="$(QtMsBuild)\qt.targets" />
-  </ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')"><Import Project="$(QtMsBuild)\qt.targets" /></ImportGroup>
   <ImportGroup Label="ExtensionTargets" />
 </Project>

@@ -1,0 +1,26 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "splinetest", "D:/Users/dws/src/Tartini/tartini1.3.0/Extra/qwt-6.2.0/tests/splinetest\splinetest.vcxproj", "{44875336-67F8-3C8C-9A13-3826D0A69AD4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "splineprof", "D:/Users/dws/src/Tartini/tartini1.3.0/Extra/qwt-6.2.0/tests/splineprof\splineprof.vcxproj", "{947DAB7E-CA6F-3D70-B90E-9354CE7B1F19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44875336-67F8-3C8C-9A13-3826D0A69AD4}.Debug|x64.ActiveCfg = Debug|x64
+		{44875336-67F8-3C8C-9A13-3826D0A69AD4}.Debug|x64.Build.0 = Debug|x64
+		{44875336-67F8-3C8C-9A13-3826D0A69AD4}.Release|x64.ActiveCfg = Release|x64
+		{44875336-67F8-3C8C-9A13-3826D0A69AD4}.Release|x64.Build.0 = Release|x64
+		{947DAB7E-CA6F-3D70-B90E-9354CE7B1F19}.Debug|x64.ActiveCfg = Debug|x64
+		{947DAB7E-CA6F-3D70-B90E-9354CE7B1F19}.Debug|x64.Build.0 = Debug|x64
+		{947DAB7E-CA6F-3D70-B90E-9354CE7B1F19}.Release|x64.ActiveCfg = Release|x64
+		{947DAB7E-CA6F-3D70-B90E-9354CE7B1F19}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
