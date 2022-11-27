@@ -51,9 +51,7 @@ SoundFile::SoundFile()
   filteredStream = NULL;
   _framesPerChunk = 0;
   tempWindowBuffer = NULL;
-  //tempWindowBufferDouble = NULL;
   tempWindowBufferFiltered = NULL;
-  //tempWindowBufferFilteredDouble = NULL;
   _startTime = 0.0;
   _chunkNum = 0;
   _offset = 0; //Number of frame to read into file to get to time 0 (half buffer size).
@@ -89,15 +87,11 @@ void SoundFile::uninit()
   for(int j=0; j<numChannels(); j++) {
     delete channels(j);
     delete[] (tempWindowBuffer[j]-16);
-    //delete[] (tempWindowBufferDouble[j]-16);
     delete[] (tempWindowBufferFiltered[j]-16);
-    //delete[] (tempWindowBufferFilteredDouble[j]-16);
   }
   channels.resize(0);
   delete[] tempWindowBuffer; tempWindowBuffer = NULL;
-  //delete[] tempWindowBufferDouble; tempWindowBufferDouble = NULL;
   delete[] tempWindowBufferFiltered; tempWindowBufferFiltered = NULL;
-  //delete[] tempWindowBufferFilteredDouble; tempWindowBufferFilteredDouble = NULL;
 
   setFramesPerChunk(0);
   _startTime = 0.0;
@@ -194,14 +188,10 @@ bool SoundFile::openRead(const QString& filename_)
 
   //setup the tempChunkBuffers
   tempWindowBuffer = new float *[numChannels()];
-  //tempWindowBufferDouble = new double *[numChannels()];
   tempWindowBufferFiltered = new float *[numChannels()];
-  //tempWindowBufferFilteredDouble = new double *[numChannels()];
   for(int c=0; c<numChannels(); c++) {
     tempWindowBuffer[c] = (new float[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
-    //tempWindowBufferDouble[c] = (new double[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
     tempWindowBufferFiltered[c] = (new float[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
-    //tempWindowBufferFilteredDouble[c] = (new double[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
   }
 
   _doingDetailedPitch = gdata->doingDetailedPitch();
@@ -261,14 +251,10 @@ bool SoundFile::openWrite(const QString& filename_, int rate_, int channels_, in
 
   //setup the tempChunkBuffers
   tempWindowBuffer = new float*[numChannels()];
-  //tempWindowBufferDouble = new double*[numChannels()];
   tempWindowBufferFiltered = new float*[numChannels()];
-  //tempWindowBufferFilteredDouble = new double*[numChannels()];
   for(int c=0; c<numChannels(); c++) {
     tempWindowBuffer[c] = (new float[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
-    //tempWindowBufferDouble[c] = (new double[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
     tempWindowBufferFiltered[c] = (new float[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
-    //tempWindowBufferFilteredDouble[c] = (new double[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
   }
 
   _doingDetailedPitch = gdata->doingDetailedPitch();
@@ -563,7 +549,6 @@ void SoundFile::preProcess()
   progress->setValue(0);
   progress->setMaximumHeight(16);
 
-
   theStatusBar->addWidget(message);
   theStatusBar->addWidget(progress);
 
@@ -574,7 +559,6 @@ void SoundFile::preProcess()
   int updateInterval = MAX(1, progress->maximum() / 50); // We'll update 50 times only
 
   while(readChunk(framesPerChunk()) == framesPerChunk()) { // put data in channels
-    //printf("pos = %d\n", stream->pos);
     frameCount++;
 
     if (frameCount % updateInterval == 0) {
@@ -583,12 +567,9 @@ void SoundFile::preProcess()
          frameCount = 1;
     }
   }
-  //printf("totalChunks=%d\n", totalChunks());
-  //printf("currentChunks=%d\n", currentChunk());
   filteredStream->close();
   filteredStream->open_read(filteredFilename);
   jumpToChunk(0);
-
 
   progress->setValue(progress->maximum());
   theStatusBar->removeWidget(progress);
@@ -598,7 +579,6 @@ void SoundFile::preProcess()
 
   gdata->setDoingActiveAnalysis(false);
   firstTimeThrough = false;
-  //printf("freqLookup.size()=%d\n", channels(0)->freqLookup.size());
 }
 
 //shift all the channels data left by n frames

@@ -1161,10 +1161,10 @@ TartiniDialog::TartiniDialog(QWidget *parent) : QDialog(parent)
     "Tartini version " TARTINI_VERSION_STR " is released under the GPL license <a href=\"http://www.gnu.org/licenses/gpl.html\">http://www.gnu.org/licenses/gpl.html</a>.<br><br>"
 
     "<i>Libraries used by tartini include:</i><br>"
-    "Qt - <a href=\"http://www.trolltech.com/qt\">http://www.trolltech.com/qt</a><br>"
+    "Qt - <a href=\"https://www.qt.io/\">https://www.qt.io/</a><br>"
     "FFTW - <a href=\"http://www.fftw.org\">http://www.fftw.org</a><br>"
-    "Qwt - <a href=\"http://qwt.sourceforge.net\">http://qwt.sourceforge.net</a><br>"
-    "RtAudio - <a href=\"http://www.music.mcgill.ca/~gary/rtaudio/index.html\">http://www.music.mcgill.ca/~gary/rtaudio/index.html</a><br>"
+    "Qwt - <a href=\"https://qwt.sourceforge.io/\">https://qwt.sourceforge.io/</a><br>"
+    "RtAudio - <a href=\"https://www.music.mcgill.ca/~gary/rtaudio/\">https://www.music.mcgill.ca/~gary/rtaudio/</a><br>"
     "<br>"
     "This program is free software; you can redistribute it and/or modify "
     "it under the terms of the GNU General Public License as published by "

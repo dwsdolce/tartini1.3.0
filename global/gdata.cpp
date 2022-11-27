@@ -237,9 +237,7 @@ bool GData::playSound(SoundFile *s)
   soundMode = SOUND_PLAY;
 
   if(!audio_stream) {
-  //printf("Creating a new AudioStream\n");
     audio_stream = new AudioStream;
-    //printf("The BufferSize!!! = %d\n", s->bufferSize());
     if(audio_stream->open(F_WRITE, s->rate(), int(s->numChannels()), s->bits(), int(s->bufferSize()/2))) {
       fprintf(stderr, "Error initialising sound\n");
       delete audio_stream;
