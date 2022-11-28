@@ -27,12 +27,12 @@ class QStringList;
 class SoundStream
 {
  public:
-  int freq;
-  int channels;
-  int bits;
-  int mode;
+  int freq = 0;
+  int channels = 0;
+  int bits = 0;
+  int mode = F_NONE;
 
-  SoundStream() { mode=F_NONE; }
+  SoundStream() { }
   virtual ~SoundStream() {}
 
   int sample_size() { return (bits+7) / 8; }

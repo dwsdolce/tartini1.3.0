@@ -144,7 +144,10 @@ template<class T> class Array1d
   void resize(size_t newSize) {
     if(newSize > allocatedSize) {
       allocatedSize = nextPowerOf2(newSize);
-      data = (T*)realloc(data, allocatedSize * sizeof(T));
+      T *tmp = (T*)realloc(data, allocatedSize * sizeof(T));
+      if (tmp != NULL) {
+        data = (T*)realloc(data, allocatedSize * sizeof(T));
+      }
     }
     dataSize = newSize;
   }

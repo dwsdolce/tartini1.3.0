@@ -88,71 +88,29 @@ public:
   float &noteChangeScore() { return values[NOTE_CHANGE_SCORE]; }
 };
 
-struct lessFundametalFreq : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
+struct lessFundametalFreq {
 	bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.fundamentalFreq < y.fundamentalFreq; }
 };
 
-struct greaterFundametalFreq : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
+struct greaterFundametalFreq {
 	bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.fundamentalFreq > y.fundamentalFreq; }
 };
 
-struct lessPitch : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
+struct lessPitch {
 	bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.pitch < y.pitch; }
 };
 
-struct greaterPitch : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
+struct greaterPitch {
 	bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.pitch > y.pitch; }
 };
 
-/*
-struct lessCorrelation : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-	bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.correlation < y.correlation; }
-};
-
-struct greaterCorrelation : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-	bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.correlation > y.correlation; }
-};
-
-struct lessVolumeValue : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-	bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.volumeValue < y.volumeValue; }
-};
-
-struct greaterVolumeValue : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-	bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.volumeValue > y.volumeValue; }
-};
-
-struct lessLogRMS : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-  bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.logrms < y.logrms; }
-};
-
-struct greaterLogRMS : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-  bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.logrms > y.logrms; }
-};
-
-struct lessMaxIntensityDB : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-  bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.maxIntensityDB < y.maxIntensityDB; }
-};
-
-struct greaterMaxIntensityDB : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-  bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.maxIntensityDB > y.maxIntensityDB; }
-};
-
-struct lessChangeness : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-  bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.changeness < y.changeness; }
-};
-
-struct greaterChangeness : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
-  bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.changeness > y.changeness; }
-};
-*/
-
-struct lessValue : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
+struct lessValue {
   int v;
   lessValue(int v_) { v = v_; }
   bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.values[v] < y.values[v]; }
 };
 
-struct greaterValue : public std::binary_function<AnalysisData &, AnalysisData &, bool> {
+struct greaterValue {
   int v;
   greaterValue(int v_) { v = v_; }
   bool operator()(const AnalysisData &x, const AnalysisData &y) { return x.values[v] > y.values[v]; }

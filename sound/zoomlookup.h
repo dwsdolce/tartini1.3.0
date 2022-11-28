@@ -26,14 +26,14 @@ class AnalysisData;
 class ZoomElement
 {
 private:
-  float _low, _high, _corr;
+  float _low = 0.0f, _high = 0.0f, _corr = 0.0f;
   QColor _color;
-  int _noteIndex;
-  int _midChunk;
-  bool _isValid;
+  int _noteIndex = 0;
+  int _midChunk = 0;
+  bool _isValid = false;
 
 public:
-  ZoomElement() { _isValid = false; }
+  ZoomElement() { }
   float low() { return _low; }
   float high() { return _high; }
   float corr() { return _corr; }

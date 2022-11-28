@@ -67,17 +67,15 @@
 // between the private RtAudio stream structure and global callback
 // handling functions.
 struct CallbackInfo {
-  void *object;    // Used as a "this" pointer.
-  ThreadHandle thread;
-  bool usingCallback;
-  void *callback;
-  void *userData;
-  void *apiInfo;   // void pointer for API specific callback information
+  void *object = NULL;    // Used as a "this" pointer.
+  ThreadHandle thread = NULL;
+  bool usingCallback = false;
+  void *callback = NULL;
+  void *userData = NULL;
+  void *apiInfo = NULL;   // void pointer for API specific callback information
 
   // Default constructor.
-  CallbackInfo()
-    :object(0), usingCallback(false), callback(0),
-     userData(0), apiInfo(0) {}
+  CallbackInfo() {}
 };
 
 // Support for signed integers and floats.  Audio data fed to/from
@@ -171,60 +169,56 @@ protected:
 
   // A protected structure used for buffer conversion.
   struct ConvertInfo {
-    int channels;
-    int inJump, outJump;
-    RtAudioFormat inFormat, outFormat;
+    int channels = 0;
+    int inJump = 0, outJump = 0;
+    RtAudioFormat inFormat = 0, outFormat = 0;
     std::vector<int> inOffset;
     std::vector<int> outOffset;
   };
 
   // A protected structure for audio streams.
   struct RtApiStream {
-    int device[2];          // Playback and record, respectively.
-    void *apiHandle;        // void pointer for API specific stream handle information
-    StreamMode mode;         // OUTPUT, INPUT, or DUPLEX.
-    StreamState state;       // STOPPED or RUNNING
-    char *userBuffer;
-    char *deviceBuffer;
-    bool doConvertBuffer[2]; // Playback and record, respectively.
-    bool deInterleave[2];    // Playback and record, respectively.
-    bool doByteSwap[2];      // Playback and record, respectively.
-    int sampleRate;
-    int bufferSize;
-    int nBuffers;
-    int nUserChannels[2];    // Playback and record, respectively.
-    int nDeviceChannels[2];  // Playback and record channels, respectively.
-    RtAudioFormat userFormat;
-    RtAudioFormat deviceFormat[2]; // Playback and record, respectively.
+    int device[2] = { 0, 0 };           // Playback and record, respectively.
+    void *apiHandle = NULL;             // void pointer for API specific stream handle information
+    StreamMode mode = INPUT;            // OUTPUT, INPUT, or DUPLEX.
+    StreamState state = STREAM_STOPPED; // STOPPED or RUNNING
+    char *userBuffer = NULL;
+    char *deviceBuffer = NULL;
+    bool doConvertBuffer[2] = { 0, 0 }; // Playback and record, respectively.
+    bool deInterleave[2] = { 0, 0 };    // Playback and record, respectively.
+    bool doByteSwap[2] = { 0, 0 };      // Playback and record, respectively.
+    int sampleRate = 0;
+    int bufferSize = 0;
+    int nBuffers = 0;
+    int nUserChannels[2] = { 0, 0 };    // Playback and record, respectively.
+    int nDeviceChannels[2] = { 0, 0 };  // Playback and record channels, respectively.
+    RtAudioFormat userFormat = 0;
+    RtAudioFormat deviceFormat[2] = { 0, 0 }; // Playback and record, respectively.
     StreamMutex mutex;
     CallbackInfo callbackInfo;
     ConvertInfo convertInfo[2];
 
-    RtApiStream()
-      :apiHandle(0), userBuffer(0), deviceBuffer(0) {}
+    RtApiStream() {}
   };
 
   // A protected device structure for audio devices.
   struct RtApiDevice {
-    std::string name;      /*!< Character string device identifier. */
-    bool probed;           /*!< true if the device capabilities were successfully probed. */
-    void *apiDeviceId;     // void pointer for API specific device information
-    int maxOutputChannels; /*!< Maximum output channels supported by device. */
-    int maxInputChannels;  /*!< Maximum input channels supported by device. */
-    int maxDuplexChannels; /*!< Maximum simultaneous input/output channels supported by device. */
-    int minOutputChannels; /*!< Minimum output channels supported by device. */
-    int minInputChannels;  /*!< Minimum input channels supported by device. */
-    int minDuplexChannels; /*!< Minimum simultaneous input/output channels supported by device. */
-    bool hasDuplexSupport; /*!< true if device supports duplex mode. */
-    bool isDefault;        /*!< true if this is the default output or input device. */
+    std::string name;              /*!< Character string device identifier. */
+    bool probed = false;           /*!< true if the device capabilities were successfully probed. */
+    void *apiDeviceId = NULL;      // void pointer for API specific device information
+    int maxOutputChannels = 0;     /*!< Maximum output channels supported by device. */
+    int maxInputChannels = 0;      /*!< Maximum input channels supported by device. */
+    int maxDuplexChannels = 0;     /*!< Maximum simultaneous input/output channels supported by device. */
+    int minOutputChannels = 0;     /*!< Minimum output channels supported by device. */
+    int minInputChannels = 0;      /*!< Minimum input channels supported by device. */
+    int minDuplexChannels = 0;     /*!< Minimum simultaneous input/output channels supported by device. */
+    bool hasDuplexSupport = false; /*!< true if device supports duplex mode. */
+    bool isDefault = false;        /*!< true if this is the default output or input device. */
     std::vector<int> sampleRates; /*!< Supported sample rates. */
-    RtAudioFormat nativeFormats;  /*!< Bit mask of supported data formats. */
+    RtAudioFormat nativeFormats = 0;  /*!< Bit mask of supported data formats. */
 
     // Default constructor.
-    RtApiDevice()
-      :probed(false), apiDeviceId(0), maxOutputChannels(0), maxInputChannels(0),
-       maxDuplexChannels(0), minOutputChannels(0), minInputChannels(0),
-       minDuplexChannels(0), isDefault(false), nativeFormats(0) {}
+    RtApiDevice() {}
   };
 
   typedef signed short Int16;

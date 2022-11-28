@@ -140,7 +140,7 @@ bool SoundFile::openRead(const QString& filename_)
   fprintf(stderr, "Opening file: %s\n(FilteredFilename: %s)\n", filename.toUtf8().constData(), filteredFilename.toUtf8().constData());
   QFileInfo fi(filename);
   if(fi.suffix() == "wav") {
-	stream = new WaveStream;
+	  stream = new WaveStream;
     filteredStream = new WaveStream;
   }
   else {
@@ -189,7 +189,7 @@ bool SoundFile::openRead(const QString& filename_)
   //setup the tempChunkBuffers
   tempWindowBuffer = new float *[numChannels()];
   tempWindowBufferFiltered = new float *[numChannels()];
-  for(int c=0; c<numChannels(); c++) {
+  for(size_t c=0; c<numChannels(); c++) {
     tempWindowBuffer[c] = (new float[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
     tempWindowBufferFiltered[c] = (new float[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
   }
@@ -242,7 +242,7 @@ bool SoundFile::openWrite(const QString& filename_, int rate_, int channels_, in
 
   channels.resize(stream->channels);
   fprintf(stderr, "channels = %zu\n", numChannels());
-  for(int j=0; j<numChannels(); j++) {
+  for(size_t j=0; j<numChannels(); j++) {
     channels(j) = new Channel(this, windowSize_);
     fprintf(stderr, "channel size = %zu\n", channels(j)->size());
     channels(j)->setColor(gdata->getNextColor());
@@ -252,7 +252,7 @@ bool SoundFile::openWrite(const QString& filename_, int rate_, int channels_, in
   //setup the tempChunkBuffers
   tempWindowBuffer = new float*[numChannels()];
   tempWindowBufferFiltered = new float*[numChannels()];
-  for(int c=0; c<numChannels(); c++) {
+  for(size_t c=0; c<numChannels(); c++) {
     tempWindowBuffer[c] = (new float[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
     tempWindowBufferFiltered[c] = (new float[bufferSize()+16]) + 16; //array ranges from -16 to bufferSize()
   }
@@ -593,15 +593,15 @@ void SoundFile::jumpToChunk(int chunk)
 {
   int c;
   lock();
-  if(chunk * framesPerChunk() < offset()) {
-    size_t pos = offset() - chunk * framesPerChunk();
+  if (static_cast<size_t>(chunk) * framesPerChunk() < offset()) {
+    size_t pos = offset() - static_cast<size_t>(chunk) * framesPerChunk();
     stream->jump_to_frame(0);
     if(equalLoudness()) filteredStream->jump_to_frame(0);
     for(c=0; c<numChannels(); c++)
       channels(c)->reset();
     readN(bufferSize() - pos);
   } else {
-    size_t pos = chunk * framesPerChunk() - offset();
+    size_t pos = static_cast<size_t>(chunk) * framesPerChunk() - offset();
     stream->jump_to_frame(pos);
     if(equalLoudness()) filteredStream->jump_to_frame(pos);
     readN(bufferSize());

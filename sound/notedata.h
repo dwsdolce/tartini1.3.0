@@ -29,30 +29,30 @@ class Channel;
 */
 class NoteData
 {
-  Channel *channel;
-  int _startChunk; //the chunk at which this note starts on
-  int _endChunk; //the chunk after the last one in the note
-  float maxLogRMS; //The maximum RMS volume during the note
-  float maxIntensityDB; //The maximum intensity volume during the note
-  float maxCorrelation;
-  float maxPurity;
-  float _numPeriods;
-  float _periodOctaveEstimate; /*< This is in terms of the periodRatio at the beginning of the note */
-  float _volume; //A normalised volume between 0 and 1
-  float _avgPitch;
-  int loopStep;  // In the vibrato-analysis, search pitchLookupSmoothed with steps of the size of loopStep
-  int loopStart;  // Remembers where the previous vibrato-analysis broke off
-  int prevExtremumTime;
-  float prevExtremumPitch;
+  Channel *channel = NULL;
+  int _startChunk = 0; //the chunk at which this note starts on
+  int _endChunk = 0; //the chunk after the last one in the note
+  float maxLogRMS = 0.0f; //The maximum RMS volume during the note
+  float maxIntensityDB = 0.0f; //The maximum intensity volume during the note
+  float maxCorrelation = 0.0f;
+  float maxPurity = 0.0f;
+  float _numPeriods = 0.0f;
+  float _periodOctaveEstimate = 0.0f; /*< This is in terms of the periodRatio at the beginning of the note */
+  float _volume = 0.0f; //A normalised volume between 0 and 1
+  float _avgPitch = 0.0f;
+  int loopStep = 0;  // In the vibrato-analysis, search pitchLookupSmoothed with steps of the size of loopStep
+  int loopStart = 0;  // Remembers where the previous vibrato-analysis broke off
+  int prevExtremumTime = 0;
+  float prevExtremumPitch = 0.0f;
   enum PrevExtremum {NONE, FIRST_MAXIMUM, FIRST_MINIMUM, MAXIMUM, MINIMUM};
-  PrevExtremum prevExtremum;
+  PrevExtremum prevExtremum = NONE;
 
 public:
   Array1d<float> nsdfAggregateData;
   Array1d<float> nsdfAggregateDataScaled;
-  double nsdfAggregateRoof; //keeps the sum of scalers. i.e. The highest possible aggregate value
-  float firstNsdfPeriod;
-  float currentNsdfPeriod;
+  double nsdfAggregateRoof = 0.0; //keeps the sum of scalers. i.e. The highest possible aggregate value
+  float firstNsdfPeriod = 0.0f;
+  float currentNsdfPeriod = 0.0f;
 
   NoteData() { }
   NoteData(Channel *channel_);

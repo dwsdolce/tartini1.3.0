@@ -64,7 +64,7 @@ inline double pow2(double x) { return pow(2.0, x); }
 
 #ifdef WINDOWS
 //From log rules  log_b(x) = log_a(x) / log_a(b)
-inline double log2(double x) { return log(x) / 0.69314718055994530941723212145818; }
+//inline double log2(double x) { return log(x) / 0.69314718055994530941723212145818; }
 #endif
 
 inline double logBaseN(double baseN, double x) {
@@ -286,13 +286,13 @@ template <class T>
 inline T absolute(const T &x) { return (x >= 0) ? x : -x; }
 
 template <class T>
-struct absoluteLess : public std::binary_function<T, T, bool>
+struct absoluteLess
 {
   bool operator()(const T &x, const T &y) const { return absolute(x) < absolute(y); }
 };
 
 template <class T>
-struct absoluteGreater : public std::binary_function<T, T, bool>
+struct absoluteGreater
 {
   bool operator()(T &x, T &y) const { return absolute(x) > absolute(y); }
 };
