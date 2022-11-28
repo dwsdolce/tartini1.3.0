@@ -57,7 +57,7 @@ void LEDIndicator::paintEvent(QPaintEvent *)
 {
 
   QPainter p(this);
-  p.setPen(palette().color(QPalette::Foreground));
+  p.setPen(palette().color(QPalette::WindowText));
   p.setBackground(palette().color(QPalette::Window));
 
   p.fillRect(0, 0, QWidget::width(), QWidget::height(), (active) ? on : off);
@@ -66,7 +66,7 @@ void LEDIndicator::paintEvent(QPaintEvent *)
 
   QFontMetrics fm = p.fontMetrics();
   int fontHeight = fm.height() / 4;
-  int fontWidth = fm.width(objectName()) / 2;
+  int fontWidth = fm.horizontalAdvance(objectName()) / 2;
   
   p.drawText(QWidget::width()/2 - fontWidth, QWidget::height()/2 + fontHeight, objectName());
 }

@@ -43,13 +43,13 @@ CorrelationView::CorrelationView( int viewID_, QWidget *parent )
   aggregateModeComboBox->setObjectName("aggregateModeComboBox");
   aggregateModeComboBox->addItems(s);
   QHBoxLayout *hLayout = new QHBoxLayout();
-  hLayout->setMargin(0);
+  hLayout->setContentsMargins(0, 0, 0, 0);
   hLayout->addWidget(aggregateModeComboBox);
   hLayout->addStretch(1);
   connect(aggregateModeComboBox, SIGNAL(activated(int)), correlationWidget, SLOT(setAggregateMode(int)));
 
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
-  mainLayout->setMargin(0);
+  mainLayout->setContentsMargins(0, 0, 0 ,0);
   mainLayout->addWidget(correlationWidget);
   mainLayout->addLayout(hLayout);
 

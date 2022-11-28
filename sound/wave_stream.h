@@ -18,8 +18,6 @@
 #include "sound_file_stream.h"
 #include <stdio.h>
 
-class QStringList;
-
 class WaveStream : public SoundFileStream
 {
   int header_length;

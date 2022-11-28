@@ -70,9 +70,9 @@ void VolumeMeterWidget::paintEvent( QPaintEvent * )
   
   // Work out how many labels we can draw
   QFontMetrics fm = p.fontMetrics();
-  int labelWidth = fm.width("-60"); // Since we'll have two characters normally
+  int labelWidth = fm.horizontalAdvance("-60"); // Since we'll have two characters normally
   int halfLabelWidth = labelWidth / 2;
-  int stopWidth = fm.width("0dB") / 2;
+  int stopWidth = fm.horizontalAdvance("0dB") / 2;
   int realWidth = width() - stopWidth - halfLabelWidth; // The actual width of the data
   int places = labelNumbers[MIN(realWidth / 20, 6) - 1]; // How many labels we should have
   int pixelStep = toInt(double(realWidth) / double(places)); // How many pixels to jump between labels/markers

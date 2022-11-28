@@ -23,7 +23,7 @@ MyLabel::MyLabel(const QString &text_, QWidget *parent, const char * name) : Dra
   _text = text_;
   QFontMetrics fm = QFontMetrics(p.font());
   _fontHeight = fm.height();
-  _textWidth = fm.width(_text);
+  _textWidth = fm.horizontalAdvance(_text);
 }
 
 void MyLabel::paintEvent( QPaintEvent * )

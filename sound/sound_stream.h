@@ -16,13 +16,11 @@
 #define SOUND_STREAM_H
 #include <QString>
 
+
 #define F_NONE         0
 #define F_READ         1
 #define F_WRITE        2
 #define F_RDWR         3
-
-//class FBuffer;
-class QStringList;
 
 class SoundStream
 {

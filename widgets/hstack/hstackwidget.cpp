@@ -102,10 +102,10 @@ void HStackWidget::paintEvent( QPaintEvent * )
     for (lbl = 0; lbl < viewheight; lbl+=increase)
     {
       p.drawLine(0,-toInt((-top + lbl)*scaleY),width(),-toInt((-top + lbl)*scaleY));
-      p.drawText(0,-toInt((-top + lbl)*scaleY),s.sprintf(txt, lbl));
+      p.drawText(0,-toInt((-top + lbl)*scaleY),s.asprintf(txt, lbl));
 
       p.drawLine(0,-toInt((-top - lbl)*scaleY),width(),-toInt((-top - lbl)*scaleY));
-      p.drawText(0,-toInt((-top - lbl)*scaleY),s.sprintf(txt, -lbl));
+      p.drawText(0,-toInt((-top - lbl)*scaleY),s.asprintf(txt, -lbl));
     }
 
     for (i = -1; i <= windowSize + 1; i++)

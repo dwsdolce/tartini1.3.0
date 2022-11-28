@@ -73,7 +73,7 @@ void SummaryDrawWidget::paintEvent( QPaintEvent * )
              int(view->viewWidth()*timeRatio), int(view->viewHeight()*pitchRatio));
 
   //draw the current time line
-  p.setPen(QPen(palette().color(QPalette::Foreground), 1));
+  p.setPen(QPen(palette().color(QPalette::WindowText), 1));
   //p.moveTo(int((gdata->leftTime()+view->currentTime())*timeRatio), 0);
   //p.lineTo(int((gdata->leftTime()+view->currentTime())*timeRatio), height()-1);
   p.drawLine(int((gdata->leftTime()+view->currentTime())*timeRatio), 0, 
@@ -146,10 +146,10 @@ void SummaryDrawWidget::wheelEvent( QWheelEvent *e)
   e->accept();
 
   if (e->modifiers() == Qt::AltModifier) {
-    int horScale = toInt(gdata->totalTime() / width() * (e->delta() / 10));
+    int horScale = toInt(gdata->totalTime() / width() * (e->angleDelta().y() / 10));
     gdata->view->setCurrentTime(gdata->view->currentTime() + horScale);
   } else {
-    int vertScale = toInt(gdata->topPitch() / height() * (e->delta() / 10));
+    int vertScale = toInt(gdata->topPitch() / height() * (e->angleDelta().y() / 10));
     gdata->view->setViewBottom(gdata->view->viewBottom() + vertScale);
   }
 }

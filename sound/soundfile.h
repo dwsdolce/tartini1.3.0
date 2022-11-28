@@ -37,7 +37,7 @@ protected:
   double _startTime;
   size_t _offset;
   bool _saved;
-  QMutex *mutex;
+  QRecursiveMutex *mutex;
   bool _doingDetailedPitch;
 
   size_t blockingRead(SoundStream *s, float **buffer, size_t n); //low level

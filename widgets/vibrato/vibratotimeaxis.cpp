@@ -40,7 +40,7 @@ void VibratoTimeAxis::paintEvent( QPaintEvent * )
 {
   beginDrawing(false);
 
-  fillBackground(palette().color(QPalette::Background));
+  fillBackground(palette().color(QPalette::Window));
 
   doUpdate();
 
@@ -92,15 +92,15 @@ void VibratoTimeAxis::paintEvent( QPaintEvent * )
           int seconds = intFloor(i*secondsPerNotch*1.000001) % 60;
           int thousandthseconds = intFloor(1000*i*secondsPerNotch*1.000001) % 1000;
           if (thousandthseconds == 0) {  // Label: m:ss
-            s.sprintf("%1d:%02d", minutes, seconds);
+            s.asprintf("%1d:%02d", minutes, seconds);
           } else if (thousandthseconds % 100 == 0) {  // Label: m:ss.h
-            s.sprintf("%1d:%02d.%01d", minutes, seconds, thousandthseconds / 100);
+            s.asprintf("%1d:%02d.%01d", minutes, seconds, thousandthseconds / 100);
           } else if (thousandthseconds % 10 == 0) {  // Label: m:ss.hh
-            s.sprintf("%1d:%02d.%02d", minutes, seconds, thousandthseconds / 10);
+            s.asprintf("%1d:%02d.%02d", minutes, seconds, thousandthseconds / 10);
           } else {  // Label: m:ss.hhh
-            s.sprintf("%1d:%02d.%03d", minutes, seconds, thousandthseconds);
+            s.asprintf("%1d:%02d.%03d", minutes, seconds, thousandthseconds);
           }
-          p.drawText(x - fm.width(s)/2, 12, s);
+          p.drawText(x - fm.horizontalAdvance(s)/2, 12, s);
           } else {  // Odd: smaller notch
           p.drawLine(x, height()-3, x, height()-1);
         }

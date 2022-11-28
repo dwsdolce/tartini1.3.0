@@ -69,7 +69,7 @@ FreqView::FreqView(int viewID_, QWidget* parent)
 		"Clicking a pitch-line selects it. Mouse-Wheel scrolls. Shift-Mouse-Wheel zooms");
 	freqFrameLayout->addWidget(freqWidget);
 
-	freqFrameLayout->setMargin(0);
+	freqFrameLayout->setContentsMargins(0, 0, 0, 0);
 	freqFrameLayout->setSpacing(0);
 	freqFrame->setLayout(freqFrameLayout);
 	topLeftLayout->addWidget(freqFrame);
@@ -107,7 +107,7 @@ FreqView::FreqView(int viewID_, QWidget* parent)
 	amplitudeWidget = new AmplitudeWidget(NULL);
 	amplitudeWidget->setWhatsThis("Shows the volume (or other parameters) at time lined up with the pitch above. Note: You can move the lines to change some thresholds.");
 	amplitudeFrameLayout->addWidget(amplitudeWidget);
-	amplitudeFrameLayout->setMargin(0);
+	amplitudeFrameLayout->setContentsMargins(0, 0, 0, 0);
 	amplitudeFrameLayout->setSpacing(0);
 	amplitudeFrame->setLayout(amplitudeFrameLayout);
 	bottomTopLayout->addWidget(amplitudeFrame);

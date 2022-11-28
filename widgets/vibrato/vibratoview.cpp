@@ -75,14 +75,14 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   vibratoSpeedWidget = new VibratoSpeedWidget(0);
   vibratoSpeedWidget->setWhatsThis("Indicates the instantaneous speed and peek-to-peek amplitude of the vibrato. Note: 100 cents = 1 semi-tone (even tempered).");
   speedFrameLayout->addWidget(vibratoSpeedWidget);
-  speedFrameLayout->setMargin(0);
+  speedFrameLayout->setContentsMargins(0, 0, 0, 0);
   speedFrameLayout->setSpacing(0);
   speedFrame->setLayout(speedFrameLayout);
   speedLayout->addWidget(speedFrame, 1, 0, 1, 1);
   speedLayout->setRowStretch(1, 1);
 
   // The button
-  speedLayout->setMargin(1);
+  speedLayout->setContentsMargins(1, 1, 1, 1);
   speedLayout->setSpacing(1);
 
   QWidget *topWidget2 = new QWidget;
@@ -107,14 +107,14 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   vibratoCircleWidget->setWhatsThis("Each cycle of your vibrato is represented by a 2D shape. A current cycle produces a circle if it has a perfect sine wave shape. "
     "Going outside the line indicates your phase is ahead of a sine-wave, and inside the line slower. Note: The shape of one cycle is blended into the next.");
   circleFrameLayout->addWidget(vibratoCircleWidget);
-  circleFrameLayout->setMargin(0);
+  circleFrameLayout->setContentsMargins(0, 0, 0, 0);
   circleFrameLayout->setSpacing(0);
   circleFrame->setLayout(circleFrameLayout);
   circleLayout->addWidget(circleFrame, 1, 0, 1, 2);
   circleLayout->setRowStretch(1, 1);
 
   // The vertical slider (for selecting type)
-  circleLayout->setMargin(1);
+  circleLayout->setContentsMargins(1, 1, 1, 1);
   circleLayout->setSpacing(1);
 
   QWidget *topWidget3 = new QWidget;
@@ -138,7 +138,7 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   vibratoPeriodWidget = new VibratoPeriodWidget(0);
   vibratoPeriodWidget->setWhatsThis("A detailed view of the current vibrato period. You can turn on and off some different options with the buttons. ");
   periodFrameLayout->addWidget(vibratoPeriodWidget);
-  periodFrameLayout->setMargin(0);
+  periodFrameLayout->setContentsMargins(0, 0, 0, 0);
   periodFrameLayout->setSpacing(0);
   periodFrame->setLayout(periodFrameLayout);
   periodLayout->addWidget(periodFrame, 1, 0, 1, 6);
@@ -196,7 +196,7 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
 
   periodLayout->setRowStretch(2, 0);
 
-  periodLayout->setMargin(1);
+  periodLayout->setContentsMargins(1, 1, 1, 1);
   periodLayout->setSpacing(1);
 
   QWidget *topWidget4 = new QWidget;
@@ -229,7 +229,7 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
     "Other shading indicates half period times. "
     "If there is no vibrato (i.e. no wobbling frequency) it will probably just look a mess. ");
   vibratoFrameLayout->addWidget(vibratoWidget);
-  vibratoFrameLayout->setMargin(0);
+  vibratoFrameLayout->setContentsMargins(0, 0, 0, 0);
   vibratoFrameLayout->setSpacing(0);
   vibratoFrame->setLayout(vibratoFrameLayout);
 
@@ -256,7 +256,7 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   bottomRightLayout->addWidget(scrollBarV, 1, 0, 4, 1);
   bottomRightLayout->setRowStretch(1, 1);
 
-  bottomRightLayout->setMargin(1);
+  bottomRightLayout->setContentsMargins(1, 1, 1, 1);
   bottomRightLayout->setSpacing(1);
 
   // The bottom side: dummy spacer + horizontal scrollwheel + resize grip
@@ -283,13 +283,13 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
   sizeGrip->setFixedSize(15, 15);
   bottomBottomLayout->addWidget(sizeGrip, 0, 5, 1, 1);
 
-  bottomBottomLayout->setMargin(1);
+  bottomBottomLayout->setContentsMargins(1, 1, 1, 1);
   bottomBottomLayout->setSpacing(1);
   bottomLayout->addWidget(vibratoTimeAxis, 0, 0, 1, 1);
   bottomLayout->addWidget(vibratoFrame, 1, 0, 1, 1);
   bottomLayout->addLayout(bottomRightLayout, 1, 1, 1, 1);
   bottomLayout->addLayout(bottomBottomLayout, 2, 0, 1, 2);
-  bottomLayout->setMargin(1);
+  bottomLayout->setContentsMargins(1, 1, 1, 1);
   bottomLayout->setSpacing(1);
 
   bottomWidget->setLayout(bottomLayout);
@@ -297,7 +297,7 @@ VibratoView::VibratoView( int viewID_, QWidget *parent )
 
   mainLayout->addWidget(verticalSplitter);
 
-  mainLayout->setMargin(1);
+  mainLayout->setContentsMargins(1, 1, 1, 1);
   mainLayout->setSpacing(1);
 
   setLayout(mainLayout);

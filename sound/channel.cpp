@@ -173,7 +173,7 @@ Channel::Channel(SoundFile *parent_, int size_, int k_) : lookup(0, 128)/*, filt
   noteIsPlaying = false;
   setIntThreshold(gdata->qsettings->value("Analysis/thresholdValue", 93).toInt());
   freq = 0.0;
-  mutex = new QMutex(QMutex::Recursive);
+  mutex = new QRecursiveMutex();
   isLocked = false;
   int filterIndex = 2;
   //choose the closest filter index
@@ -973,10 +973,10 @@ void Channel::exportChannel(int type, QString typeString)
   f.open(QIODevice::WriteOnly);
   QTextStream out(&f);
   if(type == 0) { //plain text
-    out << "        Time(secs) Pitch(semi-tones)       Volume(rms)" << endl;
+    out << "        Time(secs) Pitch(semi-tones)       Volume(rms)" << Qt::endl;
     out << qSetFieldWidth(18);
     for(int j=0; j<totalChunks(); j++) {
-      out << timeAtChunk(j) <<  dataAtChunk(j)->pitch << dataAtChunk(j)->logrms() << endl;
+      out << timeAtChunk(j) <<  dataAtChunk(j)->pitch << dataAtChunk(j)->logrms() << Qt::endl;
     }
   } else if(type == 1) { //matlab file
     out << "t = [";
@@ -984,21 +984,21 @@ void Channel::exportChannel(int type, QString typeString)
       if(j>0) out << ", ";
       out << timeAtChunk(j);
     }
-    out << "];" << endl;
+    out << "];" << Qt::endl;
 
     out << "pitch = [";
     for(int j=0; j<totalChunks(); j++) {
       if(j>0) out << ", ";
       out << dataAtChunk(j)->pitch;
     }
-    out << "];" << endl;
+    out << "];" << Qt::endl;
 
     out << "volume = [";
     for(int j=0; j<totalChunks(); j++) {
       if(j>0) out << ", ";
       out << dataAtChunk(j)->logrms();
     }
-    out << "];" << endl;
+    out << "];" << Qt::endl;
   }
   f.close();
 }

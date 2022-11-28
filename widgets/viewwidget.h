@@ -22,10 +22,10 @@ class ViewWidget : public QWidget
 {
   Q_OBJECT
 
-    int viewID;
+   int viewID;
 
  public:
-  ViewWidget( int viewID_, QWidget *parent = 0, Qt::WindowFlags f = 0);
+   ViewWidget( int viewID_, QWidget *parent = 0, Qt::WindowFlags f = Qt::Widget);
   
 //  void closeEvent( QCloseEvent * e );
   

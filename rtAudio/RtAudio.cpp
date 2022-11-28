@@ -7466,7 +7466,7 @@ std::string convertTChar( LPCTSTR name )
   // Yes, this conversion doesn't make sense for two-byte characters
   // but RtAudio is currently written to return an std::string of
   // one-byte chars for the device name.
-  for ( unsigned int i=0; i<wcslen( name ); i++ )
+  for ( unsigned int i=0; i<wcslen( (const wchar_t *) name ); i++ )
     s.push_back( char(name[i]) );
 #else
   s.append( std::string( name ) );
@@ -9005,8 +9005,8 @@ void RtApi :: convertBuffer( char *outBuffer, char *inBuffer, ConvertInfo &info 
 
 void RtApi :: byteSwapBuffer( char *buffer, int samples, RtAudioFormat format )
 {
-  register char val;
-  register char *ptr;
+  char val;
+  char *ptr;
 
   ptr = buffer;
   if (format == RTAUDIO_SINT16) {

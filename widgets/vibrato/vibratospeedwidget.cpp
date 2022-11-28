@@ -62,7 +62,7 @@ void VibratoSpeedWidget::resizeEvent(QResizeEvent*)
 void VibratoSpeedWidget::paintEvent(QPaintEvent*)
 {
   beginDrawing();
-  QPen pen(palette().color(QPalette::Foreground), 2);
+  QPen pen(palette().color(QPalette::WindowText), 2);
   p.setPen(pen);  // Border
 
   QFontMetrics fm = QFontMetrics(speedWidthFont);
@@ -90,11 +90,11 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
     p.drawArc(QRectF(halfWidth - (radius / 2.0), radius / 2.0, radius, radius), toInt((90 - thetaDeg) * 16), toInt(2 * thetaDeg * 16));
   }
 
-  p.setPen(palette().color(QPalette::Foreground));
-  p.setBrush(palette().color(QPalette::Foreground));
+  p.setPen(palette().color(QPalette::WindowText));
+  p.setBrush(palette().color(QPalette::WindowText));
 
   {//Draw the text labels and text labels
-    p.setPen(palette().color(QPalette::Foreground));
+    p.setPen(palette().color(QPalette::WindowText));
 
     double speedStep = (2 * theta) / 14.0;
     speedLabelCounter = 0;
@@ -105,7 +105,7 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
       qreal x = speedCenter.x() + radius * cos(i);
       qreal y = speedCenter.y() - radius * sin(i);
       QPointF start(x, y);
-      halfFontWidth = fm.width(speedLabelLookup[j]) / 2;
+      halfFontWidth = fm.horizontalAdvance(speedLabelLookup[j]) / 2;
       if (width() < 175) { // Small dial
         if ((j % 4) == 0) {
           // Bigger marking + text label
@@ -113,7 +113,7 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
           p.drawLine(start, start + 0.05 * (speedCenter - start));
 
           QPointF pt = start + 0.08 * (speedCenter - start);
-          p.setPen(palette().color(QPalette::Foreground));
+          p.setPen(palette().color(QPalette::WindowText));
           p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, speedLabelLookup[j]);
         } else { // Smaller marking, no text label
           p.drawLine(start, start + 0.03 * (speedCenter - start));
@@ -125,7 +125,7 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
           p.drawLine(start, start + 0.05 * (speedCenter - start));
 
           QPointF pt = start + 0.08 * (speedCenter - start);
-          p.setPen(palette().color(QPalette::Foreground));
+          p.setPen(palette().color(QPalette::WindowText));
           p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, speedLabelLookup[j]);
         } else { // Smaller marking, no text label
           p.setPen(pen);  // Border
@@ -137,14 +137,14 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
         p.drawLine(start, start + 0.05 * (speedCenter - start));
 
         QPointF pt = start + 0.08 * (speedCenter - start);
-        p.setPen(palette().color(QPalette::Foreground));
+        p.setPen(palette().color(QPalette::WindowText));
         p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, speedLabelLookup[j]);
       }
 
       // Draw the "Hz" label
       {
-        halfFontWidth = fm.width("Hz") / 2;
-        p.setPen(palette().color(QPalette::Foreground));
+        halfFontWidth = fm.horizontalAdvance("Hz") / 2;
+        p.setPen(palette().color(QPalette::WindowText));
         p.drawText(speedCenter.x() - halfFontWidth, speedCenter.y() - 0.7 * radius + halfFontHeight, "Hz");
       }
     }
@@ -199,11 +199,11 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
     p.drawArc(QRectF(halfWidth - (radius / 2.0), halfHeight + (radius / 2.0), radius, radius), toInt((90 - thetaDeg) * 16), toInt(2 * thetaDeg * 16));
   }
 
-  p.setPen(palette().color(QPalette::Foreground));
-  p.setBrush(palette().color(QPalette::Foreground));
+  p.setPen(palette().color(QPalette::WindowText));
+  p.setBrush(palette().color(QPalette::WindowText));
 
   {//Draw the text labels and text labels
-    p.setPen(palette().color(QPalette::Foreground));
+    p.setPen(palette().color(QPalette::WindowText));
 
     double widthStep = (2 * theta) / 12.0;
     widthLabelCounter = 0;
@@ -221,8 +221,8 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
 
           QPointF pt = start + 0.08 * (widthCenter - start);
           sprintf(widthLabel, "%d", widthLimit - ((widthLimit / 10) * j));
-          halfFontWidth = fm.width(widthLabel) / 2;
-          p.setPen(palette().color(QPalette::Foreground));
+          halfFontWidth = fm.horizontalAdvance(widthLabel) / 2;
+          p.setPen(palette().color(QPalette::WindowText));
           p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, widthLabel);
         } else { // Smaller marking, no text label
           p.drawLine(start, start + 0.03 * (widthCenter - start));
@@ -233,15 +233,15 @@ void VibratoSpeedWidget::paintEvent(QPaintEvent*)
 
         QPointF pt = start + 0.08 * (widthCenter - start);
         sprintf(widthLabel, "%d", widthLimit - ((widthLimit / 10) * j));
-        halfFontWidth = fm.width(widthLabel) / 2;
-        p.setPen(palette().color(QPalette::Foreground));
+        halfFontWidth = fm.horizontalAdvance(widthLabel) / 2;
+        p.setPen(palette().color(QPalette::WindowText));
         p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, widthLabel);
       }
 
       // Draw the "Cents" label
       {
-        halfFontWidth = fm.width("Cents") / 2;
-        p.setPen(palette().color(QPalette::Foreground));
+        halfFontWidth = fm.horizontalAdvance("Cents") / 2;
+        p.setPen(palette().color(QPalette::WindowText));
         p.drawText(widthCenter.x() - halfFontWidth, widthCenter.y() - 0.7 * radius + halfFontHeight, "Cents");
       }
     }

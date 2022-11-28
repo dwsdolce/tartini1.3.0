@@ -383,9 +383,9 @@ void VibratoSpeedWidgetGL::paintGL()
 
   // Draw the labels
   // Take into account that QPainter origin is upper left while OpenGL is lower left.
-  p.drawText(hzLabelX - (0.5 * fm.width("Hz")), height() - hzLabelY, "Hz");
+  p.drawText(hzLabelX - (0.5 * fm.horizontalAdvance("Hz")), height() - hzLabelY, "Hz");
   for (int i = 0; i < speedLabelCounter; i++) {
-    halfFontWidth = fm.width(speedLabels[i].label)/2;
+    halfFontWidth = fm.horizontalAdvance(speedLabels[i].label)/2;
     p.drawText(speedLabels[i].x - halfFontWidth, height() - (speedLabels[i].y - halfFontHeight), speedLabels[i].label);
   }
 
@@ -420,9 +420,9 @@ void VibratoSpeedWidgetGL::paintGL()
 
   // Draw the labels
   // Take into account that QPainter origin is upper left while OpenGL is lower left.
-  p.drawText(centsLabelX - (0.5 * fm.width("Cents")), height() - centsLabelY, "Cents");
+  p.drawText(centsLabelX - (0.5 * fm.horizontalAdvance("Cents")), height() - centsLabelY, "Cents");
   for (int i = 0; i < widthLabelCounter; i++) {
-    halfFontWidth = fm.width(widthLabels[i].label) / 2;
+    halfFontWidth = fm.horizontalAdvance(widthLabels[i].label) / 2;
     p.drawText(widthLabels[i].x - halfFontWidth, height() - (widthLabels[i].y - halfFontHeight), widthLabels[i].label);
   }
 

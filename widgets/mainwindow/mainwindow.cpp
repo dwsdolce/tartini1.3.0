@@ -541,7 +541,6 @@ MainWindow::~MainWindow()
 {
   delete rewindTimer;
   delete fastforwardTimer;
-  fprintf(stderr, "Has pending events = %s\n", (qApp->hasPendingEvents()) ? "Yes" : "No");
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -1243,7 +1242,7 @@ GPLDialog::GPLDialog(QWidget *parent) : QDialog(parent)
 void MainWindow::printPitch()
 {
   QPrinter printer(QPrinter::HighResolution);
-  printer.setOrientation(QPrinter::Landscape);
+  printer.setPageOrientation(QPageLayout::Landscape);
   QPrintDialog printDialog(&printer, this);
   if(printDialog.exec() == QDialog::Accepted) {
     View *view = gdata->view;

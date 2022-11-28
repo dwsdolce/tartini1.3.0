@@ -76,7 +76,7 @@ void FFTWidget::paintEvent( QPaintEvent * )
         clearBackground();
       }
       QString fundFreqText;
-      fundFreqText.sprintf("Fundamental Frequency = %lf", freq);
+      fundFreqText.asprintf("Fundamental Frequency = %lf", freq);
       p.setPen(Qt::black);
       p.drawText(5, 15, fundFreqText);
     } else {

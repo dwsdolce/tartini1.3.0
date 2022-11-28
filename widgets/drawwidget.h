@@ -37,7 +37,7 @@ class DrawWidget : public QWidget {
   Q_OBJECT
 
 public:
-  DrawWidget(QWidget* parent, Qt::WindowFlags f = 0);
+  DrawWidget(QWidget* parent, Qt::WindowFlags f = Qt::Widget);
   virtual ~DrawWidget();
 
 	//static QColor colorBetween(QColor a, QColor b, double ratio);

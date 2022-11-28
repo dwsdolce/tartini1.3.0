@@ -43,7 +43,7 @@ ScoreWidget::ScoreWidget(QWidget *parent)
   _fontHeight = 14;
   _pitchOffset = 0; //-12; //display 1 octave down
   _font = QFont("AnyStyle", _fontHeight);
-  _fontWidth = QFontMetrics(_font).width('#');
+  _fontWidth = QFontMetrics(_font).horizontalAdvance('#');
   _lookAhead = 0.5; //half a page look ahead
   _lookAheadGap = 0.2;
   _mouseDown = false;
@@ -183,7 +183,7 @@ void ScoreWidget::drawNoteAtPitch(int x, int y, int pitch, double noteLength, do
     drawNote(x, y-yOffset, stemType, (noteType<=Crotchet) ? FilledNote : EmptyNote, numFlicks);
   } else {
     //p.drawRoundRect(x - toInt(noteWidth/2), y - yOffset - toInt(noteHeight/2), toInt(noteWidth), toInt(noteHeight), 3, 3);
-    p.drawRoundRect(x, y - yOffset - toInt(noteHeight/2), toInt(noteLength * _scaleX)-1, toInt(noteHeight), 3, 3);
+    p.drawRoundedRect(x, y - yOffset - toInt(noteHeight/2), toInt(noteLength * _scaleX)-1, toInt(noteHeight), 3, 3);
   }
 }
 
@@ -253,7 +253,7 @@ void ScoreWidget::paintEvent( QPaintEvent * /*pe*/ )
   ScoreSegmentIterator si(this, ch);
   if(ch) {
     QString pageString;
-    p.drawText(_fontWidth, height()-4, pageString.sprintf("Page %d of %d", si.curPage()+1, si.numPages()));
+    p.drawText(_fontWidth, height()-4, pageString.asprintf("Page %d of %d", si.curPage()+1, si.numPages()));
     while(si.next()) {
       drawScoreSegment(ch, si.leftX(), si.lineCenterY(), si.leftTime(), si.rightTime());
       if(si.contains(si.curTime())) {

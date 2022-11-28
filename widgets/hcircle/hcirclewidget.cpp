@@ -75,7 +75,7 @@ void HCircleWidget::paintEvent( QPaintEvent * )
   	p.setPen(QPen(colorBetween(gdata->backgroundColor(),qRgb(128,128,128),0.3),2));
   	int radius = toInt((double)height()*zoom*(threshold-lowestValue));
   	p.drawEllipse(width()/2-radius,height()/2-radius,2*radius,2*radius);
- 	p.drawText(width()/2-radius+5,height()/2,s.sprintf("Threshold"));
+   	p.drawText(width()/2-radius+5,height()/2,s.asprintf("Threshold"));
   }
   
   //p.setPen(QPen(qRgb(128,128,128),1));
@@ -90,7 +90,7 @@ void HCircleWidget::paintEvent( QPaintEvent * )
 	  int radius = toInt((double)height()*zoom*(scale-lowestValue));
 	  p.drawEllipse(width()/2-radius,height()/2-radius,2*radius,2*radius);
 	  
-	  p.drawText(width()/2+radius,height()/2,s.sprintf("%1.1f", scale));
+	  p.drawText(width()/2+radius,height()/2,s.asprintf("%1.1f", scale));
   	}
   }
 
@@ -132,7 +132,7 @@ void HCircleWidget::paintEvent( QPaintEvent * )
 				p.drawLine(width()/2+x1, height()/2+y1, width()/2+x, height()/2+y);
         p.drawEllipse(width()/2+x-halfDotSize, height()/2+y-halfDotSize, dotSize, dotSize);
 				QString s;
-				p.drawText(width()/2+x+5, height()/2+y,s.sprintf("%d", i+1));
+				p.drawText(width()/2+x+5, height()/2+y,s.asprintf("%d", i+1));
 			}
 		}
 	}

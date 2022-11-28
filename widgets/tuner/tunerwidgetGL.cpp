@@ -265,11 +265,11 @@ void TunerWidgetGL::paintGL()
 	QFontMetrics fm = QFontMetrics(tunerFont);
 	setFont(tunerFont);
 	// Take into account that QPainter origin is upper left while OpenGL is lower left.
-	p.drawText(centsLabelX - (0.5 * fm.width("Cents")), height() - centsLabelY, "Cents");
+	p.drawText(centsLabelX - (0.5 * fm.horizontalAdvance("Cents")), height() - centsLabelY, "Cents");
 
 	for (int i = 0; i < tunerLabelCounter; i++) {
 		// Take into account that QPainter origin is upper left while OpenGL is lower left.
-		p.drawText(tunerLabels[i].x - (0.5 * fm.width(tunerLabels[i].label)), height() - (tunerLabels[i].y - 8), tunerLabels[i].label);
+		p.drawText(tunerLabels[i].x - (0.5 * fm.horizontalAdvance(tunerLabels[i].label)), height() - (tunerLabels[i].y - 8), tunerLabels[i].label);
 	}
 
 	p.beginNativePainting();

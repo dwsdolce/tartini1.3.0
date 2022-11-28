@@ -37,7 +37,7 @@ private:
   bool noteIsPlaying;
   large_vector<AnalysisData> lookup;
   float _threshold;
-  QMutex *mutex;
+  QRecursiveMutex *mutex;
   bool isLocked;
   int pronyWindowSize;
   Array1d<float> pronyData;

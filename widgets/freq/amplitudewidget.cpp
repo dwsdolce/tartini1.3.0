@@ -260,7 +260,7 @@ void AmplitudeWidget::paintEvent(QPaintEvent*)
 
 	QLineF timeLine = QLineF(QPointF(curScreenTime, 0.0), QPointF(curScreenTime, height() - 1.0));
 	
-	p.setPen(palette().color(QPalette::Foreground));
+	p.setPen(palette().color(QPalette::QPalette::WindowText));
 	p.drawLine(timeLine);
 
 	// Draw a horizontal line at the current threshold.
@@ -367,7 +367,7 @@ void AmplitudeWidget::setCurrentThreshold(double newThreshold, int index)
 QString AmplitudeWidget::getCurrentThresholdString()
 {
 	QString thresholdStr;
-	thresholdStr.sprintf(amp_display_string[gdata->amplitudeMode()], gdata->ampThreshold(gdata->amplitudeMode(), 0), gdata->ampThreshold(gdata->amplitudeMode(), 1));
+	thresholdStr.asprintf(amp_display_string[gdata->amplitudeMode()], gdata->ampThreshold(gdata->amplitudeMode(), 0), gdata->ampThreshold(gdata->amplitudeMode(), 1));
 	return thresholdStr;
 }
 
@@ -457,12 +457,12 @@ void AmplitudeWidget::wheelEvent(QWheelEvent* e)
 	View* view = gdata->view;
 	if (!(e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier))) {
 		if (gdata->running == STREAM_FORWARD) {
-			view->setZoomFactorX(view->logZoomX() + double(e->delta() / WHEEL_DELTA) * 0.3);
+			view->setZoomFactorX(view->logZoomX() + double(e->angleDelta().y() / WHEEL_DELTA) * 0.3);
 		} else {
-			if (e->delta() < 0) {
-				view->setZoomFactorX(view->logZoomX() + double(e->delta() / WHEEL_DELTA) * 0.3, width() / 2);
+			if (e->angleDelta().y() < 0) {
+				view->setZoomFactorX(view->logZoomX() + double(e->angleDelta().y() / WHEEL_DELTA) * 0.3, width() / 2);
 			} else {
-				view->setZoomFactorX(view->logZoomX() + double(e->delta() / WHEEL_DELTA) * 0.3, e->x());
+				view->setZoomFactorX(view->logZoomX() + double(e->angleDelta().y() / WHEEL_DELTA) * 0.3, e->position().x());
 			}
 		}
 		view->doSlowUpdate();

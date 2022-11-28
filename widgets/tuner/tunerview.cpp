@@ -44,7 +44,7 @@ TunerView::TunerView( int viewID_, QWidget *parent )
 
   // Tuner widget goes from (0, 0) to (0, 8);
   QGridLayout* tunerLayout = new QGridLayout;
-  tunerLayout->setMargin(0);
+  tunerLayout->setContentsMargins(0, 0, 0, 0);
   tunerLayout->setSpacing(0);
 
   // The label
@@ -56,7 +56,7 @@ TunerView::TunerView( int viewID_, QWidget *parent )
   //layout->addMultiCellWidget(tunerWidget, 0, 0, 0, 8);
   tunerWidget->setWhatsThis("Indicates pitch deviation from standard not plus the standard note that is being played.");
   tunerFrameLayout->addWidget(tunerWidget);
-  tunerFrameLayout->setMargin(0);
+  tunerFrameLayout->setContentsMargins(0, 0, 0, 0);
   tunerFrameLayout->setSpacing(0);
   tunerFrame->setLayout(tunerFrameLayout);
 

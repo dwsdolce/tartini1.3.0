@@ -135,7 +135,7 @@ void TimeAxis::paintEvent(QPaintEvent *)
       
       QString numString = mins + ":" + seconds;
       x = frameWidth + toInt((timePos-leftTime()) / (timeWidth() / double(w)));
-      p.drawText(x - (p.fontMetrics().width(numString) / 2), textBottom, numString);
+      p.drawText(x - (p.fontMetrics().horizontalAdvance(numString) / 2), textBottom, numString);
       p.drawLine(x, bigLineTop, x, bigLineBottom);
     } else {
       //draw the smaller lines

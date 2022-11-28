@@ -44,7 +44,7 @@ HTrackView::HTrackView( int viewID_, QWidget *parent )
     "The height of each track is related to how much energy is at that frequency. "
     "Tracks alternate in colour for better visibility. It can be seen how the hamonics in a note fit into the musical scale.");
   hTrackFrameLayout->addWidget(hTrackWidget);
-  hTrackFrameLayout->setMargin(0);
+  hTrackFrameLayout->setContentsMargins(0, 0, 0, 0);
   hTrackFrameLayout->setSpacing(0 );
   frame->setLayout(hTrackFrameLayout);
 

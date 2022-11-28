@@ -495,7 +495,7 @@ void FreqWidgetGL::drawReferenceLinesGL(QPainter &p, double viewBottom, double z
   // Draw the lines and notes
 	QFontMetrics fm = fontMetrics();
 	int fontHeightSpace = fm.height() / 4;
-	int fontWidth = fm.width("C#0") + 3;
+	int fontWidth = fm.horizontalAdvance("C#0") + 3;
 
 	MusicKey& musicKey = gMusicKeys[gdata->temperedType()];
 	MusicScale& musicScale = gMusicScales[gdata->musicKeyType()];
@@ -578,7 +578,7 @@ void FreqWidgetGL::drawReferenceLinesGL(QPainter &p, double viewBottom, double z
 				lineY = double(height()) - myround((curPitch - viewBottom) / zoomY);
 				nameIndex = toInt(curPitch);
 				
-				noteLabel.sprintf("%s%d", noteName(nameIndex), noteOctave(nameIndex));
+				noteLabel.asprintf("%s%d", noteName(nameIndex), noteOctave(nameIndex));
 				p.drawText(2, toInt(lineY) + fontHeightSpace, noteLabel);
 			}
 			if (zoomY > 0.1) break;
@@ -833,7 +833,7 @@ void FreqWidgetGL::paintGL()
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		QColor lineColor = palette().color(QPalette::Foreground);
+		QColor lineColor = palette().color(QPalette::WindowText);
 		lineColor.setAlpha(50);
 		Channel* ch = gdata->getActiveChannel();
 		double halfWindowTime = (double)ch->size() / (double)(ch->rate() * 2);
@@ -865,7 +865,7 @@ void FreqWidgetGL::paintGL()
 	m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_time_line.bind();
 	m_vbo_time_line.allocate(timeLine.constData(), timeLine.count() * 3 * sizeof(float));
-	MyGL::DrawShape(m_program, m_vao_time_line, m_vbo_time_line, timeLine.count(), GL_LINES, palette().color(QPalette::Foreground));
+	MyGL::DrawShape(m_program, m_vao_time_line, m_vbo_time_line, timeLine.count(), GL_LINES, palette().color(QPalette::WindowText));
 	
 	p.endNativePainting();
 	p.end();
@@ -1004,19 +1004,19 @@ double FreqWidgetGL::mousePitch(int y)
 void FreqWidgetGL::wheelEvent(QWheelEvent* e)
 {
 	View* view = gdata->view;
-	double amount = double(e->delta()) / WHEEL_DELTA * 0.15;
+	double amount = double(e->angleDelta().y()) / WHEEL_DELTA * 0.15;
 	bool isZoom = gdata->mouseWheelZooms();
 	if (e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier)) isZoom = !isZoom;
 
 	if (isZoom) {
-		if (e->delta() >= 0) { //zooming in
+		if (e->angleDelta().y() >= 0) { //zooming in
 			double before = view->logZoomY();
-			view->setZoomFactorY(view->logZoomY() + amount, height() - e->y());
+			view->setZoomFactorY(view->logZoomY() + amount, height() - e->position().y());
 			amount = view->logZoomY() - before;
 			if (gdata->running == STREAM_FORWARD) {
 				view->setZoomFactorX(view->logZoomX() + amount);
 			} else { //zoom toward mouse pointer
-				view->setZoomFactorX(view->logZoomX() + amount, e->x());
+				view->setZoomFactorX(view->logZoomX() + amount, e->position().x());
 			}
 		} else { //zoom out toward center
 			double before = view->logZoomY();

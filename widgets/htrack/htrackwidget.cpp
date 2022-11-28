@@ -561,7 +561,7 @@ void HTrackWidget::mouseReleaseEvent(QMouseEvent*)
 
 void HTrackWidget::wheelEvent(QWheelEvent* e)
 {
-  setDistanceAway(m_distanceAway * pow(2.0, -(double(e->delta()) / double(WHEEL_DELTA)) / 20.0));
+  setDistanceAway(m_distanceAway * pow(2.0, -(double(e->angleDelta().y()) / double(WHEEL_DELTA)) / 20.0));
   update();
   e->accept();
 }

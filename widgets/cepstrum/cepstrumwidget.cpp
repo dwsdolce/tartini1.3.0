@@ -105,7 +105,7 @@ void CepstrumWidget::paintEvent( QPaintEvent * )
         clearBackground();
       }
       QString numPeriodsText;
-      numPeriodsText.sprintf("Period = %lf", period);
+      numPeriodsText.asprintf("Period = %lf", period);
       p.setPen(Qt::black);
       p.drawText(5, height() - 8, numPeriodsText);
 

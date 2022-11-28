@@ -381,8 +381,13 @@ debug {
   DEFINES += MYDEBUG
 }
 
-#QT +=  opengl qt3support 
-QT +=  opengl widgets printsupport
+#equals(QT_MAJOR_VERSION, 6) { 
+#  QT +=  core opengl openglwidgets widgets printsupport
+#}
+#equals(QT_MAJOR_VERSION, 5) { 
+  QT +=  opengl widgets printsupport
+#}
+
 CONFIG += uic
 
 UI_DIR = dialogs

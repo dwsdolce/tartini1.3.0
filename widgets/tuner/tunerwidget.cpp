@@ -70,7 +70,7 @@ void TunerWidget::paintEvent(QPaintEvent*)
     lines would eventually meet up with the radius of the circle (width()/2, radius).
 
   */
-  QPen pen(palette().color(QPalette::Foreground), 2);
+  QPen pen(palette().color(QPalette::WindowText), 2);
   p.setPen(pen);  // Border
 
   double halfWidth = double(width()) / 2.0;
@@ -88,8 +88,8 @@ void TunerWidget::paintEvent(QPaintEvent*)
     p.drawArc(QRectF(halfWidth - (radius / 2.0), radius / 2.0, radius, radius), toInt((90 - thetaDeg) * 16), toInt(2 * thetaDeg * 16));
   }
 
-  p.setPen(palette().color(QPalette::Foreground));
-  p.setBrush(palette().color(QPalette::Foreground));
+  p.setPen(palette().color(QPalette::WindowText));
+  p.setBrush(palette().color(QPalette::WindowText));
 
   double step = (2 * theta) / 12.0;
   double stop = rho + (2 * theta) - (step / 2);
@@ -104,7 +104,7 @@ void TunerWidget::paintEvent(QPaintEvent*)
   }
 
   {//Draw the text labels
-    p.setPen(palette().color(QPalette::Foreground));
+    p.setPen(palette().color(QPalette::WindowText));
 
     const char* theNames[11] = { "+50", "+40", "+30", "+20", "+10", "0", "-10", "-20", "-30", "-40", "-50" };
     QFontMetrics fm = p.fontMetrics();
@@ -118,12 +118,12 @@ void TunerWidget::paintEvent(QPaintEvent*)
       QPointF start(x, y);
       double t = 0.08; //0.025;
       QPointF pt = start + t * (center - start);
-      halfFontWidth = fm.width(theNames[j]) / 2;
+      halfFontWidth = fm.horizontalAdvance(theNames[j]) / 2;
 
       p.drawText(pt.x() - halfFontWidth, pt.y() + halfFontHeight, theNames[j]);
       if (radius < 300) j += 2; else j++;
     }
-    halfFontWidth = fm.width("Cents") / 2;
+    halfFontWidth = fm.horizontalAdvance("Cents") / 2;
     p.drawText(center.x() - halfFontWidth, center.y() * 0.2 + halfFontHeight, "Cents");
   }
 

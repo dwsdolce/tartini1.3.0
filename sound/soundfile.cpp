@@ -56,7 +56,7 @@ SoundFile::SoundFile()
   _chunkNum = 0;
   _offset = 0; //Number of frame to read into file to get to time 0 (half buffer size).
   _saved = true;
-  mutex = new QMutex(QMutex::Recursive);
+  mutex = new QRecursiveMutex();
   firstTimeThrough = true;
   _doingDetailedPitch = false;
 }
@@ -82,8 +82,8 @@ void SoundFile::uninit()
         fprintf(stderr, "Error removing file %s\n", filteredFilename.toUtf8().constData());
     }
   }
-  setFilename(QString::null);
-  setFilteredFilename(QString::null);
+  setFilename(QString());
+  setFilteredFilename(QString());
   for(int j=0; j<numChannels(); j++) {
     delete channels(j);
     delete[] (tempWindowBuffer[j]-16);
@@ -120,7 +120,7 @@ QString SoundFile::getNextTempFilename()
   int index = 1;
   do {
     fileExists = false;
-    fileName.sprintf("temp%03d.wav", index);
+    fileName.asprintf("temp%03d.wav", index);
     fileInfo.setFile(dir, fileName);
     if(fileInfo.exists()) {
       fileExists = true;

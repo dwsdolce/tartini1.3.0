@@ -45,7 +45,7 @@ VibratoWidget::VibratoWidget(QWidget *parent, int nls)
   m_pronyWidthBandColor = QColor(0, 0, 0, 64);
   m_pronyAveragePitchColor = QColor(0, 0, 0, 127);
   m_vibratoPolylineColor = QColor(127, 0, 0);
-  m_currentWindowBandColor = QColor(palette().color(QPalette::Foreground).red(), palette().color(QPalette::Foreground).green(), palette().color(QPalette::Foreground).blue(), 65);
+  m_currentWindowBandColor = QColor(palette().color(QPalette::WindowText).red(), palette().color(QPalette::WindowText).green(), palette().color(QPalette::WindowText).blue(), 65);
   m_currentTimeLineColor = QColor(Qt::black);
   m_maximaPointsColor = QColor(255, 255, 0);
   m_minimaPointsColor = QColor(0, 255, 0);
@@ -273,9 +273,9 @@ void VibratoWidget::doUpdate()
       m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
       if ((noteOctave(nearestNote) >= 0) && (noteOctave(nearestNote) <= 9)) {
-        noteLabel.sprintf("%s%d", noteName(nearestNote), noteOctave(nearestNote));
+        noteLabel.asprintf("%s%d", noteName(nearestNote), noteOctave(nearestNote));
       } else {
-        noteLabel.sprintf("%s ", noteName(nearestNote));
+        noteLabel.asprintf("%s ", noteName(nearestNote));
       }
       noteLabels[noteLabelCounter].label = noteLabel;
       noteLabels[noteLabelCounter].y = referenceLineY;
@@ -288,9 +288,9 @@ void VibratoWidget::doUpdate()
         m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
         if ((noteOctave(nearestNote + i) >= 0) && (noteOctave(nearestNote + i) <= 9)) {
-          noteLabel.sprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
+          noteLabel.asprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
         } else {
-          noteLabel.sprintf("%s ", noteName(nearestNote + i));
+          noteLabel.asprintf("%s ", noteName(nearestNote + i));
         }
         noteLabels[noteLabelCounter].label = noteLabel;
         noteLabels[noteLabelCounter].y = referenceLineY;
@@ -304,9 +304,9 @@ void VibratoWidget::doUpdate()
         m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
         if ((noteOctave(nearestNote + i) >= 0) && (noteOctave(nearestNote + i) <= 9)) {
-          noteLabel.sprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
+          noteLabel.asprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
         } else {
-          noteLabel.sprintf("%s ", noteName(nearestNote + i));
+          noteLabel.asprintf("%s ", noteName(nearestNote + i));
         }
         noteLabels[noteLabelCounter].label = noteLabel;
         noteLabels[noteLabelCounter].y = referenceLineY;

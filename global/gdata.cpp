@@ -422,9 +422,9 @@ QString GData::getFilenameString()
   int digits = qsettings->value("General/fileNumberOfDigits", 2).toInt();
   QByteArray utf8String = fileGeneratingString.toUtf8();
   if(digits == 0) {
-    filename.sprintf("%s.wav", utf8String.constData());
+    filename.asprintf("%s.wav", utf8String.constData());
   } else {
-    filename.sprintf("%s%0*d.wav", utf8String.constData(), digits, fileGeneratingNumber);
+    filename.asprintf("%s%0*d.wav", utf8String.constData(), digits, fileGeneratingNumber);
   }
   return filename;
 }
@@ -500,7 +500,7 @@ QString GData::saveFileAsk(QString oldFilename)
   if(newFilename != oldFilename && QFile::exists(newFilename)) {
     if(QMessageBox::warning(mainWindow, tr("Overwrite File?"),
       QString("A file called '") + newFilename + QString("' already exists.\n Do you want to overwrite it?"),
-      tr("&Yes"), tr("&No"), QString::null, 0, 1 )) {
+      tr("&Yes"), tr("&No"), QString(), 0, 1)) {
         return QString(); //user canceled overwrite
 	  }
   }
