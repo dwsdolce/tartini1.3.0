@@ -86,7 +86,7 @@ void WaveWidget::paintEvent( QPaintEvent * )
       }
       //p.setWindow(0, 0, width(), height());
       QString numPeriodsText;
-      numPeriodsText.asprintf("# Periods = %lf", numPeriods);
+      numPeriodsText = numPeriodsText.asprintf("# Periods = %lf", numPeriods);
       p.setPen(Qt::black);
       p.drawText(5, 15, numPeriodsText);
       //printf("numPeriods = %lf\n", numPeriods);

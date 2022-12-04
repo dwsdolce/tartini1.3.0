@@ -120,7 +120,7 @@ QString SoundFile::getNextTempFilename()
   int index = 1;
   do {
     fileExists = false;
-    fileName.asprintf("temp%03d.wav", index);
+    fileName = fileName.asprintf("temp%03d.wav", index);
     fileInfo.setFile(dir, fileName);
     if(fileInfo.exists()) {
       fileExists = true;

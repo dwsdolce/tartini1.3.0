@@ -175,9 +175,9 @@ void TartiniSettingsDialog::fileNameChanged()
   int digits = fileNumberOfDigits->value();
   if(digits == 0) {
 
-    filename.asprintf("%s.wav", utf8String.constData());
+    filename = filename.asprintf("%s.wav", utf8String.constData());
   } else {
-    filename.asprintf("%s%0*d.wav", utf8String.constData(), digits, fileGeneratingNumber->value());
+    filename = filename.asprintf("%s%0*d.wav", utf8String.constData(), digits, fileGeneratingNumber->value());
   }
   filenameExample->setText(filename);
 }

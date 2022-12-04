@@ -578,7 +578,7 @@ void FreqWidgetGL::drawReferenceLinesGL(QPainter &p, double viewBottom, double z
 				lineY = double(height()) - myround((curPitch - viewBottom) / zoomY);
 				nameIndex = toInt(curPitch);
 				
-				noteLabel.asprintf("%s%d", noteName(nameIndex), noteOctave(nameIndex));
+        noteLabel = noteLabel.asprintf("%s%d", noteName(nameIndex), noteOctave(nameIndex));
 				p.drawText(2, toInt(lineY) + fontHeightSpace, noteLabel);
 			}
 			if (zoomY > 0.1) break;

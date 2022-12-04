@@ -92,13 +92,13 @@ void VibratoTimeAxis::paintEvent( QPaintEvent * )
           int seconds = intFloor(i*secondsPerNotch*1.000001) % 60;
           int thousandthseconds = intFloor(1000*i*secondsPerNotch*1.000001) % 1000;
           if (thousandthseconds == 0) {  // Label: m:ss
-            s.asprintf("%1d:%02d", minutes, seconds);
+            s = s.asprintf("%1d:%02d", minutes, seconds);
           } else if (thousandthseconds % 100 == 0) {  // Label: m:ss.h
-            s.asprintf("%1d:%02d.%01d", minutes, seconds, thousandthseconds / 100);
+            s = s.asprintf("%1d:%02d.%01d", minutes, seconds, thousandthseconds / 100);
           } else if (thousandthseconds % 10 == 0) {  // Label: m:ss.hh
-            s.asprintf("%1d:%02d.%02d", minutes, seconds, thousandthseconds / 10);
+            s = s.asprintf("%1d:%02d.%02d", minutes, seconds, thousandthseconds / 10);
           } else {  // Label: m:ss.hhh
-            s.asprintf("%1d:%02d.%03d", minutes, seconds, thousandthseconds);
+            s = s.asprintf("%1d:%02d.%03d", minutes, seconds, thousandthseconds);
           }
           p.drawText(x - fm.horizontalAdvance(s)/2, 12, s);
           } else {  // Odd: smaller notch

@@ -426,9 +426,9 @@ void VibratoWidgetGL::doUpdate()
       m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
       if ((noteOctave(nearestNote) >= 0) && (noteOctave(nearestNote) <= 9)) {
-        noteLabel.asprintf("%s%d", noteName(nearestNote), noteOctave(nearestNote));
+        noteLabel = noteLabel.asprintf("%s%d", noteName(nearestNote), noteOctave(nearestNote));
       } else {
-        noteLabel.asprintf("%s ", noteName(nearestNote));
+        noteLabel = noteLabel.asprintf("%s ", noteName(nearestNote));
       }
       noteLabels[noteLabelCounter].label = noteLabel;
       noteLabels[noteLabelCounter].y = referenceLineY;
@@ -441,9 +441,9 @@ void VibratoWidgetGL::doUpdate()
         m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
         if ((noteOctave(nearestNote + i) >= 0) && (noteOctave(nearestNote + i) <= 9)) {
-          noteLabel.asprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
+          noteLabel = noteLabel.asprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
         } else {
-          noteLabel.asprintf("%s ", noteName(nearestNote + i));
+          noteLabel = noteLabel.asprintf("%s ", noteName(nearestNote + i));
         }
         noteLabels[noteLabelCounter].label = noteLabel;
         noteLabels[noteLabelCounter].y = referenceLineY;
@@ -457,9 +457,9 @@ void VibratoWidgetGL::doUpdate()
         m_referenceLines << QLineF(QPointF(referenceLineX1, height() - referenceLineY), QPointF(referenceLineX2, height() - referenceLineY));
 
         if ((noteOctave(nearestNote + i) >= 0) && (noteOctave(nearestNote + i) <= 9)) {
-          noteLabel.asprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
+          noteLabel = noteLabel.asprintf("%s%d", noteName(nearestNote + i), noteOctave(nearestNote + i));
         } else {
-          noteLabel.asprintf("%s ", noteName(nearestNote + i));
+          noteLabel = noteLabel.asprintf("%s ", noteName(nearestNote + i));
         }
         noteLabels[noteLabelCounter].label = noteLabel;
         noteLabels[noteLabelCounter].y = referenceLineY;

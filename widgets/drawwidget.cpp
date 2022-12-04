@@ -102,7 +102,6 @@ void DrawWidget::drawChannel(QPaintDevice &pd, Channel *ch, QPainter &p, double 
  	p.setPen(current);
 
  	int viewBottomOffset = toInt(viewBottom / zoomY);
-  printf("viewBottomOffset=%d, %f, %f\n", viewBottomOffset, viewBottom, zoomY);
   viewBottom = double(viewBottomOffset) * zoomY;
   
   // baseX is the no. of chunks a pixel must represent.

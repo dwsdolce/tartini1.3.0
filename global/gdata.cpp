@@ -422,9 +422,9 @@ QString GData::getFilenameString()
   int digits = qsettings->value("General/fileNumberOfDigits", 2).toInt();
   QByteArray utf8String = fileGeneratingString.toUtf8();
   if(digits == 0) {
-    filename.asprintf("%s.wav", utf8String.constData());
+    filename = filename.asprintf("%s.wav", utf8String.constData());
   } else {
-    filename.asprintf("%s%0*d.wav", utf8String.constData(), digits, fileGeneratingNumber);
+    filename = filename.asprintf("%s%0*d.wav", utf8String.constData(), digits, fileGeneratingNumber);
   }
   return filename;
 }

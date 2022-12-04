@@ -367,7 +367,7 @@ void AmplitudeWidget::setCurrentThreshold(double newThreshold, int index)
 QString AmplitudeWidget::getCurrentThresholdString()
 {
 	QString thresholdStr;
-	thresholdStr.asprintf(amp_display_string[gdata->amplitudeMode()], gdata->ampThreshold(gdata->amplitudeMode(), 0), gdata->ampThreshold(gdata->amplitudeMode(), 1));
+  thresholdStr = thresholdStr.asprintf(amp_display_string[gdata->amplitudeMode()], gdata->ampThreshold(gdata->amplitudeMode(), 0), gdata->ampThreshold(gdata->amplitudeMode(), 1));
 	return thresholdStr;
 }
 
