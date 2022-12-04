@@ -18,10 +18,10 @@ unix{
 }
 win32{ #Windows
   CONFIG( debug, debug|release ) {
-    MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib" -L"C:/fftw-3.3.10/Debug"
+    MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib/5.15.2" -L"C:/fftw-3.3.10/Debug"
     QWT_LIB = qwtd
   } else {
-    MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib" -L"C:/fftw-3.3.10/Release"
+    MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib/5.15.2" -L"C:/fftw-3.3.10/Release"
     QWT_LIB = qwt
   }
   MY_INCLUDE_PATH += "./" "C:/Qwt-6.2.0/include" "C:/fftw-3.3.10"
