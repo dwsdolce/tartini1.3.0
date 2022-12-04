@@ -114,8 +114,6 @@ class MainWindow : public QMainWindow
   QIcon *recordIconSet;
   QTimer *rewindTimer;
   QTimer *fastforwardTimer;
-
-  QSignalMapper *createSignalMapper;
   
  protected:
   //void customEvent( QCustomEvent * e );

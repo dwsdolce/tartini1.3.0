@@ -165,8 +165,6 @@ MainWindow::MainWindow()
   : QMainWindow( NULL)
 {
   setAttribute(Qt::WA_DeleteOnClose);
-  createSignalMapper = new QSignalMapper(this);
-  connect(createSignalMapper, SIGNAL(mapped(int)), SLOT(openView(int)));
 
   QFont myFont = QFont();
   myFont.setPointSize(9);
@@ -952,8 +950,8 @@ void MainWindow::newViewUpdate()
     else if (viewData[j].menuType == 3) action = otherMenu->addAction(viewData[j].menuName);
     else continue;
 
-    connect(action, SIGNAL(triggered()), createSignalMapper, SLOT(map()));
-    createSignalMapper->setMapping(action, j);
+    connect(action, &QAction::triggered, [this, j] {  openView(j); });
+    
     QList<QMdiSubWindow*>::ConstIterator it = opened.begin();
     for (; it != opened.end(); it++) {
       QString cn = QString((*it)->widget()->metaObject()->className());

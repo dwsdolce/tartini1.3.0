@@ -32,6 +32,8 @@ bld/
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
+dialogs/ui_settingsdialog.h
+tartini_resource.rc
 
 # Output of qmake and VS import of qmake
 [Mm]akefile
