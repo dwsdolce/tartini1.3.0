@@ -16,6 +16,7 @@
 #ifndef ARRAY1D_H
 #define ARRAY1D_H
 
+#include <QDebug>
 #include <iostream>
 #include <memory>
 //#define NDEBUG //removes the asserts
@@ -146,7 +147,9 @@ template<class T> class Array1d
       allocatedSize = nextPowerOf2(newSize);
       T *tmp = (T*)realloc(data, allocatedSize * sizeof(T));
       if (tmp != NULL) {
-        data = (T*)realloc(data, allocatedSize * sizeof(T));
+        data = tmp;
+      } else {
+        qDebug() << "DEBUG: resize returned NULL";
       }
     }
     dataSize = newSize;
