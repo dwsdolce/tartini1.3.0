@@ -18,10 +18,20 @@ unix{
 }
 win32{ #Windows
   CONFIG( debug, debug|release ) {
-    MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib" -L"C:/fftw-3.3.10/Debug"
+    equals(QT_MAJOR_VERSION, 5) {
+      MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib/5.15.2" -L"C:/fftw-3.3.10/Debug"
+    }
+    equals(QT_MAJOR_VERSION, 6) {
+      MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib/6.4.1" -L"C:/fftw-3.3.10/Debug"
+    }
     QWT_LIB = qwtd
   } else {
-    MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib" -L"C:/fftw-3.3.10/Release"
+    equals(QT_MAJOR_VERSION, 5) {
+      MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib/5.15.2" -L"C:/fftw-3.3.10/Release"
+    }
+    equals(QT_MAJOR_VERSION, 6) {
+      MY_LIB_PATH += -L"C:/Qwt-6.2.0/lib/6.4.1" -L"C:/fftw-3.3.10/Release"
+    }
     QWT_LIB = qwt
   }
   MY_INCLUDE_PATH += "./" "C:/Qwt-6.2.0/include" "C:/fftw-3.3.10"
@@ -376,12 +386,24 @@ win32{
   LIBS += $$MY_LIB_PATH -l$$QWT_LIB -lfftw3f -lole32 -ldsound -lOpengl32
   #DEFINES += QT_DLL QT_THREAD_SUPPORT
   DEFINES -= UNICODE       #I think some things broke without this?
+
+  equals(QT_MAJOR_VERSION, 6) {
+    # Provide a winmain so that this can be run as a window applications instead of console.
+    # This was automatic in QT5.
+    DEFINES += QT_NEEDS_QMAIN
+    SOURCES += qtmain_win.cpp
+  }
 }
 debug {
   DEFINES += MYDEBUG
 }
 
-QT +=  opengl widgets printsupport
+equals(QT_MAJOR_VERSION, 5) {
+  QT +=  opengl widgets printsupport
+}
+equals(QT_MAJOR_VERSION, 6) {
+  QT +=  core openglwidgets opengl widgets printsupport
+}
 
 CONFIG += uic
 
