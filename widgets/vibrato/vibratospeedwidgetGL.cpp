@@ -163,7 +163,7 @@ void VibratoSpeedWidgetGL::resizeGL(int w, int h)
   m_vao_dial_speed[VBO_DIAL].bind();
   m_vbo_dial_speed[VBO_DIAL].setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_dial_speed[VBO_DIAL].bind();
-  m_vbo_dial_speed[VBO_DIAL].allocate(speedUpperArc.constData(), speedUpperArc.count() * 3 * sizeof(float));
+  m_vbo_dial_speed[VBO_DIAL].allocate(speedUpperArc.constData(), static_cast<int>(speedUpperArc.count() * 3 * sizeof(float)));
   m_vao_dial_speed[VBO_DIAL].release();
   m_vbo_dial_speed[VBO_DIAL].release();
   m_dial_count_speed[VBO_DIAL] = speedUpperArc.count();
@@ -179,7 +179,7 @@ void VibratoSpeedWidgetGL::resizeGL(int w, int h)
   m_vao_dial_speed[VBO_ARC].bind();
   m_vbo_dial_speed[VBO_ARC].setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_dial_speed[VBO_ARC].bind();
-  m_vbo_dial_speed[VBO_ARC].allocate(speedLowerArc.constData(), speedLowerArc.count() * 3 * sizeof(float));
+  m_vbo_dial_speed[VBO_ARC].allocate(speedLowerArc.constData(), static_cast<int>(speedLowerArc.count() * 3 * sizeof(float)));
   m_vao_dial_speed[VBO_ARC].release();
   m_vbo_dial_speed[VBO_ARC].release();
   m_dial_count_speed[VBO_ARC] = speedLowerArc.count();
@@ -239,7 +239,7 @@ void VibratoSpeedWidgetGL::resizeGL(int w, int h)
   m_vao_dial_speed[VBO_MARKERS].bind();
   m_vbo_dial_speed[VBO_MARKERS].setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_dial_speed[VBO_MARKERS].bind();
-  m_vbo_dial_speed[VBO_MARKERS].allocate(speedLineMarking.constData(), speedLineMarking.count() * 3 * sizeof(float));
+  m_vbo_dial_speed[VBO_MARKERS].allocate(speedLineMarking.constData(), static_cast<int>(speedLineMarking.count() * 3 * sizeof(float)));
   m_vao_dial_speed[VBO_MARKERS].release();
   m_vbo_dial_speed[VBO_MARKERS].release();
   m_dial_count_speed[VBO_MARKERS] = speedLineMarking.count();
@@ -264,7 +264,7 @@ void VibratoSpeedWidgetGL::resizeGL(int w, int h)
   m_vao_dial_width[VBO_DIAL].bind();
   m_vbo_dial_width[VBO_DIAL].setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_dial_width[VBO_DIAL].bind();
-  m_vbo_dial_width[VBO_DIAL].allocate(widthUpperArc.constData(), widthUpperArc.count() * 3 * sizeof(float));
+  m_vbo_dial_width[VBO_DIAL].allocate(widthUpperArc.constData(), static_cast<int>(widthUpperArc.count() * 3 * sizeof(float)));
   m_vao_dial_width[VBO_DIAL].release();
   m_vbo_dial_width[VBO_DIAL].release();
   m_dial_count_width[VBO_DIAL] = widthUpperArc.count();
@@ -280,7 +280,7 @@ void VibratoSpeedWidgetGL::resizeGL(int w, int h)
   m_vao_dial_width[VBO_ARC].bind();
   m_vbo_dial_width[VBO_ARC].setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_dial_width[VBO_ARC].bind();
-  m_vbo_dial_width[VBO_ARC].allocate(widthLowerArc.constData(), widthLowerArc.count() * 3 * sizeof(float));
+  m_vbo_dial_width[VBO_ARC].allocate(widthLowerArc.constData(), static_cast<int>(widthLowerArc.count() * 3 * sizeof(float)));
   m_vao_dial_width[VBO_ARC].release();
   m_vbo_dial_width[VBO_ARC].release();
   m_dial_count_width[VBO_ARC] = widthLowerArc.count();
@@ -324,7 +324,7 @@ void VibratoSpeedWidgetGL::resizeGL(int w, int h)
   m_vao_dial_width[VBO_MARKERS].bind();
   m_vbo_dial_width[VBO_MARKERS].setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_dial_width[VBO_MARKERS].bind();
-  m_vbo_dial_width[VBO_MARKERS].allocate(widthLineMarking.constData(), widthLineMarking.count() * 3 * sizeof(float));
+  m_vbo_dial_width[VBO_MARKERS].allocate(widthLineMarking.constData(), static_cast<int>(widthLineMarking.count() * 3 * sizeof(float)));
   m_vao_dial_width[VBO_MARKERS].release();
   m_vbo_dial_width[VBO_MARKERS].release();
   m_dial_count_width[VBO_MARKERS] = widthLineMarking.count();
@@ -522,7 +522,7 @@ void VibratoSpeedWidgetGL::doUpdate()
         m_vao_needle_speed.bind();
         m_vbo_needle_speed.setUsagePattern(QOpenGLBuffer::DynamicDraw);
         m_vbo_needle_speed.bind();
-        m_vbo_needle_speed.allocate(needleVectorsSpeed.constData(), needleVectorsSpeed.count() * 3 * sizeof(float));
+        m_vbo_needle_speed.allocate(needleVectorsSpeed.constData(), static_cast<int>(needleVectorsSpeed.count() * 3 * sizeof(float)));
         m_vao_needle_speed.release();
         m_vbo_needle_speed.release();
         m_needle_count_speed = needleVectorsSpeed.count();
@@ -576,7 +576,7 @@ void VibratoSpeedWidgetGL::doUpdate()
         m_vao_needle_width.bind();
         m_vbo_needle_width.setUsagePattern(QOpenGLBuffer::DynamicDraw);
         m_vbo_needle_width.bind();
-        m_vbo_needle_width.allocate(needleVectorsWidth.constData(), needleVectorsWidth.count() * 3 * sizeof(float));
+        m_vbo_needle_width.allocate(needleVectorsWidth.constData(), static_cast<int>(needleVectorsWidth.count() * 3 * sizeof(float)));
         m_vao_needle_width.release();
         m_vbo_needle_width.release();
         m_needle_count_width = needleVectorsWidth.count();

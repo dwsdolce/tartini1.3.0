@@ -196,7 +196,7 @@ void AmplitudeWidgetGL::drawChannelAmplitudeFilledGL(Channel* ch)
 	m_vao_ch_amp.bind();
 	m_vbo_ch_amp.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ch_amp.bind();
-	m_vbo_ch_amp.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
+	m_vbo_ch_amp.allocate(vertexArray.constData(), static_cast<int>(vertexArray.count() * 3 * sizeof(float)));
 
 	MyGL::DrawShape(m_program, m_vao_ch_amp, m_vbo_ch_amp, vertexArray.count(), GL_TRIANGLE_STRIP, gdata->shading2Color());
 	m_vao_ch_amp.release();
@@ -242,7 +242,7 @@ void AmplitudeWidgetGL::drawVerticalRefLines()
 	m_vao_ref_dark.bind();
 	m_vbo_ref_dark.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ref_dark.bind();
-	m_vbo_ref_dark.allocate(refLinesDark.constData(), refLinesDark.count() * 3 * sizeof(float));
+	m_vbo_ref_dark.allocate(refLinesDark.constData(), static_cast<int>(refLinesDark.count() * 3 * sizeof(float)));
 
 	MyGL::DrawShape(m_program, m_vao_ref_dark, m_vbo_ref_dark, refLinesDark.count(), GL_LINES, QColor(25, 125, 170, 128));
 
@@ -250,7 +250,7 @@ void AmplitudeWidgetGL::drawVerticalRefLines()
 	m_vao_ref_light.bind();
 	m_vbo_ref_light.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ref_light.bind();
-	m_vbo_ref_light.allocate(refLinesLight.constData(), refLinesLight.count() * 3 * sizeof(float));
+	m_vbo_ref_light.allocate(refLinesLight.constData(), static_cast<int>(refLinesLight.count() * 3 * sizeof(float)));
 
 	MyGL::DrawShape(m_program, m_vao_ref_light, m_vbo_ref_light, refLinesLight.count(), GL_LINES, QColor(25, 125, 170, 64));
 }
@@ -301,7 +301,7 @@ void AmplitudeWidgetGL::drawChannelAmplitudeGL(Channel* ch)
 		m_vao_time_line.bind();
 		m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_time_line.bind();
-		m_vbo_time_line.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
+		m_vbo_time_line.allocate(vertexArray.constData(), static_cast<int>(vertexArray.count() * 3 * sizeof(float)));
 
 		MyGL::DrawShape(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINES, ch->color);
 	} else { //baseX <= 1
@@ -330,7 +330,7 @@ void AmplitudeWidgetGL::drawChannelAmplitudeGL(Channel* ch)
 		m_vao_time_line.bind();
 		m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_time_line.bind();
-		m_vbo_time_line.allocate(vertexArray.constData(), vertexArray.count() * 3 * sizeof(float));
+		m_vbo_time_line.allocate(vertexArray.constData(), static_cast<int>(vertexArray.count() * 3 * sizeof(float)));
 
 		MyGL::DrawLine(m_program_line, m_vao_time_line, m_vbo_time_line, vertexArray.count(), GL_LINE_STRIP, lineWidth, ch->color);
 	}
@@ -387,7 +387,7 @@ void AmplitudeWidgetGL::paintGL()
 	m_vao_time_line.bind();
 	m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_time_line.bind();
-	m_vbo_time_line.allocate(timeLine.constData(), timeLine.count() * 3 * sizeof(float));
+	m_vbo_time_line.allocate(timeLine.constData(), static_cast<int>(timeLine.count() * 3 * sizeof(float)));
 
 	MyGL::DrawShape(m_program, m_vao_time_line, m_vbo_time_line, timeLine.count(), GL_LINES, palette().color(QPalette::WindowText));
 
@@ -404,7 +404,7 @@ void AmplitudeWidgetGL::paintGL()
 	m_vao_blk_ref.bind();
 	m_vbo_blk_ref.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_blk_ref.bind();
-	m_vbo_blk_ref.allocate(blkRef.constData(), blkRef.count() * 3 * sizeof(float));
+	m_vbo_blk_ref.allocate(blkRef.constData(), static_cast<int>(blkRef.count() * 3 * sizeof(float)));
 
 	MyGL::DrawShape(m_program, m_vao_blk_ref, m_vbo_blk_ref, blkRef.count(), GL_LINES, QColor(Qt::black));
 
@@ -417,7 +417,7 @@ void AmplitudeWidgetGL::paintGL()
 	m_vao_red_ref.bind();
 	m_vbo_red_ref.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_red_ref.bind();
-	m_vbo_red_ref.allocate(redRef.constData(), redRef.count() * 3 * sizeof(float));
+	m_vbo_red_ref.allocate(redRef.constData(), static_cast<int>(redRef.count() * 3 * sizeof(float)));
 
 	MyGL::DrawShape(m_program, m_vao_red_ref, m_vbo_red_ref, redRef.count(), GL_LINES, QColor(Qt::red));
 

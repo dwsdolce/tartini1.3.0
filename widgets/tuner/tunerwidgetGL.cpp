@@ -143,7 +143,7 @@ void TunerWidgetGL::resizeGL(int w, int h)
 	m_vao_dial[VBO_DIAL].bind();
 	m_vbo_dial[VBO_DIAL].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_dial[VBO_DIAL].bind();
-	m_vbo_dial[VBO_DIAL].allocate(upperArc.constData(), upperArc.count() * 3 * sizeof(float));
+	m_vbo_dial[VBO_DIAL].allocate(upperArc.constData(), static_cast<int>(upperArc.count() * 3 * sizeof(float)));
 	m_vao_dial[VBO_DIAL].release();
 	m_vbo_dial[VBO_DIAL].release();
 	m_dial_count[VBO_DIAL] = upperArc.count();
@@ -159,7 +159,7 @@ void TunerWidgetGL::resizeGL(int w, int h)
 	m_vao_dial[VBO_ARC].bind();
 	m_vbo_dial[VBO_ARC].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_dial[VBO_ARC].bind();
-	m_vbo_dial[VBO_ARC].allocate(lowerArc.constData(), lowerArc.count() * 3 * sizeof(float));
+	m_vbo_dial[VBO_ARC].allocate(lowerArc.constData(), static_cast<int>(lowerArc.count() * 3 * sizeof(float)));
 	m_vao_dial[VBO_ARC].release();
 	m_vbo_dial[VBO_ARC].release();
 	m_dial_count[VBO_ARC] = lowerArc.count();
@@ -203,7 +203,7 @@ void TunerWidgetGL::resizeGL(int w, int h)
 	m_vao_dial[VBO_MARKERS].bind();
 	m_vbo_dial[VBO_MARKERS].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_dial[VBO_MARKERS].bind();
-	m_vbo_dial[VBO_MARKERS].allocate(lineMarking.constData(), lineMarking.count() * 3 * sizeof(float));
+	m_vbo_dial[VBO_MARKERS].allocate(lineMarking.constData(), static_cast<int>(lineMarking.count() * 3 * sizeof(float)));
 	m_vao_dial[VBO_MARKERS].release();
 	m_vbo_dial[VBO_MARKERS].release();
 	m_dial_count[VBO_MARKERS] = lineMarking.count();
@@ -358,7 +358,7 @@ void TunerWidgetGL::doUpdate(double thePitch)
 				m_vao_needle.bind();
 				m_vbo_needle.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_needle.bind();
-				m_vbo_needle.allocate(needleVectors.constData(), needleVectors.count() * 3 * sizeof(float));
+				m_vbo_needle.allocate(needleVectors.constData(), static_cast<int>(needleVectors.count() * 3 * sizeof(float)));
 				m_vao_needle.release();
 				m_vbo_needle.release();
 				m_needle_count = needleVectors.count();

@@ -312,14 +312,14 @@ void FreqWidgetGL::drawChannelFilledGL(Channel* ch, double leftTime, double curr
 		m_vao_all_fill.bind();
 		m_vbo_all_fill.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_all_fill.bind();
-		m_vbo_all_fill.allocate(rect.constData(), rect.count() * 3 * sizeof(float));
+		m_vbo_all_fill.allocate(rect.constData(), static_cast<int>(rect.count() * 3 * sizeof(float)));
 		MyGL::DrawShape(m_program, m_vao_all_fill, m_vbo_all_fill, rect.count(), GL_TRIANGLE_STRIP, gdata->shading1Color());
 
 		if (bottomPoints.count() > 1) {
 			m_vao_channel_fill.bind();
 			m_vbo_channel_fill.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 			m_vbo_channel_fill.bind();
-			m_vbo_channel_fill.allocate(bottomPoints.constData(), bottomPoints.count() * 3 * sizeof(float));
+			m_vbo_channel_fill.allocate(bottomPoints.constData(), static_cast<int>(bottomPoints.count() * 3 * sizeof(float)));
 			MyGL::DrawShape(m_program, m_vao_channel_fill, m_vbo_channel_fill, bottomPoints.count(), GL_TRIANGLE_STRIP, gdata->shading2Color());
 		}
 
@@ -329,14 +329,14 @@ void FreqWidgetGL::drawChannelFilledGL(Channel* ch, double leftTime, double curr
 				m_vao_varianace2[VarGreen].bind();
 				m_vbo_varianace2[VarGreen].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_varianace2[VarGreen].bind();
-				m_vbo_varianace2[VarGreen].allocate(evenMidPoints2.constData(), evenMidPoints2.count() * 3 * sizeof(float));
+				m_vbo_varianace2[VarGreen].allocate(evenMidPoints2.constData(), static_cast<int>(evenMidPoints2.count() * 3 * sizeof(float)));
 				MyGL::DrawLine(m_program_line, m_vao_varianace2[VarGreen], m_vbo_varianace2[VarGreen], evenMidPoints2.count(), GL_LINES, 3.0, QColor(Qt::green));
 			}
 			if (oddMidPoints2.count() > 1) {
 				m_vao_varianace2[VarYellow].bind();
 				m_vbo_varianace2[VarYellow].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_varianace2[VarYellow].bind();
-				m_vbo_varianace2[VarYellow].allocate(oddMidPoints2.constData(), oddMidPoints2.count() * 3 * sizeof(float));
+				m_vbo_varianace2[VarYellow].allocate(oddMidPoints2.constData(), static_cast<int>(oddMidPoints2.count() * 3 * sizeof(float)));
 				MyGL::DrawLine(m_program_line, m_vao_varianace2[VarYellow], m_vbo_varianace2[VarYellow], oddMidPoints2.count(), GL_LINES, 3.0, QColor(Qt::yellow));
 			}
 
@@ -345,14 +345,14 @@ void FreqWidgetGL::drawChannelFilledGL(Channel* ch, double leftTime, double curr
 				m_vao_varianace[VarYellow].bind();
 				m_vbo_varianace[VarYellow].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_varianace[VarYellow].bind();
-				m_vbo_varianace[VarYellow].allocate(evenMidPoints.constData(), evenMidPoints.count() * 3 * sizeof(float));
+				m_vbo_varianace[VarYellow].allocate(evenMidPoints.constData(), static_cast<int>(evenMidPoints.count() * 3 * sizeof(float)));
 				MyGL::DrawLine(m_program_line, m_vao_varianace[VarYellow], m_vbo_varianace[VarYellow], evenMidPoints.count(), GL_LINES, 3.0, QColor(Qt::yellow));
 			}
 			if (oddMidPoints.count() > 1) {
 				m_vao_varianace[VarGreen].bind();
 				m_vbo_varianace[VarGreen].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_varianace[VarGreen].bind();
-				m_vbo_varianace[VarGreen].allocate(oddMidPoints.constData(), oddMidPoints.count() * 3 * sizeof(float));
+				m_vbo_varianace[VarGreen].allocate(oddMidPoints.constData(), static_cast<int>(oddMidPoints.count() * 3 * sizeof(float)));
 				MyGL::DrawLine(m_program_line, m_vao_varianace[VarGreen], m_vbo_varianace[VarGreen], oddMidPoints.count(), GL_LINES, 3.0, QColor(Qt::green));
 			}
 		}
@@ -439,14 +439,14 @@ void FreqWidgetGL::drawChannelFilledGL(Channel* ch, double leftTime, double curr
 		m_vao_all_fill.bind();
 		m_vbo_all_fill.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_all_fill.bind();
-		m_vbo_all_fill.allocate(rect.constData(), rect.count() * 3 * sizeof(float));
+		m_vbo_all_fill.allocate(rect.constData(), static_cast<int>(rect.count() * 3 * sizeof(float)));
 		MyGL::DrawShape(m_program, m_vao_all_fill, m_vbo_all_fill, rect.count(), GL_TRIANGLE_STRIP, gdata->shading1Color());
 
 		if (bottomPoints.count() > 1) {
 			m_vao_channel_fill.bind();
 			m_vbo_channel_fill.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 			m_vbo_channel_fill.bind();
-			m_vbo_channel_fill.allocate(bottomPoints.constData(), bottomPoints.count() * 3 * sizeof(float));
+			m_vbo_channel_fill.allocate(bottomPoints.constData(), static_cast<int>(bottomPoints.count() * 3 * sizeof(float)));
 			MyGL::DrawShape(m_program, m_vao_channel_fill, m_vbo_channel_fill, bottomPoints.count(), GL_TRIANGLE_STRIP, gdata->shading2Color());
 		}
 
@@ -456,14 +456,14 @@ void FreqWidgetGL::drawChannelFilledGL(Channel* ch, double leftTime, double curr
 				m_vao_varianace2[VarGreen].bind();
 				m_vbo_varianace2[VarGreen].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_varianace2[VarGreen].bind();
-				m_vbo_varianace2[VarGreen].allocate(evenMidPoints2.constData(), evenMidPoints2.count() * 3 * sizeof(float));
+				m_vbo_varianace2[VarGreen].allocate(evenMidPoints2.constData(), static_cast<int>(evenMidPoints2.count() * 3 * sizeof(float)));
 				MyGL::DrawShape(m_program, m_vao_varianace2[VarGreen], m_vbo_varianace2[VarGreen], evenMidPoints2.count(), GL_TRIANGLES, QColor(Qt::green));
 			}
 			if (oddMidPoints2.count() > 1) {
 				m_vao_varianace2[VarYellow].bind();
 				m_vbo_varianace2[VarYellow].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_varianace2[VarYellow].bind();
-				m_vbo_varianace2[VarYellow].allocate(oddMidPoints2.constData(), oddMidPoints2.count() * 3 * sizeof(float));
+				m_vbo_varianace2[VarYellow].allocate(oddMidPoints2.constData(), static_cast<int>(oddMidPoints2.count() * 3 * sizeof(float)));
 				MyGL::DrawShape(m_program, m_vao_varianace2[VarYellow], m_vbo_varianace2[VarYellow], oddMidPoints2.count(), GL_TRIANGLES, QColor(Qt::yellow));
 			}
 
@@ -476,14 +476,14 @@ void FreqWidgetGL::drawChannelFilledGL(Channel* ch, double leftTime, double curr
 				m_vao_varianace[VarYellow].bind();
 				m_vbo_varianace[VarYellow].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_varianace[VarYellow].bind();
-				m_vbo_varianace[VarYellow].allocate(evenMidPoints.constData(), evenMidPoints.count() * 3 * sizeof(float));
+				m_vbo_varianace[VarYellow].allocate(evenMidPoints.constData(), static_cast<int>(evenMidPoints.count() * 3 * sizeof(float)));
 				MyGL::DrawShape(m_program, m_vao_varianace[VarYellow], m_vbo_varianace[VarYellow], evenMidPoints.count(), GL_TRIANGLES, seeThroughYellow);
 			}
 			if (oddMidPoints.count() > 1) {
 				m_vao_varianace[VarGreen].bind();
 				m_vbo_varianace[VarGreen].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 				m_vbo_varianace[VarGreen].bind();
-				m_vbo_varianace[VarGreen].allocate(oddMidPoints.constData(), oddMidPoints.count() * 3 * sizeof(float));
+				m_vbo_varianace[VarGreen].allocate(oddMidPoints.constData(), static_cast<int>(oddMidPoints.count() * 3 * sizeof(float)));
 				MyGL::DrawShape(m_program, m_vao_varianace[VarGreen], m_vbo_varianace[VarGreen], oddMidPoints.count(), GL_TRIANGLES, seeThroughGreen);
 			}
 		}
@@ -542,7 +542,7 @@ void FreqWidgetGL::drawReferenceLinesGL(QPainter &p, double viewBottom, double z
 	m_vao_ref_lines[RefRoot].bind();
 	m_vbo_ref_lines[RefRoot].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ref_lines[RefRoot].bind();
-	m_vbo_ref_lines[RefRoot].allocate(refRoot.constData(), refRoot.count() * 3 * sizeof(float));
+	m_vbo_ref_lines[RefRoot].allocate(refRoot.constData(), static_cast<int>(refRoot.count() * 3 * sizeof(float)));
 	MyGL::DrawShape(m_program, m_vao_ref_lines[RefRoot], m_vbo_ref_lines[RefRoot], refRoot.count(), GL_LINES, QColor(Qt::black));
 
 	p.endNativePainting();
@@ -625,13 +625,13 @@ void FreqWidgetGL::drawReferenceLinesGL(QPainter &p, double viewBottom, double z
 	m_vao_ref_lines[RefVertDark].bind();
 	m_vbo_ref_lines[RefVertDark].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ref_lines[RefVertDark].bind();
-	m_vbo_ref_lines[RefVertDark].allocate(refVertDark.constData(), refVertDark.count() * 3 * sizeof(float));
+	m_vbo_ref_lines[RefVertDark].allocate(refVertDark.constData(), static_cast<int>(refVertDark.count() * 3 * sizeof(float)));
 	MyGL::DrawShape(m_program, m_vao_ref_lines[RefVertDark], m_vbo_ref_lines[RefVertDark], refVertDark.count(), GL_LINES, QColor(Qt::black));
 
 	m_vao_ref_lines[RefVertLight].bind();
 	m_vbo_ref_lines[RefVertLight].setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_ref_lines[RefVertLight].bind();
-	m_vbo_ref_lines[RefVertLight].allocate(refVertLight.constData(), refVertLight.count() * 3 * sizeof(float));
+	m_vbo_ref_lines[RefVertLight].allocate(refVertLight.constData(), static_cast<int>(refVertLight.count() * 3 * sizeof(float)));
 	MyGL::DrawShape(m_program, m_vao_ref_lines[RefVertLight], m_vbo_ref_lines[RefVertLight], refVertLight.count(), GL_LINES, QColor(25, 125, 170, 128));
 }
 
@@ -693,11 +693,11 @@ void FreqWidgetGL::drawChannelGL(Channel* ch, double leftTime, double currentTim
 		m_vao_channel.bind();
 		m_vbo_channel.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_channel.bind();
-		m_vbo_channel.allocate(lineVector.constData(), lineVector.count() * 3 * sizeof(float));
+		m_vbo_channel.allocate(lineVector.constData(), static_cast<int>(lineVector.count() * 3 * sizeof(float)));
 
 		m_vbo_channel_color.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_channel_color.bind();
-		m_vbo_channel_color.allocate(lineColorVector.constData(), lineColorVector.count() * 4 * sizeof(float));
+		m_vbo_channel_color.allocate(lineColorVector.constData(), static_cast<int>(lineColorVector.count() * 4 * sizeof(float)));
 
 		MyGL::DrawLine(m_program_line_color, m_vao_channel, m_vbo_channel, m_vbo_channel_color, lineVector.count(), GL_LINES, lineWidth);
 	} else { // More pixels than samples
@@ -768,20 +768,20 @@ void FreqWidgetGL::drawChannelGL(Channel* ch, double leftTime, double currentTim
 		m_vao_channel.bind();
 		m_vbo_channel.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_channel.bind();
-		m_vbo_channel.allocate(lineVector.constData(), lineVector.count() * 3 * sizeof(float));
+		m_vbo_channel.allocate(lineVector.constData(), static_cast<int>(lineVector.count() * 3 * sizeof(float)));
 
 		m_vbo_channel_color.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_channel_color.bind();
-		m_vbo_channel_color.allocate(lineColorVector.constData(), lineColorVector.count() * 4 * sizeof(float));
+		m_vbo_channel_color.allocate(lineColorVector.constData(), static_cast<int>(lineColorVector.count() * 4 * sizeof(float)));
 
 		m_vao_channel_point.bind();
 		m_vbo_channel_point.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_channel_point.bind();
-		m_vbo_channel_point.allocate(pointVector.constData(), pointVector.count() * 3 * sizeof(float));
+		m_vbo_channel_point.allocate(pointVector.constData(), static_cast<int>(pointVector.count() * 3 * sizeof(float)));
 
 		m_vbo_channel_point_color.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_channel_point_color.bind();
-		m_vbo_channel_point_color.allocate(pointColorVector.constData(), pointColorVector.count() * 4 * sizeof(float));
+		m_vbo_channel_point_color.allocate(pointColorVector.constData(), static_cast<int>(pointColorVector.count() * 4 * sizeof(float)));
 
 		MyGL::DrawLine(m_program_line_color, m_vao_channel, m_vbo_channel, m_vbo_channel_color, lineVector.count(), GL_LINES, lineWidth);
 		MyGL::DrawShape(m_program_color, m_vao_channel_point, m_vbo_channel_point, m_vbo_channel_point_color, pointVector.count(), GL_TRIANGLES);
@@ -849,7 +849,7 @@ void FreqWidgetGL::paintGL()
 		m_vao_active_band.bind();
 		m_vbo_active_band.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 		m_vbo_active_band.bind();
-		m_vbo_active_band.allocate(rect.constData(), rect.count() * 3 * sizeof(float));
+		m_vbo_active_band.allocate(rect.constData(), static_cast<int>(rect.count() * 3 * sizeof(float)));
 		MyGL::DrawShape(m_program, m_vao_active_band, m_vbo_active_band, rect.count(), GL_TRIANGLE_STRIP, lineColor);
 	}
 
@@ -864,7 +864,7 @@ void FreqWidgetGL::paintGL()
 	m_vao_time_line.bind();
 	m_vbo_time_line.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	m_vbo_time_line.bind();
-	m_vbo_time_line.allocate(timeLine.constData(), timeLine.count() * 3 * sizeof(float));
+	m_vbo_time_line.allocate(timeLine.constData(), static_cast<int>(timeLine.count() * 3 * sizeof(float)));
 	MyGL::DrawShape(m_program, m_vao_time_line, m_vbo_time_line, timeLine.count(), GL_LINES, palette().color(QPalette::WindowText));
 	
 	p.endNativePainting();

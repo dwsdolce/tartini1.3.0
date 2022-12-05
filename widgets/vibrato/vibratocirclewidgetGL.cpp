@@ -128,7 +128,7 @@ void VibratoCircleWidgetGL::resizeGL(int w, int h)
   m_vao_referenceCircle[VBO_LINES].bind();
   m_vbo_referenceCircle[VBO_LINES].setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_referenceCircle[VBO_LINES].bind();
-  m_vbo_referenceCircle[VBO_LINES].allocate(lines.constData(), lines.count() * 3 * sizeof(float));
+  m_vbo_referenceCircle[VBO_LINES].allocate(lines.constData(), static_cast<int>(lines.count() * 3 * sizeof(float)));
   m_vao_referenceCircle[VBO_LINES].release();
   m_vbo_referenceCircle[VBO_LINES].release();
   m_referenceCircleCount[VBO_LINES] = lines.count();
@@ -144,7 +144,7 @@ void VibratoCircleWidgetGL::resizeGL(int w, int h)
   m_vao_referenceCircle[VBO_CIRCLE].bind();
   m_vbo_referenceCircle[VBO_CIRCLE].setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_referenceCircle[VBO_CIRCLE].bind();
-  m_vbo_referenceCircle[VBO_CIRCLE].allocate(circle.constData(), circle.count() * 3 * sizeof(float));
+  m_vbo_referenceCircle[VBO_CIRCLE].allocate(circle.constData(), static_cast<int>(circle.count() * 3 * sizeof(float)));
   m_vao_referenceCircle[VBO_CIRCLE].release();
   m_vbo_referenceCircle[VBO_CIRCLE].release();
   m_referenceCircleCount[VBO_CIRCLE] = circle.count();
@@ -316,7 +316,7 @@ void VibratoCircleWidgetGL::doUpdate()
           m_vao_currentPeriod.bind();
           m_vbo_currentPeriod.setUsagePattern(QOpenGLBuffer::DynamicDraw);
           m_vbo_currentPeriod.bind();
-          m_vbo_currentPeriod.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+          m_vbo_currentPeriod.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
           m_vao_currentPeriod.release();
           m_vbo_currentPeriod.release();
           m_currentPeriodCount = vertices.count();
@@ -392,7 +392,7 @@ void VibratoCircleWidgetGL::doUpdate()
           m_vao_currentPeriod.bind();
           m_vbo_currentPeriod.setUsagePattern(QOpenGLBuffer::DynamicDraw);
           m_vbo_currentPeriod.bind();
-          m_vbo_currentPeriod.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+          m_vbo_currentPeriod.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
           m_vao_currentPeriod.release();
           m_vbo_currentPeriod.release();
           m_currentPeriodCount = vertices.count();
@@ -484,7 +484,7 @@ void VibratoCircleWidgetGL::doUpdate()
           m_vao_currentPeriod.bind();
           m_vbo_currentPeriod.setUsagePattern(QOpenGLBuffer::DynamicDraw);
           m_vbo_currentPeriod.bind();
-          m_vbo_currentPeriod.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+          m_vbo_currentPeriod.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
           m_vao_currentPeriod.release();
           m_vbo_currentPeriod.release();
           m_currentPeriodCount = vertices.count();

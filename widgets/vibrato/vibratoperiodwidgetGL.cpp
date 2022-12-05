@@ -143,7 +143,7 @@ void VibratoPeriodWidgetGL::resizeGL(int w, int h)
   m_vao_comparisonReference.bind();
   m_vbo_comparisonReference.setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_comparisonReference.bind();
-  m_vbo_comparisonReference.allocate(comparisonReference.constData(), comparisonReference.count() * 3 * sizeof(float));
+  m_vbo_comparisonReference.allocate(comparisonReference.constData(), static_cast<int>(comparisonReference.count() * 3 * sizeof(float)));
   m_vao_comparisonReference.release();
   m_vbo_comparisonReference.release();
   m_comparisonReferenceCount = comparisonReference.count();
@@ -339,7 +339,7 @@ void VibratoPeriodWidgetGL::doUpdate()
           m_vao_sineReference.bind();
           m_vbo_sineReference.setUsagePattern(QOpenGLBuffer::DynamicDraw);
           m_vbo_sineReference.bind();
-          m_vbo_sineReference.allocate(sineVertices.constData(), sineVertices.count() * 3 * sizeof(float));
+          m_vbo_sineReference.allocate(sineVertices.constData(), static_cast<int>(sineVertices.count() * 3 * sizeof(float)));
           m_vao_sineReference.release();
           m_vbo_sineReference.release();
           m_sineReferenceCount = sineVertices.count();
@@ -347,7 +347,7 @@ void VibratoPeriodWidgetGL::doUpdate()
         m_vao_currentPeriod.bind();
         m_vbo_currentPeriod.setUsagePattern(QOpenGLBuffer::DynamicDraw);
         m_vbo_currentPeriod.bind();
-        m_vbo_currentPeriod.allocate(currentPeriodVertices.constData(), currentPeriodVertices.count() * 3 * sizeof(float));
+        m_vbo_currentPeriod.allocate(currentPeriodVertices.constData(), static_cast<int>(currentPeriodVertices.count() * 3 * sizeof(float)));
         m_vao_currentPeriod.release();
         m_vbo_currentPeriod.release();
         m_currentPeriodCount = currentPeriodVertices.count();
@@ -355,7 +355,7 @@ void VibratoPeriodWidgetGL::doUpdate()
           m_vao_comparisonPoly.bind();
           m_vbo_comparisonPoly.setUsagePattern(QOpenGLBuffer::DynamicDraw);
           m_vbo_comparisonPoly.bind();
-          m_vbo_comparisonPoly.allocate(comparisonVertices.constData(), comparisonVertices.count() * 3 * sizeof(float));
+          m_vbo_comparisonPoly.allocate(comparisonVertices.constData(), static_cast<int>(comparisonVertices.count() * 3 * sizeof(float)));
           m_vao_comparisonPoly.release();
           m_vbo_comparisonPoly.release();
           m_comparisonPolyCount = comparisonVertices.count();
@@ -398,7 +398,7 @@ void VibratoPeriodWidgetGL::doUpdate()
             m_vao_previousPoly[i].bind();
             m_vbo_previousPoly[i].setUsagePattern(QOpenGLBuffer::DynamicDraw);
             m_vbo_previousPoly[i].bind();
-            m_vbo_previousPoly[i].allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+            m_vbo_previousPoly[i].allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
             m_vao_previousPoly[i].release();
             m_vbo_previousPoly[i].release();
             m_previousPolyCount[i] = vertices.count();
@@ -415,7 +415,7 @@ void VibratoPeriodWidgetGL::doUpdate()
             m_vao_previousPoly[i].bind();
             m_vbo_previousPoly[i].setUsagePattern(QOpenGLBuffer::DynamicDraw);
             m_vbo_previousPoly[i].bind();
-            m_vbo_previousPoly[i].allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+            m_vbo_previousPoly[i].allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
             m_vao_previousPoly[i].release();
             m_vbo_previousPoly[i].release();
             m_previousPolyCount[i] = vertices.count();

@@ -349,7 +349,7 @@ void VibratoWidgetGL::doUpdate()
         m_vao_verticalPeriodBarsShading1.bind();
         m_vbo_verticalPeriodBarsShading1.setUsagePattern(QOpenGLBuffer::DynamicDraw);
         m_vbo_verticalPeriodBarsShading1.bind();
-        m_vbo_verticalPeriodBarsShading1.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+        m_vbo_verticalPeriodBarsShading1.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
         m_vao_verticalPeriodBarsShading1.release();
         m_vbo_verticalPeriodBarsShading1.release();
         m_verticalPeriodBarsShading1Count = vertices.count();
@@ -380,7 +380,7 @@ void VibratoWidgetGL::doUpdate()
         m_vao_verticalPeriodBarsShading2.bind();
         m_vbo_verticalPeriodBarsShading2.setUsagePattern(QOpenGLBuffer::DynamicDraw);
         m_vbo_verticalPeriodBarsShading2.bind();
-        m_vbo_verticalPeriodBarsShading2.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+        m_vbo_verticalPeriodBarsShading2.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
         m_vao_verticalPeriodBarsShading2.release();
         m_vbo_verticalPeriodBarsShading2.release();
         m_verticalPeriodBarsShading2Count = vertices.count();
@@ -407,7 +407,7 @@ void VibratoWidgetGL::doUpdate()
         m_vao_verticalSeparatorLines.bind();
         m_vbo_verticalSeparatorLines.setUsagePattern(QOpenGLBuffer::DynamicDraw);
         m_vbo_verticalSeparatorLines.bind();
-        m_vbo_verticalSeparatorLines.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+        m_vbo_verticalSeparatorLines.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
         m_vao_verticalSeparatorLines.release();
         m_vbo_verticalSeparatorLines.release();
         m_verticalSeparatorLinesCount = vertices.count();
@@ -496,7 +496,7 @@ void VibratoWidgetGL::doUpdate()
       m_vao_pronyWidthBand.bind();
       m_vbo_pronyWidthBand.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       m_vbo_pronyWidthBand.bind();
-      m_vbo_pronyWidthBand.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vbo_pronyWidthBand.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
       m_vao_pronyWidthBand.release();
       m_vbo_pronyWidthBand.release();
       m_pronyWidthBandCount = vertices.count();
@@ -513,7 +513,7 @@ void VibratoWidgetGL::doUpdate()
       m_vao_pronyAveragePitch.bind();
       m_vbo_pronyAveragePitch.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       m_vbo_pronyAveragePitch.bind();
-      m_vbo_pronyAveragePitch.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vbo_pronyAveragePitch.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
       m_vao_pronyAveragePitch.release();
       m_vbo_pronyAveragePitch.release();
       m_pronyAveragePitchCount = vertices.count();
@@ -565,7 +565,7 @@ void VibratoWidgetGL::doUpdate()
       m_vao_vibratoPolyline.bind();
       m_vbo_vibratoPolyline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       m_vbo_vibratoPolyline.bind();
-      m_vbo_vibratoPolyline.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vbo_vibratoPolyline.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
       m_vao_vibratoPolyline.release();
       m_vbo_vibratoPolyline.release();
       m_vibratoPolylineCount = vertices.count();
@@ -586,7 +586,7 @@ void VibratoWidgetGL::doUpdate()
       m_vao_currentWindowBand.bind();
       m_vbo_currentWindowBand.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       m_vbo_currentWindowBand.bind();
-      m_vbo_currentWindowBand.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vbo_currentWindowBand.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
       m_vao_currentWindowBand.release();
       m_vbo_currentWindowBand.release();
       m_currentWindowBandCount = vertices.count();
@@ -600,7 +600,7 @@ void VibratoWidgetGL::doUpdate()
       m_vao_currentTimeLine.bind();
       m_vbo_currentTimeLine.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       m_vbo_currentTimeLine.bind();
-      m_vbo_currentTimeLine.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vbo_currentTimeLine.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
       m_vao_currentTimeLine.release();
       m_vbo_currentTimeLine.release();
       m_currentTimeLineCount = vertices.count();
@@ -621,7 +621,7 @@ void VibratoWidgetGL::doUpdate()
       m_vao_maximaPoints.bind();
       m_vbo_maximaPoints.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       m_vbo_maximaPoints.bind();
-      m_vbo_maximaPoints.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vbo_maximaPoints.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
       m_vao_maximaPoints.release();
       m_vbo_maximaPoints.release();
       m_maximaPointsCount = vertices.count();
@@ -641,7 +641,7 @@ void VibratoWidgetGL::doUpdate()
       m_vao_minimaPoints.bind();
       m_vbo_minimaPoints.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       m_vbo_minimaPoints.bind();
-      m_vbo_minimaPoints.allocate(vertices.constData(), vertices.count() * 3 * sizeof(float));
+      m_vbo_minimaPoints.allocate(vertices.constData(), static_cast<int>(vertices.count() * 3 * sizeof(float)));
       m_vao_minimaPoints.release();
       m_vbo_minimaPoints.release();
       m_minimaPointsCount = vertices.count();

@@ -190,13 +190,13 @@ void Piano3d::drawWhiteKey()
   m_vao_aWhiteKey.bind();
   m_vbo_aWhiteKey.setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_aWhiteKey.bind();
-  m_vbo_aWhiteKey.allocate(key.constData(), key.count() * 3 * sizeof(float));
+  m_vbo_aWhiteKey.allocate(key.constData(), static_cast<int>(key.count() * 3 * sizeof(float)));
   m_aWhiteKeyCount = key.count()/2; // Take into account both vertices and normals.
 
   m_vao_aWhiteKeyOutline.bind();
   m_vbo_aWhiteKeyOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_aWhiteKeyOutline.bind();
-  m_vbo_aWhiteKeyOutline.allocate(keyOutline.constData(), keyOutline.count() * 3 * sizeof(float));
+  m_vbo_aWhiteKeyOutline.allocate(keyOutline.constData(), static_cast<int>(keyOutline.count() * 3 * sizeof(float)));
   m_aWhiteKeyOutlineCount = keyOutline.count()/2; // Take into account both vertices and normals.
 }
 
@@ -278,7 +278,7 @@ void Piano3d::drawBlackKey()
   m_vao_aBlackKey.bind();
   m_vbo_aBlackKey.setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_aBlackKey.bind();
-  m_vbo_aBlackKey.allocate(key.constData(), key.count() * 3 * sizeof(float));
+  m_vbo_aBlackKey.allocate(key.constData(), static_cast<int>(key.count() * 3 * sizeof(float)));
   m_aBlackKeyCount = key.count()/2;
 
   // Front of the key
@@ -307,13 +307,13 @@ void Piano3d::drawBlackKey()
   m_vao_aBlackKeyFront.bind();
   m_vbo_aBlackKeyFront.setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_aBlackKeyFront.bind();
-  m_vbo_aBlackKeyFront.allocate(keyFront.constData(), keyFront.count() * 3 * sizeof(float));
+  m_vbo_aBlackKeyFront.allocate(keyFront.constData(), static_cast<int>(keyFront.count() * 3 * sizeof(float)));
   m_aBlackKeyFrontCount = keyFront.count()/2;
 
   m_vao_aBlackKeyOutline.bind();
   m_vbo_aBlackKeyOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
   m_vbo_aBlackKeyOutline.bind();
-  m_vbo_aBlackKeyOutline.allocate(keyOutline.constData(), keyOutline.count() * 3 * sizeof(float));
+  m_vbo_aBlackKeyOutline.allocate(keyOutline.constData(), static_cast<int>(keyOutline.count() * 3 * sizeof(float)));
   m_aBlackKeyOutlineCount = keyOutline.count()/2;
 }
 

@@ -152,7 +152,7 @@ void HTrackWidget::initializeGL()
 
   m_vbo_light.setUsagePattern(QOpenGLBuffer::StaticDraw);
   m_vbo_light.bind();
-  m_vbo_light.allocate(lightVector.constData(), lightVector.count() * 3 * sizeof(float));
+  m_vbo_light.allocate(lightVector.constData(), static_cast<int>(lightVector.count() * 3 * sizeof(float)));
   m_count_light = lightVector.count();
 }
 
@@ -299,7 +299,7 @@ void HTrackWidget::paintGL()
       vao_refLines.bind();
       vbo_refLines.setUsagePattern(QOpenGLBuffer::DynamicDraw);
       vbo_refLines.bind();
-      vbo_refLines.allocate(refLinePoints.constData(), refLinePoints.count() * 3 * sizeof(float));
+      vbo_refLines.allocate(refLinePoints.constData(), static_cast<int>(refLinePoints.count() * 3 * sizeof(float)));
       MyGL::DrawShape(m_program_camera, vao_refLines, vbo_refLines, refLinePoints.count(), GL_LINES, QColor(0.3f, 0.3f, 0.3f, 1.0f));
       vao_refLines.destroy();
       vbo_refLines.destroy();
@@ -411,7 +411,7 @@ void HTrackWidget::paintGL()
               vbo_harmonicPolygon.setUsagePattern(QOpenGLBuffer::DynamicDraw);
               vbo_harmonicPolygon.bind();
 
-              vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), harmonicPolygon.count() * 3 * sizeof(float));
+              vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), static_cast<int>(harmonicPolygon.count() * 3 * sizeof(float)));
               MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
               vao_harmonicPolygon.destroy();
               vbo_harmonicPolygon.destroy();
@@ -426,7 +426,7 @@ void HTrackWidget::paintGL()
                 vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
                 vbo_harmonicOutline.bind();
 
-                vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
+                vbo_harmonicOutline.allocate(harmonicOutline.constData(), static_cast<int>(harmonicOutline.count() * 3 * sizeof(float)));
                 MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(Qt::black));
                 vao_harmonicOutline.destroy();
                 vbo_harmonicOutline.destroy();
@@ -445,7 +445,7 @@ void HTrackWidget::paintGL()
             vbo_harmonicPolygon.setUsagePattern(QOpenGLBuffer::DynamicDraw);
             vbo_harmonicPolygon.bind();
 
-            vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), harmonicPolygon.count() * 3 * sizeof(float));
+            vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), static_cast<int>(harmonicPolygon.count() * 3 * sizeof(float)));
             MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
             vao_harmonicPolygon.destroy();
             vbo_harmonicPolygon.destroy();
@@ -459,7 +459,7 @@ void HTrackWidget::paintGL()
               vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
               vbo_harmonicOutline.bind();
 
-              vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
+              vbo_harmonicOutline.allocate(harmonicOutline.constData(), static_cast<int>(harmonicOutline.count() * 3 * sizeof(float)));
               MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(Qt::black));
               vao_harmonicOutline.destroy();
               vbo_harmonicOutline.destroy();
@@ -477,7 +477,7 @@ void HTrackWidget::paintGL()
         vbo_harmonicPolygon.setUsagePattern(QOpenGLBuffer::DynamicDraw);
         vbo_harmonicPolygon.bind();
 
-        vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), harmonicPolygon.count() * 3 * sizeof(float));
+        vbo_harmonicPolygon.allocate(harmonicPolygon.constData(), static_cast<int>(harmonicPolygon.count() * 3 * sizeof(float)));
         MyGL::DrawShape(m_program_lighting, vao_harmonicPolygon, vbo_harmonicPolygon, harmonicPolygon.count() / 2, GL_TRIANGLES);
         vao_harmonicPolygon.destroy();
         vbo_harmonicPolygon.destroy();
@@ -491,7 +491,7 @@ void HTrackWidget::paintGL()
           vbo_harmonicOutline.setUsagePattern(QOpenGLBuffer::DynamicDraw);
           vbo_harmonicOutline.bind();
 
-          vbo_harmonicOutline.allocate(harmonicOutline.constData(), harmonicOutline.count() * 3 * sizeof(float));
+          vbo_harmonicOutline.allocate(harmonicOutline.constData(), static_cast<int>(harmonicOutline.count() * 3 * sizeof(float)));
           MyGL::DrawShape(m_program_camera, vao_harmonicOutline, vbo_harmonicOutline, harmonicOutline.count(), GL_LINE_STRIP, QColor(Qt::black));
           vao_harmonicOutline.destroy();
           vbo_harmonicOutline.destroy();
