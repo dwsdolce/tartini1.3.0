@@ -376,6 +376,11 @@ win32{
   LIBS += $$MY_LIB_PATH -l$$QWT_LIB -lfftw3f -lole32 -ldsound -lOpengl32
   #DEFINES += QT_DLL QT_THREAD_SUPPORT
   DEFINES -= UNICODE       #I think some things broke without this?
+
+  # Provide a winmain so that this can be run as a window applications instead of console.
+  # This was automatic in QT5.
+  DEFINES += QT_NEEDS_QMAIN
+  SOURCES += qtmain_win.cpp
 }
 debug {
   DEFINES += MYDEBUG
@@ -383,6 +388,6 @@ debug {
 
 QT +=  core openglwidgets opengl widgets printsupport
 
-CONFIG += uic console
+CONFIG += uic
 
 UI_DIR = dialogs

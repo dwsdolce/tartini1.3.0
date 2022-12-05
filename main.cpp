@@ -27,7 +27,11 @@ QString macxPathString;
 #include "gdata.h"
 #include "myassert.h"
 
+#if defined(QT_NEEDS_QMAIN)
+int qMain( int argc, char **argv )
+#else
 int main( int argc, char **argv )
+#endif
 {
 #ifdef MACX
 	fixColours();
