@@ -53,7 +53,7 @@ private:
   }
 
 public:
-  class iterator
+  class iterator : public std::iterator<std::input_iterator_tag, int>
   {
     large_vector<T> *_parent;
     size_t _pos;
