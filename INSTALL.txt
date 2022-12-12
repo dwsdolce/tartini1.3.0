@@ -17,6 +17,7 @@ Build FFTW3=3.3.10 in static library mode (found in the Extras directory)
 Build QWT-6.2.0 in static library mode (found in the Extras directory):
         1. Open a shell that has Qt and your compiler environment in the path
         2. In qwtconfig.pri comment out QwtDLL so that a static library is built
+	   and set the QWT_INSTALL_PREFIX so the desired location.
         3. run: qmake qwt.pro
         4. run make (or nmake)
         5. run make install (or nmake install) to install in the location
