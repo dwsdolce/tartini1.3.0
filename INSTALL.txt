@@ -8,11 +8,12 @@ qmake on either Windows or Linux.
 Build FFTW3=3.3.10 in static library mode (found in the Extras directory)
         1. Modify CMakeLists.txt to turn BUILD_SHARED_LIBS OFF by default and
         ENABLE_FLOAT on by default.
-        2. run: cmake CMakeLists.txt
-        3. Build using either Visual Studio 2020 on Windows or configure/make on Linux
-        4. Manually install the required files
+        2. Build by opening the folder in Visual Studio 2020 and building
+	Debug and Release or using configure/make on Linux
+        3. Manually install the required files
                 debug and release fftw3f.lib and fftw3f.pdb
-           into the respective release directories in (C:\fftw-3.3.10 on windows);.
+           into the respective release directories in (C:\fftw-3.3.10\Debug
+	   and C:\fft2-3.3.10\Release on windows);.
 Build QWT-6.2.0 in static library mode (found in the Extras directory):
         1. Open a shell that has Qt and your compiler environment in the path
         2. In qwtconfig.pri comment out QwtDLL so that a static library is built
