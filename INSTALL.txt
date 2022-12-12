@@ -3,12 +3,13 @@ Install instructions for Tartini (version 1.3)
 To compile Tartini 1.3 from the source:
 
 Step 1.
-Build Qt 5.15.2 in static library mode
+Build Qt 6.4.1 in static library mode using Visual Studio 2020 on Windows or
+qmake on either Windows or Linux.
 Build FFTW3=3.3.10 in static library mode (found in the Extras directory)
         1. Modify CMakeLists.txt to turn BUILD_SHARED_LIBS OFF by default and
         ENABLE_FLOAT on by default.
         2. run: cmake CMakeLists.txt
-        3. Build using either Visual Studio 2019 on Windows or make on Linux
+        3. Build using either Visual Studio 2020 on Windows or configure/make on Linux
         4. Manually install the required files
                 debug and release fftw3f.lib and fftw3f.pdb
            into the respective release directories in (C:\fftw-3.3.10 on windows);.
@@ -33,5 +34,5 @@ On Linux:
 On Windows:
   nmake all               - This will compile the executable called tartini.
 
-You can also build in Visual Studio 2019 using the Qt Visual Studio Tools
+You can also build in Visual Studio 2020 using the Qt Visual Studio Tools
 extension to create a solution. Then build the desired configuration.
