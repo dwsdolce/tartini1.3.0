@@ -24,6 +24,7 @@ CONFIG           -= depend_includepath
 unix:lessThan(QT_MAJOR_VERSION, 5) CONFIG += qtsystemincludes
 
 # CONFIG += c++11
+CONFIG += c++20
 
 c++11 {
     CONFIG           += strict_c++
