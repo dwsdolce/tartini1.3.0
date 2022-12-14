@@ -12,8 +12,8 @@ unix{
     MY_LIB_PATH += -L/Users/student/usr/local/lib
     MY_INCLUDE_PATH += /Users/student/usr/local/include
   }else{ #Linux
-    MY_LIB_PATH += -L/home/inferno/research/pitch/lib
-    MY_INCLUDE_PATH += /home/inferno/research/pitch/include/Qt /home/inferno/research/pitch/include/qwt /home/inferno/research/pitch/include
+    MY_LIB_PATH += -L/home/dws/Extra/Qwt-6.2.0/lib -L/home/dws/Extra/fft-3.3.10/lib
+    MY_INCLUDE_PATH += /home/dws/Extra/Qwt-6.2.0/include /home/dws/Extra/fft-3.3.10/include
   }
 }
 win32{ #Windows
@@ -288,12 +288,12 @@ DEPENDPATH += $$MYPATHS
 
 unix{
   debug {
-    OBJECTS_DIR=.debug_obj
-    MOC_DIR=.debug_moc
+    OBJECTS_DIR=DEBUG
+    MOC_DIR=DEBUG_MOC
   }
   release {
-    OBJECTS_DIR=.obj
-    MOC_DIR=.moc
+    OBJECTS_DIR=RELEASE
+    MOC_DIR=RELEASE_MOC
   }
   macx{
 
@@ -336,7 +336,7 @@ unix{
     DEPENDPATH += rtAudio/
     HEADERS += rtAudio/audio_stream.h rtAudio/RtAudio.h rtAudio/RtError.h
     SOURCES += rtAudio/audio_stream.cpp rtAudio/RtAudio.cpp
-    DEFINES += __LINUX_OSS__
+    #DEFINES += __LINUX_OSS__
     DEFINES += __LINUX_ALSA__
     #DEFINES += __LINUX_JACK__  #Uncomment to use Jack. Note untested.
 
@@ -390,6 +390,6 @@ debug {
 
 QT +=  core openglwidgets opengl widgets printsupport
 
-CONFIG += uic
+CONFIG += uic debug_and_release
 
 UI_DIR = dialogs

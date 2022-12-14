@@ -3395,6 +3395,7 @@ void RtApiJack :: cancelStreamCallback()
 #if defined(__LINUX_ALSA__)
 
 #include <alsa/asoundlib.h>
+#include <climits>
 #include <unistd.h>
 #include <ctype.h>
 

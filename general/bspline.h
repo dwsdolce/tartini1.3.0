@@ -17,6 +17,8 @@
 #ifndef BSPLINE_H
 #define BSPLINE_H
 
+#include <cstddef>
+
 #define LINEAR           0
 #define BSPLINE          1
 #define HERMITE_CUBIC    2

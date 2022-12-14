@@ -6,14 +6,19 @@ Step 1.
 Build Qt 6.4.1 in static library mode using Visual Studio 2020 on Windows or
 qmake on either Windows or Linux.
 Build FFTW3=3.3.10 in static library mode (found in the Extras directory)
+    Windows:
         1. Modify CMakeLists.txt to turn BUILD_SHARED_LIBS OFF by default and
-        ENABLE_FLOAT on by default.
+           ENABLE_FLOAT on by default
         2. Build by opening the folder in Visual Studio 2020 and building
-	Debug and Release or using configure/make on Linux
-        3. Manually install the required files
-                debug and release fftw3f.lib and fftw3f.pdb
-           into the respective release directories in (C:\fftw-3.3.10\Debug
-	   and C:\fft2-3.3.10\Release on windows);.
+	   Debug and Release
+        3. Manually install the required files debug and release fftw3f.lib
+	   and fftw3f.pdb into the respective release directories in
+	   (C:\fftw-3.3.10\Debug and C:\fft2-3.3.10\Release on windows)
+    Linux:
+	1. ./configure --enable-single --prefix=INSTALL_DIR > LOG.configure 2>&1 &
+	2. make
+	3. make install
+	   
 Build QWT-6.2.0 in static library mode (found in the Extras directory):
         1. Open a shell that has Qt and your compiler environment in the path
         2. In qwtconfig.pri comment out QwtDLL so that a static library is built
@@ -21,10 +26,11 @@ Build QWT-6.2.0 in static library mode (found in the Extras directory):
         3. run: qmake qwt.pro
         4. run make (or nmake)
         5. run make install (or nmake install) to install in the location
-        defined in qwtconfig.pri.
+           defined in qwtconfig.pri
 
 Step 2.
 Edit pitch.pro and put the correct library and include paths for your setup.
+(for Linux make sure libasound2-dev is loaded)
 
 Step 3.
 Open a shell that has Qt and your compiler environment in the path
