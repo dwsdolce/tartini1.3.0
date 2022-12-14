@@ -29,11 +29,8 @@ win32{ #Windows
 
 TEMPLATE = app
 CONFIG += qt thread opengl
-#CONFIG -= debug
-#CONFIG += release
 CONFIG += warn_on
 CONFIG += precompile_header
-#CONFIG += profile
 #DEFINES += SHARED_DRAWING_BUFFER
 DEFINES += SINGLE_DRAWING_BUFFER
 LANGUAGE = C++
@@ -287,14 +284,34 @@ INCLUDEPATH += $$MYPATHS
 DEPENDPATH += $$MYPATHS
 
 unix{
-  debug {
-    OBJECTS_DIR=debug
-    MOC_DIR=debug_moc
+  build_pass:CONFIG(debug, debug|release) {
+    DESTDIR=debug
+    OBJECTS_DIR=$$DESTDIR/.obj
+    MOC_DIR=$$DESTDIR/.moc
+    RCC_DIR=$$DESTDIR/.rcc
+    UI_DIR=$$DESTDIR/.ui
   }
-  release {
-    OBJECTS_DIR=release
-    MOC_DIR=release_moc
+  build_pass:CONFIG(release, debug|release) {
+    DESTDIR=release
+    OBJECTS_DIR=$$DESTDIR/.obj
+    MOC_DIR=$$DESTDIR/.moc
+    RCC_DIR=$$DESTDIR/.rcc
+    UI_DIR=$$DESTDIR/.ui
   }
+  #debug {
+  #  DESTDIR=debug
+  #  OBJECTS_DIR=$$DESTDIR/.obj
+  #  MOC_DIR=$$DESTDIR/.moc
+  #  RCC_DIR=$$DESTDIR/.rcc
+  #  UI_DIR=$$DESTDIR/.ui
+  #}
+  #release {
+  #  DESTDIR=release
+  #  OBJECTS_DIR=$$DESTDIR/.obj
+  #  MOC_DIR=$$DESTDIR/.moc
+  #  RCC_DIR=$$DESTDIR/.rcc
+  #  UI_DIR=$$DESTDIR/.ui
+  #}
   macx{
 
     #INCLUDEPATH += macx/
@@ -324,21 +341,12 @@ unix{
     #CONFIG += ppc
   }
   else{ #linux
-
-    #old sound library routines
-    #INCLUDEPATH += unix/
-    #DEPENDPATH += unix/
-    #HEADERS += unix/audio_stream.h
-    #SOURCES += unix/audio_stream.cpp
-
     #RtAudio sound library routines
     INCLUDEPATH += rtAudio/
     DEPENDPATH += rtAudio/
     HEADERS += rtAudio/audio_stream.h rtAudio/RtAudio.h rtAudio/RtError.h
     SOURCES += rtAudio/audio_stream.cpp rtAudio/RtAudio.cpp
-    #DEFINES += __LINUX_OSS__
     DEFINES += __LINUX_ALSA__
-    #DEFINES += __LINUX_JACK__  #Uncomment to use Jack. Note untested.
 
     DEFINES += LINUX
     INCLUDEPATH += $$MY_INCLUDE_PATH
