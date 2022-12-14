@@ -12,8 +12,8 @@ unix{
     MY_LIB_PATH += -L/Users/student/usr/local/lib
     MY_INCLUDE_PATH += /Users/student/usr/local/include
   }else{ #Linux
-    MY_LIB_PATH += -L/home/dws/Extra/Qwt-6.2.0/lib -L/home/dws/Extra/fft-3.3.10/lib
-    MY_INCLUDE_PATH += /home/dws/Extra/Qwt-6.2.0/include /home/dws/Extra/fft-3.3.10/include
+    MY_LIB_PATH += -L/home/dws/Extra/qwt-6.2.0/lib -L/home/dws/Extra/fft-3.3.10/lib
+    MY_INCLUDE_PATH += /home/dws/Extra/qwt-6.2.0/include /home/dws/Extra/fft-3.3.10/include
   }
 }
 win32{ #Windows
@@ -288,12 +288,12 @@ DEPENDPATH += $$MYPATHS
 
 unix{
   debug {
-    OBJECTS_DIR=DEBUG
-    MOC_DIR=DEBUG_MOC
+    OBJECTS_DIR=debug
+    MOC_DIR=debug_moc
   }
   release {
-    OBJECTS_DIR=RELEASE
-    MOC_DIR=RELEASE_MOC
+    OBJECTS_DIR=release
+    MOC_DIR=release_moc
   }
   macx{
 
