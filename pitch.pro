@@ -346,7 +346,9 @@ unix{
     DEPENDPATH += rtAudio/
     HEADERS += rtAudio/audio_stream.h rtAudio/RtAudio.h rtAudio/RtError.h
     SOURCES += rtAudio/audio_stream.cpp rtAudio/RtAudio.cpp
+    DEFINES += __LINUX_OSS__
     DEFINES += __LINUX_ALSA__
+    #DEFINES += __LINUX_JACK__  #Uncomment to use Jack. Note untested.
 
     DEFINES += LINUX
     INCLUDEPATH += $$MY_INCLUDE_PATH

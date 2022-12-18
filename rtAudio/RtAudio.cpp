@@ -484,6 +484,7 @@ bool RtApi :: probeDeviceOpen( int /*device*/, StreamMode /*mode*/, int /*channe
 
 #if defined(__LINUX_OSS__)
 
+#include <cstring>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -3449,24 +3450,24 @@ void RtApiAlsa :: initialize(void)
       sprintf(message_, "RtApiAlsa: control open (%i): %s.", card, snd_strerror(result));
       error(RtError::DEBUG_WARNING);
       goto next_card;
-		}
+    }
     result = snd_ctl_card_info(handle, info);
-		if (result < 0) {
+    if (result < 0) {
       sprintf(message_, "RtApiAlsa: control hardware info (%i): %s.", card, snd_strerror(result));
       error(RtError::DEBUG_WARNING);
       goto next_card;
-		}
+    }
     cardId = snd_ctl_card_info_get_id(info);
-		subdevice = -1;
-		while (1) {
+    subdevice = -1;
+    while (1) {
       result = snd_ctl_pcm_next_device(handle, &subdevice);
-			if (result < 0) {
+      if (result < 0) {
         sprintf(message_, "RtApiAlsa: control next device (%i): %s.", card, snd_strerror(result));
         error(RtError::DEBUG_WARNING);
         break;
       }
-			if (subdevice < 0)
-        break;
+      if (subdevice < 0)
+	break;
       sprintf( name, "hw:%d,%d", card, subdevice );
       // If a cardId exists and it contains at least one non-numeric
       // character, use it to identify the device.  This avoids a bug
@@ -3496,8 +3497,8 @@ void RtApiAlsa :: probeDeviceInfo(RtApiDevice *info)
   snd_pcm_t *handle;
   snd_ctl_t *chandle;
   snd_pcm_stream_t stream;
-	snd_pcm_info_t *pcminfo;
-	snd_pcm_info_alloca(&pcminfo);
+  snd_pcm_info_t *pcminfo;
+  snd_pcm_info_alloca(&pcminfo);
   snd_pcm_hw_params_t *params;
   snd_pcm_hw_params_alloca(&params);
   char name[64];
@@ -3751,6 +3752,8 @@ void RtApiAlsa :: probeDeviceInfo(RtApiDevice *info)
   return;
 }
 
+#include <QDebug>
+
 bool RtApiAlsa :: probeDeviceOpen( int device, StreamMode mode, int channels, 
                                    int sampleRate, RtAudioFormat format,
                                    int *bufferSize, int numberOfBuffers )
@@ -3774,8 +3777,7 @@ bool RtApiAlsa :: probeDeviceOpen( int device, StreamMode mode, int channels,
   int alsa_open_mode = SND_PCM_ASYNC;
   err = snd_pcm_open(&handle, name, alsa_stream, alsa_open_mode);
   if (err < 0) {
-    sprintf(message_,"RtApiAlsa: pcm device (%s) won't open: %s.",
-            name, snd_strerror(err));
+    sprintf(message_,"RtApiAlsa: pcm device (%s) won't open: %s.", name, snd_strerror(err));
     error(RtError::DEBUG_WARNING);
     return FAILURE;
   }
@@ -3786,8 +3788,7 @@ bool RtApiAlsa :: probeDeviceOpen( int device, StreamMode mode, int channels,
   err = snd_pcm_hw_params_any(handle, hw_params);
   if (err < 0) {
     snd_pcm_close(handle);
-    sprintf(message_, "RtApiAlsa: error getting parameter handle (%s): %s.",
-            name, snd_strerror(err));
+    sprintf(message_, "RtApiAlsa: error getting parameter handle (%s): %s.", name, snd_strerror(err));
     error(RtError::DEBUG_WARNING);
     return FAILURE;
   }
@@ -3800,12 +3801,10 @@ bool RtApiAlsa :: probeDeviceOpen( int device, StreamMode mode, int channels,
   // Set access ... try interleaved access first, then non-interleaved
   if ( !snd_pcm_hw_params_test_access( handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED) ) {
     err = snd_pcm_hw_params_set_access(handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED);
-  }
-  else if ( !snd_pcm_hw_params_test_access( handle, hw_params, SND_PCM_ACCESS_RW_NONINTERLEAVED) ) {
-		err = snd_pcm_hw_params_set_access(handle, hw_params, SND_PCM_ACCESS_RW_NONINTERLEAVED);
+  } else if ( !snd_pcm_hw_params_test_access( handle, hw_params, SND_PCM_ACCESS_RW_NONINTERLEAVED) ) {
+    err = snd_pcm_hw_params_set_access(handle, hw_params, SND_PCM_ACCESS_RW_NONINTERLEAVED);
     stream_.deInterleave[mode] = true;
-  }
-  else {
+  } else {
     snd_pcm_close(handle);
     sprintf(message_, "RtApiAlsa: device (%s) access not supported by RtAudio.", name);
     error(RtError::DEBUG_WARNING);
@@ -3910,7 +3909,7 @@ bool RtApiAlsa :: probeDeviceOpen( int device, StreamMode mode, int channels,
   }
 
   // Set the sample rate.
-  err = snd_pcm_hw_params_set_rate(handle, hw_params, (unsigned int)sampleRate, 0);
+  err = snd_pcm_hw_params_set_rate_near(handle, hw_params, (unsigned int*)&sampleRate, 0);
   if (err < 0) {
     snd_pcm_close(handle);
     sprintf(message_, "RtApiAlsa: error setting sample rate (%d) on device (%s): %s.",

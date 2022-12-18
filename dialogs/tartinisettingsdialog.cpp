@@ -86,7 +86,7 @@ void TartiniSettingsDialog::init()
   soundInput->clear();
   soundInput->insertItems(-1, AudioStream::getInputDeviceNames());
   soundOutput->clear();
-  soundOutput->insertItems(-1, AudioStream::getInputDeviceNames());
+  soundOutput->insertItems(-1, AudioStream::getOutputDeviceNames());
   
   QString group;
   //QObject *obj;
@@ -356,60 +356,6 @@ void TartiniSettingsDialog::onNoteRangeChoice(int choice)
   checkAnalysisEnabled();
 }
 
-/*
-void TartiniSettingsDialog::setUnknownstToDefault(Settings *settings)
-{
-  settings->setBool("General", "bindOpenSaveFolders", true);
-  settings->setString("General", "tempFilesFolder", QDir::convertSeparators(QDir::currentDirPath()));
-  settings->setString("General", "filenameGeneratingString", "Untitled");
-  settings->setInt("General", "fileGeneratingNumber", 1);
-  settings->setInt("General", "fileNumberOfDigits", 2);
-  settings->setInt("Display", "fastUpdateSpeed", 75);
-  settings->setInt("Display", "slowUpdateSpeed", 150);
-  settings->setString("General", "noteRangeChoice", "Notes F1 and higher - Cello, Guitar, Bass Clarinet, General sounds ...");
-  
-  settings->setBool("View", "autoFollow", true);
-  settings->setBool("View", "backgroundShading", true);
-
-#ifndef LINUX
-  settings->setString("Sound", "soundInput", "Default Input Device");   // Use default device
-  settings->setString("Sound", "soundOutput", "Default Output Device"); // Use default device
-#else
-  settings->setString("Sound", "soundInput", "/dev/dsp");
-  settings->setString("Sound", "soundOutput", "/dev/dsp");
-#endif
-  settings->setString("Sound", "numberOfChannels", "Mono");
-  settings->setInt("Sound", "sampleRate", 44100);
-  settings->setInt("Sound", "bitsPerSample", 16);
-  settings->setBool("Sound", "muteOutput", true);
-  
-  settings->setInt("Analysis", "bufferSizeValue", 48);
-  settings->setString("Analysis", "bufferSizeUnit", "milli-seconds");
-  settings->setBool("Analysis", "bufferSizeRound", true);
-  
-  settings->setInt("Analysis", "stepSizeValue", 24);
-  settings->setString("Analysis", "stepSizeUnit", "milli-seconds");
-  settings->setBool("Analysis", "stepSizeRound", true);
-  settings->setBool("Analysis", "doingHarmonicAnalysis", true);
-  settings->setBool("Analysis", "doingFreqAnalysis", true);
-  settings->setBool("Analysis", "doingEqualLoudness", true);
-  settings->setBool("Analysis", "doingAutoNoiseFloor", true);
-  settings->setString("Analysis", "analysisType", "MPM");
-  settings->setInt("Analysis", "thresholdValue", 93);
-
-  settings->setString("Display", "theBackgroundColor", "#BBCDE2");
-  settings->setString("Display", "shading1Color", "#BBCDEF");
-  settings->setString("Display", "shading2Color", "#CBCDE2");
-  settings->setBool("Display", "displayBackgroundShading", true);
-  
-  settings->setBool("Dialogs", "rememberOpenFolder", true);
-  settings->setString("Dialogs", "openFilesFolder", QDir::convertSeparators(QDir::currentDirPath()));
-  settings->setBool("Dialogs", "rememberSaveFolder", true);
-  settings->setString("Dialogs", "saveFilesFolder", QDir::convertSeparators(QDir::currentDirPath()));
-  settings->setBool("Dialogs", "appendWav", true);
-}
-*/
-
 #define SetIfMissing(key, value) \
   if(!s->contains(key)) s->setValue(key, value)
 
@@ -428,15 +374,6 @@ void TartiniSettingsDialog::setUnknownsToDefault(QSettings *s)
 
   SetIfMissing("Sound/soundInput", "Default");
   SetIfMissing("Sound/soundOutput", "Default");
-/*
-#ifndef LINUX
-  SetIfMissing("Sound/soundInput", "Default Input Device");
-  SetIfMissing("Sound/soundOutput", "Default Output Device");
-#else
-  SetIfMissing("Sound/soundInput", "/dev/dsp");
-  SetIfMissing("Sound/soundOutput", "/dev/dsp");
-#endif
-*/
   SetIfMissing("Sound/numberOfBuffers", 4);
   SetIfMissing("Sound/numberOfChannels", "Mono");
   SetIfMissing("Sound/sampleRate", 44100);
@@ -480,8 +417,6 @@ void TartiniSettingsDialog::setUnknownsToDefault(QSettings *s)
 void TartiniSettingsDialog::resetDefaults()
 {
   gdata->qsettings->clear();
-  //setDefaults(&gdata->settings);
-  //gdata->settings.save();
   setUnknownsToDefault(gdata->qsettings);
   gdata->qsettings->sync();
   init();
