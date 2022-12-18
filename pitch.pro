@@ -298,20 +298,6 @@ unix{
     RCC_DIR=$$DESTDIR/.rcc
     UI_DIR=$$DESTDIR/.ui
   }
-  #debug {
-  #  DESTDIR=debug
-  #  OBJECTS_DIR=$$DESTDIR/.obj
-  #  MOC_DIR=$$DESTDIR/.moc
-  #  RCC_DIR=$$DESTDIR/.rcc
-  #  UI_DIR=$$DESTDIR/.ui
-  #}
-  #release {
-  #  DESTDIR=release
-  #  OBJECTS_DIR=$$DESTDIR/.obj
-  #  MOC_DIR=$$DESTDIR/.moc
-  #  RCC_DIR=$$DESTDIR/.rcc
-  #  UI_DIR=$$DESTDIR/.ui
-  #}
   macx{
 
     #INCLUDEPATH += macx/
