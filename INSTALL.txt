@@ -13,8 +13,9 @@ Build FFTW3=3.3.10 in static library mode (found in the Extras directory)
         2. Build by opening the folder in Visual Studio 2020 and building
 	   Debug and Release
         3. Manually install the required files debug and release fftw3f.lib
-	   and fftw3f.pdb into the respective release directories in
+	   into the respective release directories in
 	   (C:\fftw-3.3.10\Debug and C:\fft2-3.3.10\Release on windows)
+	   and the include file fftw3.h in c:\fftw-3.3.10.
     Linux:
 	1. ./configure --enable-single --prefix=INSTALL_DIR > LOG.configure 2>&1 &
 	2. make
@@ -45,5 +46,5 @@ On Linux:
 On Windows:
   nmake all               - This will compile the executable called tartini.
 
-You can also build in Visual Studio 2020 using the Qt Visual Studio Tools
+You can also build in Visual Studio 2022 using the Qt Visual Studio Tools
 extension to create a solution. Then build the desired configuration.
